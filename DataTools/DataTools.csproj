@@ -27,4 +27,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DataLayerMaui\DataLayerMaui.csproj" />
+    <ProjectReference Include="..\Yi\Yi.csproj" />
+  </ItemGroup>
+
 </Project>

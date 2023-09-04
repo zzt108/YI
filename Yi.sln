@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTools", "DataTools\Data
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{753528D5-762C-4630-AC3C-6B7D61AA1A0A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayerMaui", "DataLayerMaui\DataLayerMaui.csproj", "{FB15187A-27AF-4456-9A78-815D07345FCB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{753528D5-762C-4630-AC3C-6B7D61AA1A0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{753528D5-762C-4630-AC3C-6B7D61AA1A0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{753528D5-762C-4630-AC3C-6B7D61AA1A0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB15187A-27AF-4456-9A78-815D07345FCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB15187A-27AF-4456-9A78-815D07345FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB15187A-27AF-4456-9A78-815D07345FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB15187A-27AF-4456-9A78-815D07345FCB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

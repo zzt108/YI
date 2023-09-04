@@ -3,10 +3,10 @@
 using System;
 using System.IO;
 
-namespace DataLayer
+namespace DataLayerMaui
 {
-
-public class YiDbContext : DbContext
+    // All the code in this file is included in all platforms.
+    public class YiDbContext : DbContext
     {
         public DbSet<Language> Languages { get; set; }
 
@@ -17,13 +17,12 @@ public class YiDbContext : DbContext
             //Android
             string yiDbName = "yidb.sqlite";
             string dbPath = "Empty";
-
 #if __ANDROID__
     // Android-specific path
-     dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), yiDbName);
+    dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), yiDbName);
 #elif WINDOWS_UWP
     // Windows-specific path
-     dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, yiDbName);
+    dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, yiDbName);
 #endif
             // Configure the database connection
             optionsBuilder.UseSqlite($"Filename={dbPath}");
@@ -57,8 +56,6 @@ public class YiDbContext : DbContext
     {
         public int Id { get; set; }
         public int HexaGramId { get; set; }
-        public string Question { get; set;}
+        public string Question { get; set; }
     }
-
-
 }
