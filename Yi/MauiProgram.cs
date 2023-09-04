@@ -21,5 +21,11 @@ namespace Yi
 
             return builder.Build();
         }
+        //static void Main()
+        //{
+        //    Console.WriteLine("Dummy static Main");
+        //    Console.ReadKey();
+        //}
+
     }
 }

@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34018.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yi", "Yi\Yi.csproj", "{F2C5F19A-26C6-446D-A8B0-EF723DC1F47C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yi", "Yi\Yi.csproj", "{F2C5F19A-26C6-446D-A8B0-EF723DC1F47C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTools", "DataTools\DataTools.csproj", "{B5B76370-C138-4345-BB47-C717873661D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "DataLayer\DataLayer.csproj", "{753528D5-762C-4630-AC3C-6B7D61AA1A0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{753528D5-762C-4630-AC3C-6B7D61AA1A0A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayerMaui", "DataLayerMaui\DataLayerMaui.csproj", "{FB15187A-27AF-4456-9A78-815D07345FCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayerMaui", "DataLayerMaui\DataLayerMaui.csproj", "{FB15187A-27AF-4456-9A78-815D07345FCB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +21,6 @@ Global
 		{F2C5F19A-26C6-446D-A8B0-EF723DC1F47C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2C5F19A-26C6-446D-A8B0-EF723DC1F47C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F2C5F19A-26C6-446D-A8B0-EF723DC1F47C}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{B5B76370-C138-4345-BB47-C717873661D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B5B76370-C138-4345-BB47-C717873661D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B5B76370-C138-4345-BB47-C717873661D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B5B76370-C138-4345-BB47-C717873661D3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{753528D5-762C-4630-AC3C-6B7D61AA1A0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{753528D5-762C-4630-AC3C-6B7D61AA1A0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{753528D5-762C-4630-AC3C-6B7D61AA1A0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
