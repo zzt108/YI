@@ -39,6 +39,21 @@ public class YiDbContext : DbContext
             this.dbFullPath = Path.Combine(dbPath, yiDbName); ;
         }
 
+        public bool Delete()
+        {
+            try
+            {
+                File.Delete(dbFullPath);
+            }
+            catch (DirectoryNotFoundException)
+            { return true; }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+            return true;
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

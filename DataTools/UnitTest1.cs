@@ -29,6 +29,8 @@ namespace DataTools
             // Configure the database connection
             //            using var dbContext = new YiDbContext(@"c:\Git\Yi\");
             using var dbContext = new YiDbContext();
+            if (!dbContext.Delete()) Assert.Fail("Delete unsuccessfull");
+
             dbContext.Database.Migrate();
 
             //List<object> sampleData = new List<object>();
@@ -57,15 +59,17 @@ namespace DataTools
 
             var h1 = new Hexagram { Value = 1, Name = "Hexagram 1" };
             dbContext.Hexagrams.Add(h1);
-            var h2 = new Hexagram { Value = 1, Name = "Hexagram 2" };
+            var h2 = new Hexagram { Value = 2, Name = "Hexagram 2" };
             dbContext.Hexagrams.Add(h2);
-            var h3 = new Hexagram { Value = 1, Name = "Hexagram 3" };
+            var h3 = new Hexagram { Value = 3, Name = "Hexagram 3" };
             dbContext.Hexagrams.Add(h3);
 
             var q1 = new Question { Text = "What is your favorite color?", BaseHexagram = h1 };
             var q2 = new Question { Text = "What is your favorite food?" , BaseHexagram = h1, ChangedHexagram = h2 };
             var q3 = new Question { Text = "What is your favorite movie?" };
-
+            dbContext.Questions.Add(q1);
+            dbContext.Questions.Add(q2);
+            dbContext.Questions.Add(q3);
 
             dbContext.SaveChanges();
 /*
