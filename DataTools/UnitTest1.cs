@@ -20,10 +20,12 @@ namespace DataTools
 
             // Configure the database connection
 
-            var dbContext = new YiDbContext();
-            //dbContext.Database.EnsureCreated();
-            dbContext.Database.Migrate(); 
-            Assert.Pass();
+            using (var dbContext = new YiDbContext(@"c:\Git\Yi\"))
+            {
+                // dbContext.Database.EnsureCreated();
+                dbContext.Database.Migrate();
+                Assert.Pass();
+            }
         }
     }
 }

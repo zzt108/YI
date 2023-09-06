@@ -1,6 +1,5 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-//using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
 
@@ -13,18 +12,24 @@ public class YiDbContext : DbContext
         string yiDbName = "yidb.sqlite";
 
         private string dbFullPath;
+        
+        public DbSet<Language> Languages => Set<Language>();
+        //public DbSet<LineText> LineTexts { get; set; }
+        //public DbSet<Text> Texts { get; set; }
+        //public DbSet<Hexagram> Hexagrams { get; set; }
+        //public DbSet<Question> Questions { get; set; }
+        
         public YiDbContext()
         {
             string localFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             dbFullPath = Path.Combine(localFolderPath, yiDbName);
-
         }
 
         public YiDbContext(string dbPath)
         {
             this.dbFullPath = Path.Combine(dbPath, yiDbName); ;
         }
-        public DbSet<Language> Languages { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -35,12 +40,25 @@ public class YiDbContext : DbContext
             // Configure the database connection
             optionsBuilder.UseSqlite($"Filename={dbFullPath}");
         }
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
+        //    modelBuilder.Entity<Text>().ToTable("Texts")
+        //        .HasOne<Language>(l => l.Language);
+        //    modelBuilder.Entity<Hexagram>().ToTable("Hexagrams")
+        //        .HasMany(t => t.Texts);
+        //    modelBuilder.Entity<Question>().ToTable("Questions")
+        //        .HasOne(q => q.BaseHexagram)
+        //        .WithMany(h => h.Questions);
+        //}
     }
 
     public class Language
     {
         public int Id { get; set; }
         public string Name { get; set; }
+//        public List<Text> Texts { get; set; }
     }
 
     public class LineText
@@ -52,19 +70,27 @@ public class YiDbContext : DbContext
     public class Text
     {
         public int Id { get; set; }
-        public int HexaGramId { get; set; }
+        public List<LineText> Lines { get; set; }
+
+        public int LanguageId { get; set; }
+        public Language Language { get; set; }
     }
 
     public class Hexagram
     {
         public int Id { get; set; }
+        public List<Text> Texts { get; set; }
     }
 
-    public class History
+    public class Question
     {
         public int Id { get; set; }
-        public int HexaGramId { get; set; }
-        public string Question { get; set;}
+
+        public string Text { get; set;}
+
+        //todo : hexagram is nullable
+        public Hexagram BaseHexagram { get; set; }
+        public Hexagram ChangedHexagram { get; set; }
     }
 
 
