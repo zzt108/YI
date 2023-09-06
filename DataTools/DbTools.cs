@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using OldDataLayer;
 using FluentAssertions;
+using System.Text.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace DataTools
 {
@@ -20,7 +23,7 @@ namespace DataTools
         public void CreateOpen_Database()
         {
             // Configure the database connection
-//            using var dbContext = new YiDbContext(@"c:\Git\Yi\");
+            //            using var dbContext = new YiDbContext(@"c:\Git\Yi\");
             using var dbContext = new YiDbContext();
             dbContext.Database.Migrate();
         }
@@ -74,32 +77,55 @@ namespace DataTools
             dbContext.Hexagrams.Add(h3);
 
             var q1 = new Question { Text = "What is your favorite color?", BaseHexagram = h1 };
-            var q2 = new Question { Text = "What is your favorite food?" , BaseHexagram = h1, ChangedHexagram = h2 };
+            var q2 = new Question { Text = "What is your favorite food?", BaseHexagram = h1, ChangedHexagram = h2 };
             var q3 = new Question { Text = "What is your favorite movie?" };
             dbContext.Questions.Add(q1);
             dbContext.Questions.Add(q2);
             dbContext.Questions.Add(q3);
 
             dbContext.SaveChanges();
-/*
-            List<SampleData> GenerateSampleData()
+        }
+
+        [Test]
+        public void ExportToJson()
+        {
+            using var dbContext = new YiDbContext();
+
+            dbContext.Database.Migrate();
+
+            // Assuming you have a DbContext instance called "dbContext"
+            var jsonData = new JObject();
+            var settings = new JsonSerializerSettings
             {
-                List<SampleData> sampleData = new List<SampleData>();
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
 
+            string[] array = { "Database", "View", "ChangeTracker", "Model" };
+            foreach (var set in dbContext.GetType().GetProperties())
+            {
+                if (array.Contains(set.Name))
+                    continue;
 
-                // Generate sample data for LineTexts
-
-
-                // Generate sample data for Hexagrams
-                sampleData.Add(new SampleData { HexagramId = 1, HexagramName = "Hexagram 1" });
-                sampleData.Add(new SampleData { HexagramId = 2, HexagramName = "Hexagram 2" });
-                sampleData.Add(new SampleData { HexagramId = 3, HexagramName = "Hexagram 3" });
-
-                // Generate sample data for Questions
-
-                return sampleData;
+                var entities = set.GetValue(dbContext);
+                try
+                {
+                    var json = JsonConvert.SerializeObject(entities, settings);
+                    jsonData[set.Name] = JArray.Parse(json);
+                }
+                catch (JsonReaderException ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    continue;
+                }
             }
-*/
+
+            var jsonString = jsonData.ToString();
+
+            // Use the JSON string as needed
+            Console.WriteLine(jsonString);
+            string filePath = @"c:\git\yi\export.json";
+
+            File.WriteAllText(filePath, jsonString);
         }
     }
 }
