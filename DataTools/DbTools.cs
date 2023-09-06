@@ -4,10 +4,12 @@ using System.IO;
 using DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using OldDataLayer;
+using FluentAssertions;
 
 namespace DataTools
 {
-    public class Tests
+    public class DbTools
     {
         [SetUp]
         public void Setup()
@@ -22,6 +24,18 @@ namespace DataTools
             using var dbContext = new YiDbContext();
             dbContext.Database.Migrate();
         }
+        [Test]
+        public void OpenOldDatabase()
+        {
+            // Configure the database connection
+            using var dbContext = new OldYiDbContext(@"c:\Git\Yi\");
+            dbContext.Database.OpenConnection();
+            var tables = dbContext.GetTableNames();
+            tables.Count.Should().BeGreaterThan(0);
+            var records = dbContext.GuaExp.ToList();
+            records.Count.Should().BeGreaterThan(0);
+        }
+
 
         [Test]
         public void CreateData()
@@ -32,11 +46,6 @@ namespace DataTools
             if (!dbContext.Delete()) Assert.Fail("Delete unsuccessfull");
 
             dbContext.Database.Migrate();
-
-            //List<object> sampleData = new List<object>();
-            //sampleData.Add(new Language { Id = 1, LanguageName = "English" });
-            //sampleData.Add(new Language { Id = 2, LanguageName = "Spanish" });
-            //sampleData.Add(new Language { Id = 3, LanguageName = "French" });
 
             Language langEng = new Language { Name = "English" };
             dbContext.Languages.Add(langEng);
