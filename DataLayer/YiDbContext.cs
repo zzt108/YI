@@ -1,13 +1,29 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
 //using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
+
 
 namespace DataLayer
 {
 
 public class YiDbContext : DbContext
     {
+        string yiDbName = "yidb.sqlite";
+
+        private string dbFullPath;
+        public YiDbContext()
+        {
+            string localFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            dbFullPath = Path.Combine(localFolderPath, yiDbName);
+
+        }
+
+        public YiDbContext(string dbPath)
+        {
+            this.dbFullPath = Path.Combine(dbPath, yiDbName); ;
+        }
         public DbSet<Language> Languages { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -15,18 +31,9 @@ public class YiDbContext : DbContext
             // Define the SQLite database file path
             // string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "mydatabase.db3");
             //Android
-            string yiDbName = "yidb.sqlite";
-            string dbPath = "Empty";
 
-#if __ANDROID__
-    // Android-specific path
-     dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), yiDbName);
-#elif WINDOWS_UWP
-    // Windows-specific path
-     dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, yiDbName);
-#endif
             // Configure the database connection
-            optionsBuilder.UseSqlite($"Filename={dbPath}");
+            optionsBuilder.UseSqlite($"Filename={dbFullPath}");
         }
     }
 
