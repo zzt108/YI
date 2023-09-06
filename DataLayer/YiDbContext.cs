@@ -10,19 +10,26 @@ namespace DataLayer
 
 public class YiDbContext : DbContext
     {
-        string yiDbName = "yidb.sqlite";
+        const string yiDbName = "yidb.sqlite";
+        const string yiDbSubFolder = "YiChing";
 
         private string dbFullPath;
         
         public DbSet<Language> Languages => Set<Language>();
-        //public DbSet<LineText> LineTexts { get; set; }
-        //public DbSet<Text> Texts { get; set; }
-        //public DbSet<Hexagram> Hexagrams { get; set; }
-        //public DbSet<Question> Questions { get; set; }
-        
+        public DbSet<LineText> LineTexts => Set<LineText>();
+        public DbSet<Text> Texts => Set<Text>();
+        public DbSet<Hexagram> Hexagrams => Set<Hexagram>();
+        public DbSet<Question> Questions => Set<Question>();
+
         public YiDbContext()
         {
-            string localFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string localFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), yiDbSubFolder);
+
+            if (!Directory.Exists(localFolderPath))
+            {
+                Directory.CreateDirectory(localFolderPath);
+            }
+
             dbFullPath = Path.Combine(localFolderPath, yiDbName);
         }
 

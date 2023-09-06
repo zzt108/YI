@@ -15,17 +15,21 @@ namespace DataTools
         }
 
         [Test]
-        public void Test1()
+        public void CreateOpen_Database()
         {
-
             // Configure the database connection
+//            using var dbContext = new YiDbContext(@"c:\Git\Yi\");
+            using var dbContext = new YiDbContext();
+            dbContext.Database.Migrate();
+        }
 
-            using (var dbContext = new YiDbContext(@"c:\Git\Yi\"))
-            {
-                // dbContext.Database.EnsureCreated();
-                dbContext.Database.Migrate();
-                Assert.Pass();
-            }
+        [Test]
+        public void CreateData()
+        {
+            // Configure the database connection
+            //            using var dbContext = new YiDbContext(@"c:\Git\Yi\");
+            using var dbContext = new YiDbContext();
+            dbContext.Database.Migrate();
         }
     }
 }
