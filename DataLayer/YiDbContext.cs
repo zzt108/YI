@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 
 
@@ -17,7 +18,7 @@ public class YiDbContext : DbContext
         
         public DbSet<Language> Languages => Set<Language>();
         public DbSet<LineText> LineTexts => Set<LineText>();
-        public DbSet<Text> Texts => Set<Text>();
+        public DbSet<MainText> Texts => Set<MainText>();
         public DbSet<Hexagram> Hexagrams => Set<Hexagram>();
         public DbSet<Question> Questions => Set<Question>();
 
@@ -73,11 +74,14 @@ public class YiDbContext : DbContext
     {
         public int Id { get; set; }
         public string Text { get; set; }
+
+        public MainText MainText { get; set; }
     }
 
-    public class Text
+    public class MainText
     {
         public int Id { get; set; }
+        public string Text { get; set; }
         public List<LineText> Lines { get; set; }
 
         public int LanguageId { get; set; }
@@ -86,8 +90,10 @@ public class YiDbContext : DbContext
 
     public class Hexagram
     {
-        public int Id { get; set; }
-        public List<Text> Texts { get; set; }
+        [Key]
+        public int Value { get; set; }
+        public string Name { get; set; }
+        public List<MainText> Texts { get; set; }
     }
 
     public class Question
@@ -97,8 +103,8 @@ public class YiDbContext : DbContext
         public string Text { get; set;}
 
         //todo : hexagram is nullable
-        public Hexagram BaseHexagram { get; set; }
-        public Hexagram ChangedHexagram { get; set; }
+        public Hexagram? BaseHexagram { get; set; }
+        public Hexagram? ChangedHexagram { get; set; }
     }
 
 
