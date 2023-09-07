@@ -89,17 +89,17 @@ namespace DataLayer
     {
         public Hexagram()
         {
-
+            Texts = new List<MainText>();
         }
 
-        public Hexagram(int value)
+        public Hexagram(int value):this()
         {
             this.Value = value;
         }
 
         [Key]
         public int Value { get; set; }
-        public List<MainText> Texts { get; set; }
+        public virtual List<MainText> Texts { get; set; }
 
     }
 
@@ -109,7 +109,6 @@ namespace DataLayer
 
         public string Text { get; set; }
 
-        //todo : hexagram is nullable
         public Hexagram? BaseHexagram { get; set; }
         public Hexagram? ChangedHexagram { get; set; }
     }

@@ -16,8 +16,17 @@ namespace OldDataLayer
             return hexagram;
         }
 
-        public static MainText FromOldText(this MainText mainText, Hexagram hexagram, Language language, string oldText)
+        public static MainText FromOldText(this MainText mainText, YiDbContext dbContext,  Hexagram hexagram, string oldText)
         {
+            Language language = null;
+            if (oldText.Contains("Képjel")) {
+                language = dbContext.Languages.First(l => l.Name == "Hungarian");
+            }
+            else if (oldText.Contains("Action:"))
+            {
+                language = dbContext.Languages.First(l => l.Name == "English");
+            }
+
             mainText.Hexagram =  hexagram;
             mainText.Title = "Title";
             mainText.Summary = "Summary";
