@@ -75,6 +75,13 @@ namespace OldDataLayer
             return lines.ToList<string>();
         }
 
+        public static List<string> ParseEngHexagram(string input)
+        {
+            input = input.Replace("\\n", "\n");
+            string[] lines = Regex.Split(input, @"(?=Line \d)");
+            return lines.ToList<string>();
+        }
+
     }
 
     [Table("guaexp")]
