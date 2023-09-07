@@ -8,6 +8,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Microsoft.Data.Sqlite;
 
 namespace DataLayer
 {
@@ -71,6 +72,31 @@ public class BaseDbContext : DbContext
             string filePath = jsonFileName;
 
             File.WriteAllText(filePath, jsonString);
+        }
+
+        public List<string> GetTableNames()
+        {
+            var result = new List<string>();
+            using (var connection = new SqliteConnection($"Data Source={dbFullPath}"))
+            {
+                connection.Open();
+
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT name FROM sqlite_master WHERE type='table';";
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var tableName = reader.GetString(0);
+                            result.Add(tableName);
+                            // Do something with the table name
+                        }
+                    }
+                }
+            }
+            return result;
         }
 
     }
