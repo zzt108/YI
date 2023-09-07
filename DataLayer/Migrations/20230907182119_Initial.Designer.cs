@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(YiDbContext))]
-    [Migration("20230906180827_Initial")]
+    [Migration("20230907182119_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -25,10 +25,6 @@ namespace DataLayer.Migrations
                     b.Property<int>("Value")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.HasKey("Value");
 
@@ -76,13 +72,17 @@ namespace DataLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("HexagramValue")
+                    b.Property<int>("HexagramValue")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("LanguageId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Text")
+                    b.Property<string>("Summary")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -133,15 +133,19 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DataLayer.MainText", b =>
                 {
-                    b.HasOne("DataLayer.Hexagram", null)
+                    b.HasOne("DataLayer.Hexagram", "Hexagram")
                         .WithMany("Texts")
-                        .HasForeignKey("HexagramValue");
+                        .HasForeignKey("HexagramValue")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DataLayer.Language", "Language")
                         .WithMany()
                         .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Hexagram");
 
                     b.Navigation("Language");
                 });

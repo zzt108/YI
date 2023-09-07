@@ -15,8 +15,7 @@ namespace DataLayer.Migrations
                 columns: table => new
                 {
                     Value = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true)
                 },
                 constraints: table =>
                 {
@@ -67,9 +66,10 @@ namespace DataLayer.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Text = table.Column<string>(type: "TEXT", nullable: false),
+                    Summary = table.Column<string>(type: "TEXT", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", nullable: false),
                     LanguageId = table.Column<int>(type: "INTEGER", nullable: false),
-                    HexagramValue = table.Column<int>(type: "INTEGER", nullable: true)
+                    HexagramValue = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -78,7 +78,8 @@ namespace DataLayer.Migrations
                         name: "FK_Texts_Hexagrams_HexagramValue",
                         column: x => x.HexagramValue,
                         principalTable: "Hexagrams",
-                        principalColumn: "Value");
+                        principalColumn: "Value",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Texts_Languages_LanguageId",
                         column: x => x.LanguageId,

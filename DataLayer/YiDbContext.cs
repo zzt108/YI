@@ -1,111 +1,17 @@
-﻿
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using Microsoft.Data.Sqlite;
+using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace DataLayer
 {
-
-public class BaseDbContext : DbContext
-    {
-        protected string dbFullPath;
-
-        public bool Delete()
-        {
-            try
-            {
-                File.Delete(dbFullPath);
-            }
-            catch (DirectoryNotFoundException)
-            { return true; }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
-            return true;
-        }
-
-        public void ExportToJson(string jsonFileName)
-        {
-            //using var dbContext = new YiDbContext();
-
-            //dbContext.Database.Migrate();
-
-            // Assuming you have a DbContext instance called "dbContext"
-            var jsonData = new JObject();
-            var settings = new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            };
-
-            string[] array = { "Database", "View", "ChangeTracker", "Model" };
-            foreach (var set in GetType().GetProperties())
-            {
-                if (array.Contains(set.Name))
-                    continue;
-
-                var entities = set.GetValue(this);
-                try
-                {
-                    var json = JsonConvert.SerializeObject(entities, settings);
-                    jsonData[set.Name] = JArray.Parse(json);
-                }
-                catch (JsonReaderException ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                    continue;
-                }
-            }
-
-            var jsonString = jsonData.ToString();
-
-            // Use the JSON string as needed
-            Console.WriteLine(jsonString);
-            string filePath = jsonFileName;
-
-            File.WriteAllText(filePath, jsonString);
-        }
-
-        public List<string> GetTableNames()
-        {
-            var result = new List<string>();
-            using (var connection = new SqliteConnection($"Data Source={dbFullPath}"))
-            {
-                connection.Open();
-
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText = "SELECT name FROM sqlite_master WHERE type='table';";
-
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var tableName = reader.GetString(0);
-                            result.Add(tableName);
-                            // Do something with the table name
-                        }
-                    }
-                }
-            }
-            return result;
-        }
-
-    }
 
     public class YiDbContext : BaseDbContext
     {
         const string yiDbName = "yidb.sqlite";
         const string yiDbSubFolder = "YiChing";
-        
+
         public DbSet<Language> Languages => Set<Language>();
         public DbSet<LineText> LineTexts => Set<LineText>();
         public DbSet<MainText> Texts => Set<MainText>();
@@ -170,26 +76,38 @@ public class BaseDbContext : DbContext
     public class MainText
     {
         public int Id { get; set; }
-        public string Text { get; set; }
+        public string Summary { get; set; }
+        public string Title { get; set; }
         public List<LineText> Lines { get; set; }
 
-        public int LanguageId { get; set; }
+        //        public int LanguageId { get; set; }
         public Language Language { get; set; }
+        public Hexagram Hexagram { get; set; }
     }
 
     public class Hexagram
     {
+        public Hexagram()
+        {
+
+        }
+
+        public Hexagram(int value)
+        {
+            this.Value = value;
+        }
+
         [Key]
         public int Value { get; set; }
-        public string Name { get; set; }
         public List<MainText> Texts { get; set; }
+
     }
 
     public class Question
     {
         public int Id { get; set; }
 
-        public string Text { get; set;}
+        public string Text { get; set; }
 
         //todo : hexagram is nullable
         public Hexagram? BaseHexagram { get; set; }

@@ -1,12 +1,8 @@
 ﻿
 using DataLayer;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.IO;
 using System.Text.RegularExpressions;
 
 namespace OldDataLayer
@@ -18,7 +14,6 @@ namespace OldDataLayer
         const string yiDbNameEng = "yi - EnglishOnly.sqlite";
         const string yiDbSubFolder = "OldData";
 
-        private string dbFullPath;
         public DbSet<GuaExp> GuaExp => Set<GuaExp>();
 
         public OldYiDbContext()
@@ -35,7 +30,7 @@ namespace OldDataLayer
 
         public OldYiDbContext(string dbPath)
         {
-            this.dbFullPath = Path.Combine(dbPath, yiDbSubFolder, yiDbName); ;
+            dbFullPath = Path.Combine(dbPath, yiDbSubFolder, yiDbName); ;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -90,6 +85,4 @@ namespace OldDataLayer
         public int Id { get; set; }
         public string Exp { get; set; }
     }
-
-
 }
