@@ -1,0 +1,125 @@
+{
+  "Languages": [
+    {
+      "Id": 1,
+      "Name": "English"
+    },
+    {
+      "Id": 2,
+      "Name": "Hungarian"
+    }
+  ],
+  "LineTexts": [
+    {
+      "Id": 1,
+      "Text": "Lorem ipsum dolor sit amet",
+      "MainText": null
+    },
+    {
+      "Id": 2,
+      "Text": "consectetur adipiscing elit",
+      "MainText": null
+    },
+    {
+      "Id": 3,
+      "Text": "sed do eiusmod tempor incididunt",
+      "MainText": null
+    }
+  ],
+  "Texts": [
+    {
+      "Id": 1,
+      "Text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+      "Lines": [
+        {
+          "Id": 1,
+          "Text": "Lorem ipsum dolor sit amet"
+        }
+      ],
+      "LanguageId": 1,
+      "Language": {
+        "Id": 1,
+        "Name": "English"
+      }
+    },
+    {
+      "Id": 2,
+      "Text": "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+      "Lines": [
+        {
+          "Id": 2,
+          "Text": "consectetur adipiscing elit"
+        }
+      ],
+      "LanguageId": 1,
+      "Language": {
+        "Id": 1,
+        "Name": "English"
+      }
+    },
+    {
+      "Id": 3,
+      "Text": "Ut enim ad minim veniam, quis nostrud exercitation ullamco",
+      "Lines": [
+        {
+          "Id": 3,
+          "Text": "sed do eiusmod tempor incididunt"
+        }
+      ],
+      "LanguageId": 1,
+      "Language": {
+        "Id": 1,
+        "Name": "English"
+      }
+    }
+  ],
+  "Hexagrams": [
+    {
+      "Value": 1,
+      "Name": "Hexagram 1",
+      "Texts": null
+    },
+    {
+      "Value": 2,
+      "Name": "Hexagram 2",
+      "Texts": null
+    },
+    {
+      "Value": 3,
+      "Name": "Hexagram 3",
+      "Texts": null
+    }
+  ],
+  "Questions": [
+    {
+      "Id": 1,
+      "Text": "What is your favorite movie?",
+      "BaseHexagram": null,
+      "ChangedHexagram": null
+    },
+    {
+      "Id": 2,
+      "Text": "What is your favorite color?",
+      "BaseHexagram": {
+        "Value": 1,
+        "Name": "Hexagram 1",
+        "Texts": null
+      },
+      "ChangedHexagram": null
+    },
+    {
+      "Id": 3,
+      "Text": "What is your favorite food?",
+      "BaseHexagram": {
+        "Value": 1,
+        "Name": "Hexagram 1",
+        "Texts": null
+      },
+      "ChangedHexagram": {
+        "Value": 2,
+        "Name": "Hexagram 2",
+        "Texts": null
+      }
+    }
+  ]
+}

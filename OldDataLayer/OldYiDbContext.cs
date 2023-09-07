@@ -1,4 +1,5 @@
 ﻿
+using DataLayer;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -11,7 +12,7 @@ using System.IO;
 namespace OldDataLayer
 {
 
-    public class OldYiDbContext : DbContext
+    public class OldYiDbContext : BaseDbContext
     {
         const string yiDbName = "yi.sqlite";
         const string yiDbNameEng = "yi - EnglishOnly.sqlite";

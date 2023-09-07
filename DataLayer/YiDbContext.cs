@@ -4,17 +4,81 @@ using Microsoft.EntityFrameworkCore.Design;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace DataLayer
 {
 
-public class YiDbContext : DbContext
+public class BaseDbContext : DbContext
+    {
+        protected string dbFullPath;
+
+        public bool Delete()
+        {
+            try
+            {
+                File.Delete(dbFullPath);
+            }
+            catch (DirectoryNotFoundException)
+            { return true; }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+            return true;
+        }
+
+        public void ExportToJson(string jsonFileName)
+        {
+            //using var dbContext = new YiDbContext();
+
+            //dbContext.Database.Migrate();
+
+            // Assuming you have a DbContext instance called "dbContext"
+            var jsonData = new JObject();
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+
+            string[] array = { "Database", "View", "ChangeTracker", "Model" };
+            foreach (var set in GetType().GetProperties())
+            {
+                if (array.Contains(set.Name))
+                    continue;
+
+                var entities = set.GetValue(this);
+                try
+                {
+                    var json = JsonConvert.SerializeObject(entities, settings);
+                    jsonData[set.Name] = JArray.Parse(json);
+                }
+                catch (JsonReaderException ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    continue;
+                }
+            }
+
+            var jsonString = jsonData.ToString();
+
+            // Use the JSON string as needed
+            Console.WriteLine(jsonString);
+            string filePath = jsonFileName;
+
+            File.WriteAllText(filePath, jsonString);
+        }
+
+    }
+
+    public class YiDbContext : BaseDbContext
     {
         const string yiDbName = "yidb.sqlite";
         const string yiDbSubFolder = "YiChing";
-
-        private string dbFullPath;
         
         public DbSet<Language> Languages => Set<Language>();
         public DbSet<LineText> LineTexts => Set<LineText>();
@@ -39,21 +103,6 @@ public class YiDbContext : DbContext
             this.dbFullPath = Path.Combine(dbPath, yiDbName); ;
         }
 
-        public bool Delete()
-        {
-            try
-            {
-                File.Delete(dbFullPath);
-            }
-            catch (DirectoryNotFoundException)
-            { return true; }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
-            return true;
-        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -89,7 +138,7 @@ public class YiDbContext : DbContext
         public int Id { get; set; }
         public string Text { get; set; }
 
-        public MainText MainText { get; set; }
+        public virtual MainText MainText { get; set; }
     }
 
     public class MainText
