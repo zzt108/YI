@@ -12,8 +12,9 @@ To install the dotnet-ef tool, run the following command:
 
 dotnet tool install --global dotnet-ef
 
-PM> dotnet ef migrations add Initial --project DataLayer
+PM> dotnet ef migrations add Initial --project DataLayer --context YiDbContext
 
- To undo this action, use 'ef migrations remove' (no 'Initial')
+To undo this action, use 'ef migrations remove' (no 'Initial')
+PM> dotnet ef migrations remove --project DataLayer --context yidbcontext
 
 Your startup project 'DataLayer' doesn't reference Microsoft.EntityFrameworkCore.Design. --> Not just add nuget package but add using Microsoft.EntityFrameworkCore.Design; 
