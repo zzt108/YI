@@ -48,7 +48,7 @@ namespace OldDataLayer
                 summary = lines[1];
             }
 
-            foreach (string lineText in parts.Skip(2))
+            foreach (string lineText in parts.Skip(parts.Count-6))
             {
                 var lt1 = new LineText { MainText = mainText, Text = lineText };
                 mainText.Lines.Add(lt1);
