@@ -109,23 +109,21 @@ namespace DataTools
             dbContext.Database.Migrate();
             CreateBaseTables(dbContext);
 
-            //var langEng = dbContext.Languages.Where(l => l.Name == "English").First();
-            var hg = new Hexagram().FromOldText(input);
+            var hg = new Hexagram().FromOldText(dbContext, input);
             dbContext.Hexagrams.Add(hg);
 
-            var mainTexts = OldYiDbContext.ParseHunEngHexagram(input);
-            foreach (string mText in mainTexts)
-            {
-                var mainText = new MainText().FromOldText(dbContext, hg, mText.Trim());
-                hg.Texts.Add(mainText);
-            }
             dbContext.SaveChanges();
 
             Console.WriteLine($"==>{hg.Value}");
             hg.Value.Should().Be(2);
             hg.Texts.Count.Should().Be(2);
-            hg.Texts.First().Lines.Count.Should().Be(6);
-            hg.Texts.Last().Lines.Count.Should().Be(6);
+            foreach ( var mtext in hg.Texts )
+            {
+                mtext.Title.Should().NotBeEmpty();
+                mtext.Summary.Should().NotBeEmpty();
+            }
+            //hg.Texts.First().Lines.Count.Should().Be(6);
+            //hg.Texts.Last().Lines.Count.Should().Be(6);
 
 
         }

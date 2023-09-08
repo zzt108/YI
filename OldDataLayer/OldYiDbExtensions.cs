@@ -1,5 +1,6 @@
 ﻿
 using DataLayer;
+using Microsoft.EntityFrameworkCore;
 using OldDataLayer;
 using System;
 using System.Text.RegularExpressions;
@@ -9,18 +10,26 @@ namespace OldDataLayer
     // Extension method for Hexagram
     public static class OldYiDbExtensions
     {
-        public static Hexagram FromOldText(this Hexagram hexagram, string oldText)
+        public static Hexagram FromOldText(this Hexagram hexagram, YiDbContext dbContext, string oldText)
         {
             int firstNumber = int.Parse(Regex.Match(oldText, @"\d+").Value);
             hexagram.Value = firstNumber;
+
+            var mainTexts = OldYiDbContext.ParseHunEngHexagram(oldText);
+            foreach (string mText in mainTexts)
+            {
+                var mainText = new MainText().FromOldText(dbContext, hexagram, mText.Trim());
+                hexagram.Texts.Add(mainText);
+            }
             return hexagram;
         }
 
         public static MainText FromOldText(this MainText mainText, YiDbContext dbContext,  Hexagram hexagram, string oldText)
         {
-            List<string> parts;
+            List<string> parts = null;
             string title = string.Empty;
             string summary = string.Empty;
+            mainText.Lines = new List<LineText>();
 
             Language language = null;
             if (oldText.Contains("Képjel")) {
@@ -39,12 +48,16 @@ namespace OldDataLayer
                 summary = lines[1];
             }
 
+            foreach (string lineText in parts.Skip(2))
+            {
+                var lt1 = new LineText { MainText = mainText, Text = lineText };
+                mainText.Lines.Add(lt1);
+            }
 
             mainText.Hexagram =  hexagram;
             mainText.Title = title;
             mainText.Summary = summary;
             mainText.Language = language;
-            mainText.Lines = new List<LineText>();
             return mainText;
         }
     }
