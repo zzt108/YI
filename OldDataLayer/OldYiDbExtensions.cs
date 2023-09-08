@@ -35,7 +35,7 @@ namespace OldDataLayer
             if (oldText.ToLower().Contains("képjel")) {
                 language = dbContext.Languages.First(l => l.Name == "Hungarian");
                 parts = OldYiDbContext.ParseHunHexagram(oldText);
-                string[] lines = parts[1].Split(new[] { '\n' }, 2);
+                string[] lines = parts[parts.Count - 7].Split(new[] { '\n' }, 2);
                 title = lines[0];
                 summary = lines[1];
             }
@@ -43,7 +43,7 @@ namespace OldDataLayer
             {
                 language = dbContext.Languages.First(l => l.Name == "English");
                 parts = OldYiDbContext.ParseEngHexagram(oldText);
-                string[] lines = parts[0].Split(new[] { '\n' }, 2);
+                string[] lines = parts[parts.Count - 7].Split(new[] { '\n' }, 2);
                 title = lines[0];
                 summary = lines[1];
             }
