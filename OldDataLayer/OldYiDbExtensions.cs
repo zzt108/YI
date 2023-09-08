@@ -32,7 +32,7 @@ namespace OldDataLayer
             mainText.Lines = new List<LineText>();
 
             Language language = null;
-            if (oldText.Contains("Képjel")) {
+            if (oldText.ToLower().Contains("képjel")) {
                 language = dbContext.Languages.First(l => l.Name == "Hungarian");
                 parts = OldYiDbContext.ParseHunHexagram(oldText);
                 string[] lines = parts[1].Split(new[] { '\n' }, 2);
