@@ -97,6 +97,7 @@ namespace DataTools
             dbContext.Database.Migrate();
             dbContext.ExportToJson(@"c:\git\yi\exportOld.json");
         }
+
         [Test]
         public void ParseFullHexagram()
         {
@@ -115,14 +116,18 @@ namespace DataTools
             var mainTexts = OldYiDbContext.ParseHunEngHexagram(input);
             foreach (string mText in mainTexts)
             {
-                var mainText = new MainText().FromOldText(dbContext, hg, mText);
+                var mainText = new MainText().FromOldText(dbContext, hg, mText.Trim());
                 hg.Texts.Add(mainText);
             }
             dbContext.SaveChanges();
 
-
             Console.WriteLine($"==>{hg.Value}");
             hg.Value.Should().Be(2);
+            hg.Texts.Count.Should().Be(2);
+            hg.Texts.First().Lines.Count.Should().Be(6);
+            hg.Texts.Last().Lines.Count.Should().Be(6);
+
+
         }
 
     }
