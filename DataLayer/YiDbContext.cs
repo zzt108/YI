@@ -106,7 +106,7 @@ namespace DataLayer
     public class Question
     {
         public int Id { get; set; }
-
+        public DateTime Date {get;set;}
         public string Text { get; set; }
 
         public Hexagram? BaseHexagram { get; set; }
