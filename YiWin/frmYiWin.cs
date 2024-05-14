@@ -35,26 +35,6 @@ namespace YiWin
     { 101, new Dictionary<int, int> { { 111, 13 }, { 1, 55 }, { 10, 63 }, { 100, 22 }, { 0, 36 }, { 110, 37 }, { 11, 49 }, { 101, 30 } } },
     { 011, new Dictionary<int, int> { { 111, 10 }, { 1, 54 }, { 10, 60 }, { 100, 41 }, { 0, 19 }, { 110, 61 }, { 11, 58 }, { 101, 38 } } }
 };
-        private static Dictionary<string, int> hexagramLookup2 = new Dictionary<string, int>()
-    {
-        {"111111", 1}, {"111110", 2}, {"111101", ColCount}, {"111100", 4},
-        {"111011", 5}, {"111010", RowCount}, {"111001", 7}, {"111000", 8},
-        {"110111", 9}, {"110110", 10}, {"110101", 11}, {"110100", 12},
-        {"110011", 13}, {"110010", 14}, {"110001", 15}, {"110000", 16},
-        {"101111", 17}, {"101110", 18}, {"101101", 19}, {"101100", 20},
-        {"101011", 21}, {"101010", 22}, {"101001", 23}, {"101000", 24},
-        {"100111", 25}, {"100110", 26}, {"100101", 27}, {"100100", 28},
-        {"100011", 29}, {"100010", 30}, {"100001", 31}, {"100000", 32},
-        {"011111", 33}, {"011110", 34}, {"011101", 35}, {"011100", 36},
-        {"011011", 37}, {"011010", 38}, {"011001", 39}, {"011000", 40},
-        {"010111", 41}, {"010110", 42}, {"010101", 43}, {"010100", 44},
-        {"010011", 45}, {"010010", 46}, {"010001", 47}, {"010000", 48},
-        {"001111", 49}, {"001110", 50}, {"001101", 51}, {"001100", 52},
-        {"001011", 53}, {"001010", 54}, {"001001", 55}, {"001000", 56},
-        {"000111", 57}, {"000110", 58}, {"000101", 59}, {"000100", 60},
-        {"000011", 61}, {"000010", 62}, {"000001", 63}, {"000000", 64}
-    };
-
         protected CheckBox[,] CheckBoxes = new CheckBox[RowCount, ColCount];
 
         public frmYiWin()
@@ -72,10 +52,10 @@ namespace YiWin
                 {
                     CheckBox checkBox = new CheckBox();
                     CheckBoxes[row, col] = checkBox;
-                    if (col == ColCount-1)
+                    if (col == ColCount - 1)
                     {
                         checkBox.Width = 100;
-                        checkBox.Text = $"{row + 1}";
+                        checkBox.Text = $"{RowCount - row}";
                     }
                     else
                     {
@@ -94,6 +74,12 @@ namespace YiWin
             }
         }
 
+        private void btnCopy_Click(object sender, EventArgs e)
+        {
+            var full = $"Question to I Ching:\n {rtQuestion.Text}\n I Ching answered:\n{rtAnswer.Text}\nWould you please interpret?";
+            Clipboard.SetText(full);
+        }
+
         private void btnEval_Click(object sender, EventArgs e)
         {
             // Get the text from the RichTextBox control
@@ -101,13 +87,24 @@ namespace YiWin
             var changingLines = new List<int>();
             var tg = GetTrigrams();
             var hexagram = hexagramLookup[tg[0]][tg[1]];
-            rtAnswer.Text = $"Hexagram {hexagram}";
+            var changedHexagram = hexagramLookup[tg[2]][tg[3]];
+            rtAnswer.Text = $"Main Hexagram {hexagram}\n";
+            if (changingLines.Count > 0)
+            {
+                rtAnswer.Text += $"Changing Hexagram {changedHexagram}\n";
+                rtAnswer.Text += "Changing lines: ";
+                foreach (int line in changingLines)
+                {
+                    rtAnswer.Text += line + ", ";
+                }
+            }
 
 
             int[] GetTrigrams()
             {
                 var rowStr = string.Empty;
-                string[] trigrams = ["",""];
+                string[] trigrams = ["", ""];
+                string[] changedTrigrams = ["", ""];
                 var pos = 0;
 
                 for (int row = RowCount - 1; row >= 0; row--)
@@ -118,19 +115,23 @@ namespace YiWin
                     {
                         case 6:
                             trigrams[pos] += "0";
-                            changingLines.Add(row+1); break;
+                            changedTrigrams[pos] += "1";
+                            changingLines.Add(RowCount - row); break;
                         case 7:
+                            changedTrigrams[pos] += "0";
                             trigrams[pos] += "0";
                             break;
                         case 8:
+                            changedTrigrams[pos] += "1";
                             trigrams[pos] += "1";
                             break;
                         case 9:
+                            changedTrigrams[pos] += "0";
                             trigrams[pos] += "1";
-                            changingLines.Add(row+1); break;
+                            changingLines.Add(RowCount- row); break;
                     }
                 }
-                return [int.Parse(trigrams[0]), int.Parse(trigrams[1])];
+                return [int.Parse(trigrams[0]), int.Parse(trigrams[1]), int.Parse(changedTrigrams[0]), int.Parse(changedTrigrams[1])];
 
                 int GetLine(int row)
                 {
