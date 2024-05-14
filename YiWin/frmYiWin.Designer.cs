@@ -36,6 +36,7 @@
             btnEval = new Button();
             groupBox2 = new GroupBox();
             rtAnswer = new RichTextBox();
+            button1 = new Button();
             gbQuestion.SuspendLayout();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -71,6 +72,7 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(button1);
             groupBox1.Controls.Add(btnCopy);
             groupBox1.Controls.Add(btnEval);
             groupBox1.Location = new Point(342, 218);
@@ -82,13 +84,13 @@
             // 
             // btnCopy
             // 
-            btnCopy.Location = new Point(33, 153);
+            btnCopy.Location = new Point(33, 134);
             btnCopy.Name = "btnCopy";
             btnCopy.Size = new Size(124, 90);
             btnCopy.TabIndex = 1;
             btnCopy.Text = "&Copy";
             btnCopy.UseVisualStyleBackColor = true;
-            btnCopy.Click += this.btnCopy_Click;
+            btnCopy.Click += btnCopy_Click;
             // 
             // btnEval
             // 
@@ -120,6 +122,16 @@
             rtAnswer.TabIndex = 0;
             rtAnswer.Text = "";
             // 
+            // button1
+            // 
+            button1.Location = new Point(33, 230);
+            button1.Name = "button1";
+            button1.Size = new Size(124, 90);
+            button1.TabIndex = 2;
+            button1.Text = "Clear throw";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // frmYiWin
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
@@ -147,5 +159,6 @@
         private Button btnEval;
         private GroupBox groupBox2;
         private RichTextBox rtAnswer;
+        private Button button1;
     }
 }

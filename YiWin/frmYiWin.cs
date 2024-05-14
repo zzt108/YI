@@ -76,7 +76,8 @@ namespace YiWin
 
         private void btnCopy_Click(object sender, EventArgs e)
         {
-            var full = $"Question to I Ching:\n {rtQuestion.Text}\n I Ching answered:\n{rtAnswer.Text}\nWould you please interpret?";
+            var full = $"{DateTime.Now:d}\nQuestion to I Ching:\n {rtQuestion.Text}\n"
+                + $"\nI Ching answered:\n{rtAnswer.Text}\nWould you please interpret?";
             Clipboard.SetText(full);
         }
 
@@ -98,6 +99,8 @@ namespace YiWin
                     rtAnswer.Text += line + ", ";
                 }
             }
+            else
+                rtAnswer.Text += " No changing lines";
 
 
             int[] GetTrigrams()
@@ -128,7 +131,7 @@ namespace YiWin
                         case 9:
                             changedTrigrams[pos] += "0";
                             trigrams[pos] += "1";
-                            changingLines.Add(RowCount- row); break;
+                            changingLines.Add(RowCount - row); break;
                     }
                 }
                 return [int.Parse(trigrams[0]), int.Parse(trigrams[1]), int.Parse(changedTrigrams[0]), int.Parse(changedTrigrams[1])];
@@ -152,6 +155,14 @@ namespace YiWin
                 }
             }
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            foreach (var item in CheckBoxes)
+            {
+                item.Checked = false;
+            }
         }
     }
 }
