@@ -35,7 +35,7 @@
             btnCopy = new Button();
             btnEval = new Button();
             groupBox2 = new GroupBox();
-            richTextBox1 = new RichTextBox();
+            rtAnswer = new RichTextBox();
             gbQuestion.SuspendLayout();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -97,12 +97,12 @@
             btnEval.TabIndex = 0;
             btnEval.Text = "&Eval";
             btnEval.UseVisualStyleBackColor = true;
-            btnEval.Click += this.btnEval_Click;
+            btnEval.Click += btnEval_Click;
             // 
             // groupBox2
             // 
             groupBox2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            groupBox2.Controls.Add(richTextBox1);
+            groupBox2.Controls.Add(rtAnswer);
             groupBox2.Location = new Point(545, 12);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(764, 553);
@@ -110,14 +110,14 @@
             groupBox2.TabStop = false;
             groupBox2.Text = "Results";
             // 
-            // richTextBox1
+            // rtAnswer
             // 
-            richTextBox1.Dock = DockStyle.Fill;
-            richTextBox1.Location = new Point(3, 35);
-            richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(758, 515);
-            richTextBox1.TabIndex = 0;
-            richTextBox1.Text = "";
+            rtAnswer.Dock = DockStyle.Fill;
+            rtAnswer.Location = new Point(3, 35);
+            rtAnswer.Name = "rtAnswer";
+            rtAnswer.Size = new Size(758, 515);
+            rtAnswer.TabIndex = 0;
+            rtAnswer.Text = "";
             // 
             // frmYiWin
             // 
@@ -145,6 +145,6 @@
         private Button btnCopy;
         private Button btnEval;
         private GroupBox groupBox2;
-        private RichTextBox richTextBox1;
+        private RichTextBox rtAnswer;
     }
 }

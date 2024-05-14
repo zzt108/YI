@@ -100,8 +100,9 @@ namespace YiWin
             string question = rtQuestion.Text;
             var changingLines = new List<int>();
             var tg = GetTrigrams();
+            var hexagram = hexagramLookup[tg[0]][tg[1]];
+            rtAnswer.Text = $"Hexagram {hexagram}";
 
-           
 
             int[] GetTrigrams()
             {
