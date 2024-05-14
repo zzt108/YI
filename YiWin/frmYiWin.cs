@@ -6,6 +6,8 @@ namespace YiWin
         private const int VerDist = 40;
         private const int HorStart = 20;
         private const int VerStart = 40;
+        private const int RowCount = 6;
+        private const int ColCount = 3;
 
         /*
          Here is a table with the numerical values in each cell of the provided image:
@@ -19,11 +21,13 @@ namespace YiWin
 |110| 44 | 32 | 48 | 18 | 46 | 57 | 50 | 28 |
 |101| 13 | 55 | 63 | 22 | 36 | 37 | 30 | 49 |
 |011| 10 | 54 | 60 | 41 | 19 | 61 | 38 | 58 |
+
+        111 000 = 11
         */
         private static readonly Dictionary<int, Dictionary<int, int>> hexagramLookup = new()
 {
     { 111, new Dictionary<int, int> { { 111,  1 }, { 1, 34 }, { 10, 5  }, { 100, 26 }, { 0, 11 }, { 110, 9  }, { 11, 43 }, { 101, 14 } } },
-    { 001, new Dictionary<int, int> { { 111, 25 }, { 1, 51 }, { 10, 3  }, { 100, 27 }, { 0, 24 }, { 110, 42 }, { 11, 17 }, { 101, 21 } } },
+    { 001, new Dictionary<int, int> { { 111, 25 }, { 1, 51 }, { 10, 3 }, { 100, 27 }, { 0, 24 }, { 110, 42 }, { 11, 17 }, { 101, 21 } } },
     { 010, new Dictionary<int, int> { { 111,  6 }, { 1, 40 }, { 10, 29 }, { 100, 4  }, { 0, 7  }, { 110, 59 }, { 11, 47 }, { 101, 64 } } },
     { 100, new Dictionary<int, int> { { 111, 33 }, { 1, 62 }, { 10, 39 }, { 100, 52 }, { 0, 15 }, { 110, 53 }, { 11, 31 }, { 101, 56 } } },
     { 000, new Dictionary<int, int> { { 111, 12 }, { 1, 16 }, { 10, 8  }, { 100, 23 }, { 0, 2  }, { 110, 20 }, { 11, 45 }, { 101, 35 } } },
@@ -33,8 +37,8 @@ namespace YiWin
 };
         private static Dictionary<string, int> hexagramLookup2 = new Dictionary<string, int>()
     {
-        {"111111", 1}, {"111110", 2}, {"111101", 3}, {"111100", 4},
-        {"111011", 5}, {"111010", 6}, {"111001", 7}, {"111000", 8},
+        {"111111", 1}, {"111110", 2}, {"111101", ColCount}, {"111100", 4},
+        {"111011", 5}, {"111010", RowCount}, {"111001", 7}, {"111000", 8},
         {"110111", 9}, {"110110", 10}, {"110101", 11}, {"110100", 12},
         {"110011", 13}, {"110010", 14}, {"110001", 15}, {"110000", 16},
         {"101111", 17}, {"101110", 18}, {"101101", 19}, {"101100", 20},
@@ -51,26 +55,24 @@ namespace YiWin
         {"000011", 61}, {"000010", 62}, {"000001", 63}, {"000000", 64}
     };
 
-        protected CheckBox[,] checkBoxes = new CheckBox[6, 3];
+        protected CheckBox[,] CheckBoxes = new CheckBox[RowCount, ColCount];
 
         public frmYiWin()
         {
             InitializeComponent();
-
-            // Create an array of CheckBox controls
 
             // Set the initial location for the checkboxes
             int x = HorStart;
             int y = VerStart;
 
             // Add CheckBoxes to the Panel in a 6x3 arrangement
-            for (int row = 0; row < 6; row++)
+            for (int row = 0; row < RowCount; row++)
             {
-                for (int col = 0; col < 3; col++)
+                for (int col = 0; col < ColCount; col++)
                 {
                     CheckBox checkBox = new CheckBox();
-                    checkBoxes[row, col] = checkBox;
-                    if (col == 2)
+                    CheckBoxes[row, col] = checkBox;
+                    if (col == ColCount-1)
                     {
                         checkBox.Width = 100;
                         checkBox.Text = $"{row + 1}";
@@ -96,10 +98,57 @@ namespace YiWin
         {
             // Get the text from the RichTextBox control
             string question = rtQuestion.Text;
-        }
+            var changingLines = new List<int>();
+            var tg = GetTrigrams();
 
-        private void rtQuestion_TextChanged(object sender, EventArgs e)
-        {
+           
+
+            int[] GetTrigrams()
+            {
+                var rowStr = string.Empty;
+                string[] trigrams = ["",""];
+                var pos = 0;
+
+                for (int row = RowCount - 1; row >= 0; row--)
+                {
+                    pos = row > 2 ? 0 : 1;
+                    var line = GetLine(row);
+                    switch (line)
+                    {
+                        case 6:
+                            trigrams[pos] += "0";
+                            changingLines.Add(row+1); break;
+                        case 7:
+                            trigrams[pos] += "0";
+                            break;
+                        case 8:
+                            trigrams[pos] += "1";
+                            break;
+                        case 9:
+                            trigrams[pos] += "1";
+                            changingLines.Add(row+1); break;
+                    }
+                }
+                return [int.Parse(trigrams[0]), int.Parse(trigrams[1])];
+
+                int GetLine(int row)
+                {
+                    var line = 0;
+                    for (int col = 0; col < ColCount; col++)
+                    {
+                        var checkbox = CheckBoxes[row, col];
+                        if (checkbox.Checked)
+                        {
+                            line += 3;
+                        }
+                        else
+                        {
+                            line += 2;
+                        }
+                    }
+                    return line;
+                }
+            }
 
         }
     }

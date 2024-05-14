@@ -68,7 +68,6 @@
             rtQuestion.Size = new Size(510, 162);
             rtQuestion.TabIndex = 0;
             rtQuestion.Text = "";
-            rtQuestion.TextChanged += rtQuestion_TextChanged;
             // 
             // groupBox1
             // 
