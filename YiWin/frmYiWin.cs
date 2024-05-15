@@ -89,18 +89,18 @@ namespace YiWin
             var tg = GetTrigrams();
             var hexagram = hexagramLookup[tg[0]][tg[1]];
             var changedHexagram = hexagramLookup[tg[2]][tg[3]];
-            rtAnswer.Text = $"Main Hexagram {hexagram}\n";
-            if (changingLines.Count > 0)
+            rtAnswer.Text = $"\nMain Hexagram {hexagram}\n\n";
+            if (changingLines.Any())
             {
-                rtAnswer.Text += $"Changing Hexagram {changedHexagram}\n";
                 rtAnswer.Text += "Changing lines: ";
                 foreach (int line in changingLines)
                 {
                     rtAnswer.Text += line + ", ";
                 }
+                rtAnswer.Text += $"\n\nChanging Hexagram {changedHexagram}\n";
             }
             else
-                rtAnswer.Text += " No changing lines";
+                rtAnswer.Text += "\n No changing lines ";
 
 
             int[] GetTrigrams()
