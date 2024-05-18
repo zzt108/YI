@@ -16,7 +16,7 @@ public class YarrowStalksHelper
     // Constants
     private const int TotalStalks = 50; // Total number of stals in a Yarrow
     private const int ObserverStalk = 1; // Number of observer stals
-    internal int RemainingStalkCount = 0; // Number of remaining stals
+    public int RemainingStalkCount = TotalStalks-ObserverStalk; // Number of remaining stals
 
     // TODO Divide remaining stalks into right and left piles
     private int[] DividePiles(int position)
@@ -26,7 +26,7 @@ public class YarrowStalksHelper
         return new int[] { leftPiles, rightPiles };
     }
 
-    private int GetHand(int position)
+    public int GetHand(int position)
     {
         var divide = DividePiles(position);
 
@@ -40,6 +40,7 @@ public class YarrowStalksHelper
         hand += rightRemainder == 0 ? 4 : rightRemainder;
 
         Console.WriteLine(hand);
+        RemainingStalkCount -= hand;
         return hand;
     }
 
@@ -53,7 +54,6 @@ public class YarrowStalksHelper
         {
             Console.WriteLine($"---Pos:{position[i]}: Remaining stalks: {RemainingStalkCount}");
             var hand = GetHand(position[i]);
-            RemainingStalkCount -= hand;
             piles[i] = hand;
         }
 

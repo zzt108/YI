@@ -27,49 +27,49 @@
         /// </summary>
         private void InitializeComponent()
         {
-            tableLayoutPanel = new TableLayoutPanel();
-            okButton = new Button();
-            tableLayoutPanel.SuspendLayout();
+            panelSticks = new Panel();
+            panelinfo = new Panel();
+            labelClicksLeft = new Label();
+            panelinfo.SuspendLayout();
             SuspendLayout();
             // 
-            // tableLayoutPanel
+            // panelSticks
             // 
-            tableLayoutPanel.ColumnCount = 2;
-            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 86.03696F));
-            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 13.9630394F));
-            tableLayoutPanel.Controls.Add(okButton, 1, 1);
-            tableLayoutPanel.Dock = DockStyle.Fill;
-            tableLayoutPanel.Location = new Point(10, 10);
-            tableLayoutPanel.Margin = new Padding(4, 3, 4, 3);
-            tableLayoutPanel.Name = "tableLayoutPanel";
-            tableLayoutPanel.RowCount = 2;
-            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 89.5765457F));
-            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 10.4234524F));
-            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel.Size = new Size(487, 307);
-            tableLayoutPanel.TabIndex = 0;
+            panelSticks.BackColor = Color.Black;
+            panelSticks.Dock = DockStyle.Fill;
+            panelSticks.Location = new Point(10, 10);
+            panelSticks.Name = "panelSticks";
+            panelSticks.Size = new Size(712, 292);
+            panelSticks.TabIndex = 0;
             // 
-            // okButton
+            // panelinfo
             // 
-            okButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            okButton.DialogResult = DialogResult.Cancel;
-            okButton.Location = new Point(423, 278);
-            okButton.Margin = new Padding(4, 3, 4, 3);
-            okButton.Name = "okButton";
-            okButton.Size = new Size(60, 26);
-            okButton.TabIndex = 24;
-            okButton.Text = "&OK";
+            panelinfo.Controls.Add(labelClicksLeft);
+            panelinfo.Dock = DockStyle.Right;
+            panelinfo.Font = new Font("Segoe UI", 10.875F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            panelinfo.Location = new Point(676, 10);
+            panelinfo.Name = "panelinfo";
+            panelinfo.Size = new Size(46, 292);
+            panelinfo.TabIndex = 1;
+            panelinfo.Visible = false;
+            // 
+            // labelClicksLeft
+            // 
+            labelClicksLeft.AutoSize = true;
+            labelClicksLeft.Dock = DockStyle.Top;
+            labelClicksLeft.Location = new Point(0, 0);
+            labelClicksLeft.Name = "labelClicksLeft";
+            labelClicksLeft.Size = new Size(47, 20);
+            labelClicksLeft.TabIndex = 0;
+            labelClicksLeft.Text = "18/18";
             // 
             // YarrowStalks
             // 
-            AcceptButton = okButton;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(507, 327);
-            Controls.Add(tableLayoutPanel);
+            ClientSize = new Size(732, 312);
+            Controls.Add(panelinfo);
+            Controls.Add(panelSticks);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Margin = new Padding(4, 3, 4, 3);
             MaximizeBox = false;
@@ -80,14 +80,15 @@
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "Yarrow Stalks";
-            Load += AboutBox1_Load;
-            tableLayoutPanel.ResumeLayout(false);
+            panelinfo.ResumeLayout(false);
+            panelinfo.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
-        private Button okButton;
+        private Panel panelSticks;
+        private Panel panelinfo;
+        private Label labelClicksLeft;
     }
 }
