@@ -22,11 +22,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OldDataLayer", "OldDataLaye
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YiWin", "YiWin\YiWin.csproj", "{A6A280AC-A3B0-4369-AD69-7F16E219121A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexagram", "Hexagram\Hexagram.csproj", "{653DC934-BC46-4CE8-ABB3-598A6858CB2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hexagram", "Hexagram\Hexagram.csproj", "{653DC934-BC46-4CE8-ABB3-598A6858CB2D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{8BCF42F2-8AC0-4D10-8C54-AB85FED04ACA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHexagram", "TestHexagram\TestHexagram.csproj", "{6A95758B-2280-477F-9607-D9756C152040}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "TestHexagram\Test.csproj", "{6A95758B-2280-477F-9607-D9756C152040}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
