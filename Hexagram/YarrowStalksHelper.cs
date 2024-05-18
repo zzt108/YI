@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HexagramNS;
+[assembly: InternalsVisibleTo("Test")]
 
+namespace HexagramNS;
 /// <summary>
 /// Helper class for generating hexagram line values based on the count of piles.
 /// </summary>
@@ -14,62 +16,50 @@ public class YarrowStalksHelper
     // Constants
     private const int TotalStalks = 50; // Total number of stals in a Yarrow
     private const int ObserverStalk = 1; // Number of observer stals
-    private const int RemainingStalkCount = TotalStalks - ObserverStalk; // Number of remaining stals
+    internal int RemainingStalkCount = 0; // Number of remaining stals
 
-    /// <summary>
-    /// Generates a list of pile counts for the hexagram.
-    /// </summary>
-    /// <returns>A list of integer counts for each pile.</returns>
-    private List<int> GetCountedPiles()
+    // TODO Divide remaining stalks into right and left piles
+    private int[] DividePiles(int position)
     {
-        List<int> countedPiles = new List<int>();
-
-        int remainingStalkCount = RemainingStalkCount;
-        int totalCount;
-
-        // Iterate over the piles
-        for (int i = 0; i < 3; i++)
-        {
-            List<int> piles = new List<int>();
-            int remainder = remainingStalkCount;
-
-            // Divide the remaining piles into 4s and the remainder
-            while (remainder >= 4)
-            {
-                piles.Add(4);
-                remainder -= 4;
-            }
-
-            // Add the remainder if it's greater than 0
-            if (remainder > 0)
-            {
-                piles.Add(remainder);
-            }
-
-            // Calculate the total count of piles
-            totalCount = GetTotalCount(piles);
-            countedPiles.Add(totalCount);
-
-            // Calculate the remaining stalk count for the next iteration
-            remainingStalkCount = totalCount % 4 == 0 ? 8 : 5;
-        }
-
-        return countedPiles;
+        int rightPiles = RemainingStalkCount - position;
+        int leftPiles = position;
+        return new int[] { leftPiles, rightPiles };
     }
 
-    /// <summary>
-    /// Calculates the total count of piles, considering the special cases of 4 and 5.
-    /// </summary>
-    /// <param name="piles">A list of integer counts for each pile.</param>
-    /// <returns>The total count of piles.</returns>
-    private int GetTotalCount(List<int> piles)
+    private int GetHand(int position)
     {
-        int totalCount = piles.Count;
+        var divide = DividePiles(position);
 
-        // Iterate over each pile
+        int hand = 1;
+        divide[1] -= 1;
+
+        int leftRemainder = divide[0] % 4;
+        int rightRemainder = divide[1] % 4;
+        hand += leftRemainder == 0 ? 4 : leftRemainder;
+
+        hand += rightRemainder == 0 ? 4 : rightRemainder;
+
+        Console.WriteLine(hand);
+        return hand;
+    }
+
+    internal int GetLine(int[] position)
+    {
+        RemainingStalkCount = TotalStalks - ObserverStalk;
+
+        int[] piles = { 0, 0, 0 };
+
+        for (int i = 0; i < 3; i++)
+        {
+            Console.WriteLine($"---Pos:{position[i]}: Remaining stalks: {RemainingStalkCount}");
+            var hand = GetHand(position[i]);
+            RemainingStalkCount -= hand;
+            piles[i] = hand;
+        }
+
+        int totalCount = 0;
         foreach (int pile in piles)
         {
-            // Add 3 for piles of 4 or 5, and 2 for other piles
             if (pile == 4 || pile == 5)
             {
                 totalCount += 3;
@@ -81,22 +71,24 @@ public class YarrowStalksHelper
         }
 
         return totalCount;
+
     }
 
     /// <summary>
     /// Generates an array of hexagram line values based on the counted piles.
     /// </summary>
     /// <returns>An array of integer values for each hexagram line.</returns>
-    public int[] GetHexagramLineValues()
+    public int[] GetHexagramLineValues(int[] positions)
     {
-        List<int> countedPiles = GetCountedPiles();
         int[] hexagramLineValues = new int[6];
 
         // Iterate over the counted piles
-        for (int i = 0; i < countedPiles.Count; i++)
+        for (int i = 0; i < 6; i++)
         {
-            // Set the value to 2 if the count is divisible by 4, and 3 otherwise
-            int value = countedPiles[i] % 4 == 0 ? 2 : 3;
+            int value = GetLine([positions[i], positions[i], positions[i]]);
+
+            // Console.WriteLine($"Line {i}: {value}");
+
             hexagramLineValues[i] = value;
         }
 
