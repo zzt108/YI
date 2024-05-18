@@ -12,7 +12,15 @@ namespace YiWin
 
         public void FillCheckBoxes(Values values)
         {
-            values.InitValues<CheckBox>(CheckBoxes, (checkBox, row, col) => checkBox.Checked);
+            values.UpdateValues<CheckBox>(CheckBoxes, (row, col, value) =>
+            {
+                CheckBox checkBox = CheckBoxes[row, col];
+
+                checkBox.Checked = value;
+                checkBox.Update();
+                return checkBox;
+            });
+
         }
 
         public frmYiWin()

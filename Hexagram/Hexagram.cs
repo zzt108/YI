@@ -5,6 +5,8 @@ public class Values
     private bool[,] values;
     public bool Changed { get; set; }
 
+    public int RowCount { get => values.GetLength(0); }
+
     public Values(int rowCount = Hexagram.RowCount, int colCount = Hexagram.ColCount)
     { values = new bool[rowCount, colCount];
     Changed = false;}
@@ -88,21 +90,7 @@ public class Values
         return this;
     }
 
-    public T[] GetValues<T>(Func<int, int, T> func)
-    {
-        T[] array = new T[values.Length];
-        int i = 0;
-        for (int row = 0; row < values.GetLength(0); row++)
-        {
-            for (int col = 0; col < values.GetLength(1); col++)
-            {
-                array[i++] = func(row, col);
-            }
-        }
-        return array;
-    }
-
-    public void UpdateValues<T>(T[,] array, Func<int, int, T> func)
+    public void UpdateValues<T>(T[,] array, Func< int, int, bool, T> func)
     {
         int rows = array.GetLength(0);
         int cols = array.GetLength(1);
@@ -111,7 +99,7 @@ public class Values
         {
             for (int j = 0; j < cols; j++)
             {
-                array[i, j] = func(i, j);
+                array[i, j] = func(i, j , values[i, j]);
             }
         }
     }

@@ -30,14 +30,15 @@ namespace YiWin
         private YarrowStalksHelper helper = new YarrowStalksHelper();
         int[] piles = { 0, 0, 0 };
         int clickCount = 0;
-        int hexagramRow = 0;
         public Values values = new Values();
+        int hexagramRow;
         public frmYiWin frmYiWin;
 
         public frmYarrowStalks()
         {
             InitializeComponent();
             GenerateLinesAndButtons(helper.RemainingStalkCount, panelSticks.Controls);
+            hexagramRow = values.RowCount;
         }
 
         private void GenerateLinesAndButtons(int stickCount, Control.ControlCollection controls)
@@ -116,18 +117,15 @@ namespace YiWin
                 clickCount++;
                 if (clickCount % 3 == 0)
                 {
+                    hexagramRow--;
                     values.SetHexagramRow(hexagramRow, YarrowStalksHelper.GetHexagramLine(piles));
-                    hexagramRow++;
+                    frmYiWin.FillCheckBoxes(values);
                     helper.Reset();
                 }
-            }
-            else
-            {
-                // hexagramRow is 6 here, but it should be 5;
-                //values.SetHexagramRow(hexagramRow, YarrowStalksHelper.GetHexagramLine(piles));
-                frmYiWin.FillCheckBoxes(values);
-                this.Close();
-                clickCount = 0;
+                if (clickCount == 18)
+                {
+                    this.Close();
+                }
             }
             this.Text = $"18/: {clickCount} - 1:{piles[0]} -  2:{piles[1]} - 3:{piles[2]}";
 

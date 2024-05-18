@@ -63,7 +63,7 @@
             labelClicksLeft.TabIndex = 0;
             labelClicksLeft.Text = "18/18";
             // 
-            // YarrowStalks
+            // frmYarrowStalks
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -74,7 +74,7 @@
             Margin = new Padding(4, 3, 4, 3);
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "YarrowStalks";
+            Name = "frmYarrowStalks";
             Padding = new Padding(10);
             ShowIcon = false;
             ShowInTaskbar = false;
