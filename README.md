@@ -142,3 +142,125 @@ int[] hexagramLineValues = helper.GetHexagramLineValues();
 ```
 
 The `hexagramLineValues` array will contain the six values representing the hexagram lines, following the instructions you provided.
+
+### Yarrow Stalks UI
+
+Here's a C# WinForms code snippet that creates a new form with 49 vertical, narrow lines and 48 narrow buttons among the lines in one row. When a button is clicked, it displays the number of lines to the left and right of that button:
+
+```csharp
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+public class LinesAndButtonsForm : Form
+{
+    private const int LineWidth = 2;
+    private const int LineHeight = 100;
+    private const int ButtonWidth = 40;
+    private const int ButtonHeight = 20;
+    private const int Spacing = 2;
+
+    private Panel[] lines;
+    private Button[] buttons;
+
+    public LinesAndButtonsForm()
+    {
+        InitializeComponents();
+        GenerateLinesAndButtons();
+    }
+
+    private void InitializeComponents()
+    {
+        Text = "Lines and Buttons Form";
+        StartPosition = FormStartPosition.CenterScreen;
+        FormBorderStyle = FormBorderStyle.FixedSingle;
+        MaximizeBox = false;
+    }
+
+    private void GenerateLinesAndButtons()
+    {
+        lines = new Panel[49];
+        buttons = new Button[48];
+
+        int x = Spacing;
+        int y = Spacing;
+
+        for (int i = 0; i < 49; i++)
+        {
+            // Create a line
+            Panel line = new Panel
+            {
+                Width = LineWidth,
+                Height = LineHeight,
+                Location = new Point(x, y),
+                BackColor = Color.Black
+            };
+            lines[i] = line;
+            Controls.Add(line);
+
+            // Create a button (if applicable)
+            if (i < 48)
+            {
+                int buttonX = x + LineWidth + Spacing;
+                Button button = new Button
+                {
+                    Width = ButtonWidth,
+                    Height = ButtonHeight,
+                    Location = new Point(buttonX, y + (LineHeight - ButtonHeight) / 2),
+                    Text = (i + 1).ToString()
+                };
+                button.Click += Button_Click;
+                buttons[i] = button;
+                Controls.Add(button);
+
+                x += LineWidth + ButtonWidth + Spacing * 2;
+            }
+            else
+            {
+                x += LineWidth + Spacing;
+            }
+        }
+
+        ClientSize = new Size(x + Spacing, LineHeight + Spacing * 2);
+    }
+
+    private void Button_Click(object sender, EventArgs e)
+    {
+        Button clickedButton = (Button)sender;
+        int buttonIndex = Array.IndexOf(buttons, clickedButton);
+
+        int linesLeft = buttonIndex;
+        int linesRight = 47 - buttonIndex;
+
+        MessageBox.Show($"Lines to the left: {linesLeft}\nLines to the right: {linesRight}", "Button Click", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
+
+    [STAThread]
+    static void Main()
+    {
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
+        Application.Run(new LinesAndButtonsForm());
+    }
+}
+```
+
+Here's how the code works:
+
+1. The `LinesAndButtonsForm` class inherits from `Form`.
+2. In the constructor, the `InitializeComponents` method is called to set up the form properties, and then the `GenerateLinesAndButtons` method is called to create the lines and buttons.
+3. The `InitializeComponents` method sets the form's title, position, border style, and disables the maximize button.
+4. The `GenerateLinesAndButtons` method creates two arrays: `lines` to store the `Panel` instances representing the lines, and `buttons` to store the `Button` instances.
+5. A loop iterates from 0 to 48, creating a new `Panel` instance for each line and a `Button` instance for each button (except for the last line).
+6. Each line and button is added to their respective arrays (`lines` and `buttons`).
+7. Each button's `Click` event is subscribed to the `Button_Click` event handler.
+8. The `Button_Click` event handler is called when a button is clicked.
+9. Inside the `Button_Click` event handler, the clicked button is identified using the `sender` object.
+10. The index of the clicked button in the `buttons` array is obtained using `Array.IndexOf`.
+11. The number of lines to the left and right of the clicked button is calculated based on the button's index.
+12. A message box is displayed showing the number of lines to the left and right of the clicked button.
+13. In the `Main` method, the `Application.Run` method is called with an instance of the `LinesAndButtonsForm` class to start the application and display the form.
+
+When you run this code, a new form will open with 49 vertical, narrow lines and 48 narrow buttons among the lines in one row. When you click on a button, a message box will appear displaying the number of lines to the left and right of that button.
+
+Note: Remember to replace the `using` statements at the top with the appropriate namespaces for your project.
