@@ -26,9 +26,6 @@ namespace YiWin
                 //ColumnDefinitions = Columns.Define(100, 100)
             };
 
-            // Add the UI elements to the grid
-            //grid.Add(rtQuestion, 0, 0);
-            //grid.Add(rtAnswer, 0, 1);
             grid.Add(btnCopy, 1, 1);
             grid.Add(btnEval, 1, 0);
 

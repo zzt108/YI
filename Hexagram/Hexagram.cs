@@ -3,16 +3,19 @@
 public class Values
 {
     private bool[,] values;
+    public bool Changed { get; set; }
 
     public Values(int rowCount = Hexagram.RowCount, int colCount = Hexagram.ColCount)
-    { values = new bool[rowCount, colCount]; }
+    { values = new bool[rowCount, colCount];
+    Changed = false;}
 
     // TODO contsructor that takes an 2 dimensional array and a bool function to initialize the array
 
     // Example usage:
     public bool GetValue(int row, int col) { return values[row, col]; }
 
-    public void SetValue(int row, int col, bool value) { values[row, col] = value; }
+    public void SetValue(int row, int col, bool value) { values[row, col] = value; 
+    Changed = true;}
 
     public void SetValues<T>(T[] array, Func<T, int, int, bool> func)
     {
@@ -22,6 +25,7 @@ public class Values
             int col = i % values.GetLength(1);
             values[row, col] = func(array[i], row, col);
         }
+        Changed = true;
     }
 
     public Values InitValues<T>(T[,] array, Func<T, int, int, bool> func)
@@ -46,6 +50,7 @@ public class Values
                 values[i, j] = func(array[i, j], i, j);
             }
         }
+        Changed = true;
         return this;
     }
 
@@ -88,6 +93,7 @@ public class Hexagram
     public const int ColCount = 3;
 
     private Values _values { get; set; }
+    private int[] lastTrigrams = new int[] { 0, 0, 0, 0 };
 
     public Hexagram(Values values)
     {
@@ -100,8 +106,8 @@ public class Hexagram
     {
         get
         {
-            var tg = GetTrigrams();
-            return Hexagram.hexagramLookup[tg[0]][tg[1]];
+            GetTrigrams();
+            return Hexagram.hexagramLookup[lastTrigrams[0]][lastTrigrams[1]];
         }
     }
 
@@ -110,8 +116,8 @@ public class Hexagram
     {
         get
         {
-            var tg = GetTrigrams();
-            return Hexagram.hexagramLookup[tg[2]][tg[3]];
+            GetTrigrams();
+            return Hexagram.hexagramLookup[lastTrigrams[2]][lastTrigrams[3]];
         }
     }
     public List<int> ChangingLines { get; } = [];
@@ -142,46 +148,48 @@ public class Hexagram
 { 011, new Dictionary<int, int> { { 111, 10 }, { 1, 54 }, { 10, 60 }, { 100, 41 }, { 0, 19 }, { 110, 61 }, { 11, 58 }, { 101, 38 } } }
 };
 
-    private int[] GetTrigrams()
+    private void GetTrigrams()
     {
+        if (!_values.Changed) { return; }
+
         var rowStr = string.Empty;
         ChangingLines.Clear();
 
         string[] trigrams = new string[2];
         string[] changedTrigrams = new string[2];
-        var pos = 0;
 
         for (int row = RowCount - 1; row >= 0; row--)
         {
-            pos = row > 2 ? 0 : 1;
-            var line = GetLine(row);
-            UpdateTrigrams(line, pos, trigrams, changedTrigrams);
+            
+            UpdateTrigrams(row, trigrams, changedTrigrams);
         }
 
-        return new int[] { int.Parse(trigrams[0]), int.Parse(trigrams[1]), int.Parse(changedTrigrams[0]), int.Parse(changedTrigrams[1]) };
+        lastTrigrams = new int[] { int.Parse(trigrams[0]), int.Parse(trigrams[1]), int.Parse(changedTrigrams[0]), int.Parse(changedTrigrams[1]) };
     }
 
-    void UpdateTrigrams(int line, int pos, string[] trigrams, string[] changedTrigrams)
+    void UpdateTrigrams(int row, string[] trigrams, string[] changedTrigrams)
     {
+        var line = GetLine(row);
+        var trigramIndex = row > 2 ? 0 : 1;
         switch (line)
         {
             case 6:
-                trigrams[pos] += "0";
-                changedTrigrams[pos] += "1";
-                ChangingLines.Add(RowCount - pos);
+                trigrams[trigramIndex] += "0";
+                changedTrigrams[trigramIndex] += "1";
+                ChangingLines.Add(RowCount - row);
                 break;
             case 7:
-                changedTrigrams[pos] += "0";
-                trigrams[pos] += "0";
+                changedTrigrams[trigramIndex] += "0";
+                trigrams[trigramIndex] += "0";
                 break;
             case 8:
-                changedTrigrams[pos] += "1";
-                trigrams[pos] += "1";
+                changedTrigrams[trigramIndex] += "1";
+                trigrams[trigramIndex] += "1";
                 break;
             case 9:
-                changedTrigrams[pos] += "0";
-                trigrams[pos] += "1";
-                ChangingLines.Add(RowCount - pos);
+                changedTrigrams[trigramIndex] += "0";
+                trigrams[trigramIndex] += "1";
+                ChangingLines.Add(RowCount - row);
                 break;
         }
     }

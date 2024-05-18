@@ -24,6 +24,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YiWin", "YiWin\YiWin.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexagram", "Hexagram\Hexagram.csproj", "{653DC934-BC46-4CE8-ABB3-598A6858CB2D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{8BCF42F2-8AC0-4D10-8C54-AB85FED04ACA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHexagram", "TestHexagram\TestHexagram.csproj", "{6A95758B-2280-477F-9607-D9756C152040}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,9 +60,18 @@ Global
 		{653DC934-BC46-4CE8-ABB3-598A6858CB2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{653DC934-BC46-4CE8-ABB3-598A6858CB2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{653DC934-BC46-4CE8-ABB3-598A6858CB2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A95758B-2280-477F-9607-D9756C152040}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A95758B-2280-477F-9607-D9756C152040}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A95758B-2280-477F-9607-D9756C152040}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A95758B-2280-477F-9607-D9756C152040}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B5B76370-C138-4345-BB47-C717873661D3} = {8BCF42F2-8AC0-4D10-8C54-AB85FED04ACA}
+		{753528D5-762C-4630-AC3C-6B7D61AA1A0A} = {8BCF42F2-8AC0-4D10-8C54-AB85FED04ACA}
+		{D0081CF6-D420-4E5E-80D3-3E929BD8CE93} = {8BCF42F2-8AC0-4D10-8C54-AB85FED04ACA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2D313C64-61BA-40FD-89F0-98E374A3CE10}
