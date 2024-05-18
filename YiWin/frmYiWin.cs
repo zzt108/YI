@@ -20,7 +20,6 @@ namespace YiWin
                 checkBox.Update();
                 return checkBox;
             });
-
         }
 
         public frmYiWin()
@@ -93,14 +92,26 @@ namespace YiWin
 
         private void button1_Click(object sender, EventArgs e)
         {
-            foreach (var item in CheckBoxes)
-            {
-                item.Checked = false;
-            }
+            ResetIndeterminate();
+
+        }
+
+        private void ResetIndeterminate()
+        {
+            new Values().UpdateValues(
+                CheckBoxes,
+                (row, col, value) =>
+                {
+
+                    CheckBox checkBox = CheckBoxes[row, col];
+                    checkBox.CheckState = CheckState.Indeterminate;
+                    return checkBox;
+                });
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            ResetIndeterminate();
             var frm = new frmYarrowStalks();
             frm.frmYiWin = this;
             frm.ShowDialog();

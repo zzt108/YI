@@ -180,7 +180,8 @@ public class Hexagram
         string[] trigrams = new string[2];
         string[] changedTrigrams = new string[2];
 
-        for (int row = RowCount - 1; row >= 0; row--)
+        //for (int row = RowCount - 1; row >= 0; row--)
+        for (int row = 0; row < RowCount; row++)
         {
             
             UpdateTrigrams(row, trigrams, changedTrigrams);

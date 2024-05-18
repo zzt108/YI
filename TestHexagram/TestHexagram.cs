@@ -11,21 +11,39 @@ public class TestHexagram
     }
 
     [Test]
-    public void Test1()
+    public void Test11_12()
     {
-        bool[,] data = new bool[,]
+        int[,] data = new int[,]
         {
-    {false, false, false},
-    {false, false, false},
-    {false, false, false},
-    {true, true, true},
-    {true, true, true},
-    {true, true, true}
+    {0, 0, 0},
+    {0, 0, 0},
+    {0, 0, 0},
+    {1, 1, 1},
+    {1, 1, 1},
+    {1, 1, 1}
 
     };
-        var hexagram = new HexagramNS.Hexagram(new Values().InitValues(data, (item, row, col) => item));
+        var hexagram = new HexagramNS.Hexagram(new Values().InitValues(data, (item, row, col) => item > 0));
         hexagram.Main.Should().Be(11);
         hexagram.Changed.Should().Be(12);
+        hexagram.ChangingLines.Should().BeEquivalentTo(new[] {1 , 2, 3, 4, 5, 6});
+    }
+    [Test]
+    public void Test03_12()
+    {
+        int[,] data = new int[,]
+        {
+    {0, 0, 0},
+    {1, 1, 1},
+    {0, 0, 0},
+    {0, 0, 0},
+    {0, 0, 0},
+    {1, 1, 1}
+
+    };
+        var hexagram = new HexagramNS.Hexagram(new Values().InitValues(data, (item, row, col) => item > 0));
+        hexagram.Main.Should().Be(3);
+        hexagram.Changed.Should().Be(50);
         hexagram.ChangingLines.Should().BeEquivalentTo(new[] {1 , 2, 3, 4, 5, 6});
     }
 }
