@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -17,6 +18,8 @@ public class YarrowStalksHelper
     private const int TotalStalks = 50; // Total number of stals in a Yarrow
     private const int ObserverStalk = 1; // Number of observer stals
     public int RemainingStalkCount = TotalStalks-ObserverStalk; // Number of remaining stals
+
+    public void Reset() { RemainingStalkCount = TotalStalks - ObserverStalk; }
 
     // TODO Divide remaining stalks into right and left piles
     private int[] DividePiles(int position)
@@ -40,6 +43,7 @@ public class YarrowStalksHelper
         hand += rightRemainder == 0 ? 4 : rightRemainder;
 
         Console.WriteLine(hand);
+        Debug.Assert(new[] { 4, 5, 8, 9 }.Contains(hand));
         RemainingStalkCount -= hand;
         return hand;
     }

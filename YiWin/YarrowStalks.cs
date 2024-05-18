@@ -11,13 +11,14 @@ using static System.Windows.Forms.LinkLabel;
 
 
 
+
 namespace YiWin
 {
     partial class YarrowStalks : Form
     {
-        private const int LineWidth = 8;
-        private const int LineHeight = 400;
-        private const int ButtonWidth = 8;
+        private const int LineWidth = 16;
+        private const int LineHeight = 800;
+        private const int ButtonWidth = 16;
         private const int ButtonHeight = LineHeight;
         private const int Spacing = 3;
 
@@ -26,6 +27,8 @@ namespace YiWin
 
         public int[] divisions = new int[18];
         private YarrowStalksHelper helper = new YarrowStalksHelper();
+        int[] piles = { 0, 0, 0 };
+        int clickCount = 0;
 
         public YarrowStalks()
         {
@@ -37,6 +40,7 @@ namespace YiWin
         {
             lines = new Button[stickCount];
             buttons = new Button[stickCount-1];
+            controls.Clear();
 
             int x = Spacing;
             int y = Spacing;
@@ -82,7 +86,7 @@ namespace YiWin
                 }
             }
 
-            ClientSize = new Size(x + 2*Spacing+panelinfo.Width, LineHeight + Spacing * 2);
+            ClientSize = new Size(x + Spacing, LineHeight + Spacing * 2);
         }
 
         private void Button_Click(object sender, EventArgs e)
@@ -90,12 +94,23 @@ namespace YiWin
             Button clickedButton = (Button)sender;
             int buttonIndex = Array.IndexOf(buttons, clickedButton);
 
-            int linesLeft = buttonIndex+1;
+            int linesLeft = buttonIndex + 1;
             int linesRight = buttons.Length - buttonIndex;
 
-            helper.GetHand(linesLeft);
+            HandleClick(linesLeft);
 
-            MessageBox.Show($"Lines to the left: {linesLeft}\nLines to the right: {linesRight}", "Button Click", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void HandleClick(int linesLeft)
+        {
+            if (clickCount % 3 == 0)
+                helper.Reset();
+            piles[clickCount % 3] = helper.GetHand(linesLeft);
+            clickCount++;
+            this.Text = $"18/: {clickCount} - 1:{piles[0]} -  2:{piles[1]} - 3:{piles[2]}";
+            foreach (var line in lines) { line.Visible = false; Thread.Sleep(10); }
+            GenerateLinesAndButtons(helper.RemainingStalkCount, panelSticks.Controls);
+            //MessageBox.Show($"Lines to the left: {linesLeft}", "Button Click", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void Line_Click(object sender, EventArgs e)
@@ -108,9 +123,7 @@ namespace YiWin
 
             int linesRight = lines.Length - linesLeft;
 
-            helper.GetHand(linesLeft);
-
-            MessageBox.Show($"Lines to the left: {linesLeft}\nLines to the right: {linesRight}", "Button Click", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            HandleClick(linesLeft);
         }
 
     }
