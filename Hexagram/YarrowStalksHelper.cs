@@ -61,21 +61,26 @@ public class YarrowStalksHelper
             piles[i] = hand;
         }
 
-        int totalCount = 0;
+        return GetHexagramLine(piles);
+
+    }
+
+    public static int GetHexagramLine(int[] piles)
+    {
+        int lineValue = 0;
         foreach (int pile in piles)
         {
             if (pile == 4 || pile == 5)
             {
-                totalCount += 3;
+                lineValue += 3;
             }
             else
             {
-                totalCount += 2;
+                lineValue += 2;
             }
         }
 
-        return totalCount;
-
+        return lineValue;
     }
 
     /// <summary>

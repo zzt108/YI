@@ -1,6 +1,6 @@
 ﻿namespace YiWin
 {
-    partial class YarrowStalks
+    partial class frmYarrowStalks
     {
         /// <summary>
         /// Required designer variable.

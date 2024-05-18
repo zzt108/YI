@@ -27,7 +27,41 @@ public class Values
         }
         Changed = true;
     }
-
+    public void SetHexagramRow(int hexagramRow, int value)
+    {
+        switch (value)
+        {
+            case 6:
+                SetValue(hexagramRow, 0, false);
+                SetValue(hexagramRow, 1, false);
+                SetValue(hexagramRow, 2, false);
+                break;
+            case 7:
+                SetValue(hexagramRow, 0, true);
+                SetValue(hexagramRow, 1, true);
+                SetValue(hexagramRow, 2, false);
+                break;
+            case 8:
+                SetValue(hexagramRow, 0, false);
+                SetValue(hexagramRow, 1, false);
+                SetValue(hexagramRow, 2, true);
+                break;
+            case 9:
+                SetValue(hexagramRow, 0, true);
+                SetValue(hexagramRow, 1, true);
+                SetValue(hexagramRow, 2, true);
+                break;
+        }
+    }
+    
+    /// <summary>
+    /// Initializes the values in a two-dimensional array based on a given function.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the array.</typeparam>
+    /// <param name="array">The two-dimensional array to initialize.</param>
+    /// <param name="func">The function used to determine the value for each element in the array.</param>
+    /// <exception cref="ArgumentNullException">Thrown when the array or func parameter is null.</exception>
+    /// <returns>The updated Values object.</returns>
     public Values InitValues<T>(T[,] array, Func<T, int, int, bool> func)
     {
         if (array == null)

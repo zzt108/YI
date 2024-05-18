@@ -10,6 +10,11 @@ namespace YiWin
 
         protected CheckBox[,] CheckBoxes = new CheckBox[HexagramNS.Hexagram.RowCount, HexagramNS.Hexagram.ColCount];
 
+        public void FillCheckBoxes(Values values)
+        {
+            values.InitValues<CheckBox>(CheckBoxes, (checkBox, row, col) => checkBox.Checked);
+        }
+
         public frmYiWin()
         {
             InitializeComponent();
@@ -88,7 +93,9 @@ namespace YiWin
 
         private void button2_Click(object sender, EventArgs e)
         {
-            new YarrowStalks().ShowDialog();
+            var frm = new frmYarrowStalks();
+            frm.frmYiWin = this;
+            frm.ShowDialog();
         }
     }
 }

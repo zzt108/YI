@@ -14,8 +14,9 @@ using static System.Windows.Forms.LinkLabel;
 
 namespace YiWin
 {
-    partial class YarrowStalks : Form
+    partial class frmYarrowStalks : Form
     {
+        const int YarrowClickTiming = 20;
         private const int LineWidth = 16;
         private const int LineHeight = 800;
         private const int ButtonWidth = 16;
@@ -29,8 +30,11 @@ namespace YiWin
         private YarrowStalksHelper helper = new YarrowStalksHelper();
         int[] piles = { 0, 0, 0 };
         int clickCount = 0;
+        int hexagramRow = 0;
+        public Values values = new Values();
+        public frmYiWin frmYiWin;
 
-        public YarrowStalks()
+        public frmYarrowStalks()
         {
             InitializeComponent();
             GenerateLinesAndButtons(helper.RemainingStalkCount, panelSticks.Controls);
@@ -39,7 +43,7 @@ namespace YiWin
         private void GenerateLinesAndButtons(int stickCount, Control.ControlCollection controls)
         {
             lines = new Button[stickCount];
-            buttons = new Button[stickCount-1];
+            buttons = new Button[stickCount - 1];
             controls.Clear();
 
             int x = Spacing;
@@ -61,7 +65,7 @@ namespace YiWin
                 controls.Add(line);
 
                 // Create a button (if applicable)
-                if (i < stickCount-1)
+                if (i < stickCount - 1)
                 {
                     int buttonX = x + LineWidth + Spacing;
                     Button button = new Button
@@ -95,7 +99,7 @@ namespace YiWin
             int buttonIndex = Array.IndexOf(buttons, clickedButton);
 
             int linesLeft = buttonIndex + 1;
-            int linesRight = buttons.Length - buttonIndex;
+            //int linesRight = buttons.Length - buttonIndex;
 
             HandleClick(linesLeft);
 
@@ -103,13 +107,32 @@ namespace YiWin
 
         private void HandleClick(int linesLeft)
         {
-            if (clickCount % 3 == 0)
-                helper.Reset();
+
             piles[clickCount % 3] = helper.GetHand(linesLeft);
-            clickCount++;
+
+            foreach (var line in lines) { line.Visible = false; Thread.Sleep(YarrowClickTiming); }
+            if (clickCount < 18)
+            {
+                clickCount++;
+                if (clickCount % 3 == 0)
+                {
+                    values.SetHexagramRow(hexagramRow, YarrowStalksHelper.GetHexagramLine(piles));
+                    hexagramRow++;
+                    helper.Reset();
+                }
+            }
+            else
+            {
+                // hexagramRow is 6 here, but it should be 5;
+                //values.SetHexagramRow(hexagramRow, YarrowStalksHelper.GetHexagramLine(piles));
+                frmYiWin.FillCheckBoxes(values);
+                this.Close();
+                clickCount = 0;
+            }
             this.Text = $"18/: {clickCount} - 1:{piles[0]} -  2:{piles[1]} - 3:{piles[2]}";
-            foreach (var line in lines) { line.Visible = false; Thread.Sleep(10); }
+
             GenerateLinesAndButtons(helper.RemainingStalkCount, panelSticks.Controls);
+
             //MessageBox.Show($"Lines to the left: {linesLeft}", "Button Click", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -119,9 +142,9 @@ namespace YiWin
             int lineIndex = Array.IndexOf(lines, clickedButton);
 
             int linesLeft = lineIndex;
-            if (lineIndex < helper.RemainingStalkCount/2) linesLeft++;
+            if (lineIndex < helper.RemainingStalkCount / 2) linesLeft++;
 
-            int linesRight = lines.Length - linesLeft;
+            // linesRight = lines.Length - linesLeft;
 
             HandleClick(linesLeft);
         }
