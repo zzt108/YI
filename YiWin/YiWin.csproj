@@ -11,6 +11,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="YiWinCode.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="YiWinCode.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Hexagram\Hexagram.csproj" />
   </ItemGroup>
 

@@ -171,7 +171,6 @@
             Margin = new Padding(2, 1, 2, 1);
             Name = "frmYiWin";
             Text = "Yi Ching";
-            Load += frmYiWin_Load;
             gbQuestion.ResumeLayout(false);
             gbQuestion.PerformLayout();
             groupBox1.ResumeLayout(false);

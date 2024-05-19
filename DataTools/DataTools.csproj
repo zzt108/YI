@@ -33,7 +33,6 @@
   <ItemGroup>
     <ProjectReference Include="..\DataLayer\DataLayer.csproj" />
     <ProjectReference Include="..\OldDataLayer\OldDataLayer.csproj" />
-    <ProjectReference Include="..\Yi\Yi.csproj" />
   </ItemGroup>
 
 </Project>
