@@ -26,6 +26,11 @@ namespace YiWin
         {
             InitializeComponent();
 
+            DrawHexagram();
+        }
+
+        private void DrawHexagram()
+        {
             // Set the initial location for the checkboxes
             int x = HorStart;
             int y = VerStart;

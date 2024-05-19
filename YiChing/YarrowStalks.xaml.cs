@@ -5,7 +5,7 @@ public partial class YarrowStalks : ContentPage
 {
 	public YarrowStalks()
 	{
-		InitializeComponent();
+		//InitializeComponent();
 	}
 
     //private void InitializeComponent()
