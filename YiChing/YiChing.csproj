@@ -91,7 +91,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="YarrowStalks.xaml">
+	  <Compile Update="cvHexagram.xaml.cs">
+	    <DependentUpon>CvHexagram.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="CvHexagram.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="CvYarrowStalks.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
