@@ -1,21 +1,21 @@
 ﻿//using Microsoft.UI.Xaml.Controls;
 using maui = Microsoft.Maui.Controls;
 //using Microsoft.UI.Xaml.Controls;
-namespace YiWin
+namespace Yi
 {
     public class frmYiWin : ContentPage
     {
         private Grid grid;
-        private maui.TextCell rtQuestion;
-        private TextCell rtAnswer;
+        private maui.Editor rtQuestion;
+        private Editor rtAnswer;
         private Button btnCopy;
         private Button btnEval;
 
         public frmYiWin()
         {
             // Create the UI elements
-            rtQuestion = new TextCell { Text = "Enter your question" };
-            rtAnswer = new TextCell { };
+            rtQuestion = new Editor { Text = "Enter your question" };
+            rtAnswer = new Editor {IsReadOnly = true };
             btnCopy = new Button { Text = "Copy" };
             btnEval = new Button { Text = "Evaluate" };
 

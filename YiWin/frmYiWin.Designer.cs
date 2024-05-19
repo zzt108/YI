@@ -30,14 +30,14 @@
         {
             gbCoins = new GroupBox();
             gbQuestion = new GroupBox();
-            rtQuestion = new RichTextBox();
+            rtQuestion = new TextBox();
             groupBox1 = new GroupBox();
+            button2 = new Button();
             button1 = new Button();
             btnCopy = new Button();
             btnEval = new Button();
             groupBox2 = new GroupBox();
-            rtAnswer = new RichTextBox();
-            button2 = new Button();
+            rtAnswer = new TextBox();
             gbQuestion.SuspendLayout();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -71,10 +71,10 @@
             rtQuestion.Dock = DockStyle.Fill;
             rtQuestion.Location = new Point(2, 17);
             rtQuestion.Margin = new Padding(2, 1, 2, 1);
+            rtQuestion.Multiline = true;
             rtQuestion.Name = "rtQuestion";
             rtQuestion.Size = new Size(274, 76);
             rtQuestion.TabIndex = 0;
-            rtQuestion.Text = "";
             // 
             // groupBox1
             // 
@@ -90,6 +90,18 @@
             groupBox1.TabIndex = 3;
             groupBox1.TabStop = false;
             groupBox1.Text = "Action";
+            // 
+            // button2
+            // 
+            button2.Location = new Point(18, 100);
+            button2.Margin = new Padding(2, 1, 2, 1);
+            button2.Name = "button2";
+            button2.Size = new Size(67, 23);
+            button2.TabIndex = 3;
+            button2.Text = "Yarrow Stalks";
+            button2.TextAlign = ContentAlignment.BottomCenter;
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // button1
             // 
@@ -142,22 +154,10 @@
             rtAnswer.Dock = DockStyle.Fill;
             rtAnswer.Location = new Point(2, 17);
             rtAnswer.Margin = new Padding(2, 1, 2, 1);
+            rtAnswer.Multiline = true;
             rtAnswer.Name = "rtAnswer";
             rtAnswer.Size = new Size(407, 241);
             rtAnswer.TabIndex = 0;
-            rtAnswer.Text = "";
-            // 
-            // button2
-            // 
-            button2.Location = new Point(18, 100);
-            button2.Margin = new Padding(2, 1, 2, 1);
-            button2.Name = "button2";
-            button2.Size = new Size(67, 23);
-            button2.TabIndex = 3;
-            button2.Text = "Yarrow Stalks";
-            button2.TextAlign = ContentAlignment.BottomCenter;
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
             // 
             // frmYiWin
             // 
@@ -171,9 +171,12 @@
             Margin = new Padding(2, 1, 2, 1);
             Name = "frmYiWin";
             Text = "Yi Ching";
+            Load += frmYiWin_Load;
             gbQuestion.ResumeLayout(false);
+            gbQuestion.PerformLayout();
             groupBox1.ResumeLayout(false);
             groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -181,12 +184,12 @@
 
         private GroupBox gbCoins;
         private GroupBox gbQuestion;
-        private RichTextBox rtQuestion;
+        private TextBox rtQuestion;
         private GroupBox groupBox1;
         private Button btnCopy;
         private Button btnEval;
         private GroupBox groupBox2;
-        private RichTextBox rtAnswer;
+        private TextBox rtAnswer;
         private Button button1;
         private Button button2;
     }
