@@ -26,8 +26,9 @@ public partial class CvYarrowStalks : ContentView
 
     private Grid gridSticks = new ();
 
-    public CvYarrowStalks()
+    public CvYarrowStalks(MainPage mainPage)
     {
+        this.mainPage = mainPage;
         InitializeComponent();
         Content = gridSticks;
         GenerateLinesAndButtons(helper.RemainingStalkCount, gridSticks);
