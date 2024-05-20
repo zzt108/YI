@@ -16,7 +16,7 @@ public partial class CvYarrowStalks : ContentView
 
     private readonly Button[]? lines;
     private readonly Button[]? buttons;
-    private readonly Grid yarrowGrid = new Grid();
+    //private readonly Grid yarrowGrid = new Grid();
     private readonly int[] piles = { 0, 0, 0 };
     private readonly YarrowStalksHelper helper = new YarrowStalksHelper();
     private readonly MainPage mainPage;
@@ -25,18 +25,35 @@ public partial class CvYarrowStalks : ContentView
     private int clickCount;
     private int hexagramRow;
 
+    public Editor Question
+    {
+        get
+        {
+            // var text = (string)rtQuestion.GetValue(Editor.TextProperty);
+            return rtQuestion;
+        }
+        set
+        {
+            rtQuestion = value;
+        }
+    }
 
     public CvYarrowStalks(MainPage mainPage)
     {
         this.mainPage = mainPage;
         InitializeComponent();
+        btnReturn.Clicked += btnReturn_Click;
         lines = new Button[StickCount];
         buttons = new Button[StickCount - 1];
         hexagramRow = values.RowCount;
         this.mainPage = mainPage;
-        //yarrowGrid = gridMain;
-        Content = yarrowGrid;
-        GenerateLinesAndButtons(helper.RemainingStalkCount, yarrowGrid);
+        
+        GenerateLinesAndButtons(helper.RemainingStalkCount, gridYarrow);
+    }
+
+    private void btnReturn_Click(object? sender, EventArgs e)
+    {
+        ReturnToHexagramPage();
     }
 
     private void GenerateLinesAndButtons(int stickCount, Grid controls)
@@ -60,9 +77,6 @@ public partial class CvYarrowStalks : ContentView
         controls.ClearLogicalChildren();
         controls.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
 
-        int x = Spacing;
-        int y = Spacing;
-
         for (int i = 0; i < stickCount; i++)
         {
             // Create a line
@@ -83,7 +97,6 @@ public partial class CvYarrowStalks : ContentView
             // Create a button (if applicable)
             if (i < stickCount - 1)
             {
-                int buttonX = x + LineWidth + Spacing;
                 Button button = new Button
                 {
                     MinimumWidthRequest = ButtonWidth,
@@ -97,12 +110,6 @@ public partial class CvYarrowStalks : ContentView
                 controls.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
                 controls.SetColumn(button, controls.ColumnDefinitions.Count - 1);
                 controls.Children.Add(button);
-
-                //x += LineWidth + ButtonWidth + Spacing * 2;
-            }
-            else
-            {
-                //x += LineWidth + Spacing;
             }
         }
 
@@ -127,7 +134,9 @@ public partial class CvYarrowStalks : ContentView
         piles[clickCount % 3] = helper.GetHand(linesLeft);
 
         foreach (var line in lines) { line.IsVisible = false; Thread.Sleep(YarrowClickTiming); }
-        if (clickCount < 18)
+
+        const int MaxDivisionCount = 18;
+        if (clickCount < MaxDivisionCount)
         {
             clickCount++;
             if (clickCount % 3 == 0)
@@ -137,16 +146,22 @@ public partial class CvYarrowStalks : ContentView
                 mainPage.CVHexagram.FillCheckBoxes(values);
                 helper.Reset();
             }
-            if (clickCount == 18)
+            if (clickCount == MaxDivisionCount)
             {
-                mainPage.Content = mainPage.CVHexagram;
+                ReturnToHexagramPage();
             }
         }
-        mainPage.Title = $"18/: {clickCount} - 1:{piles[0]} -  2:{piles[1]} - 3:{piles[2]}";
+        mainPage.Title = $"{MaxDivisionCount}/: {clickCount} - 1:{piles[0]} -  2:{piles[1]} - 3:{piles[2]}";
 
         var b = mainPage.ShowMessageBox($"Lines to the left: {linesLeft}", "Button Click");
-        GenerateLinesAndButtons(helper.RemainingStalkCount, yarrowGrid);
+        GenerateLinesAndButtons(helper.RemainingStalkCount, gridYarrow);
 
+    }
+
+    private void ReturnToHexagramPage()
+    {
+        mainPage.CVHexagram.Question.Text = rtQuestion.Text;
+        mainPage.Content = mainPage.CVHexagram;
     }
 
     private void Line_Click(object sender, EventArgs e)

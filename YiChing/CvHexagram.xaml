@@ -7,7 +7,7 @@
         <!-- First column containing another stacklayout -->
         <StackLayout Orientation="Horizontal">
             <StackLayout>
-                <Editor x:Name="rtQuestion" Text="Enter your question" WidthRequest="300" HeightRequest="100" />
+                <Editor x:Name="rtQuestion" Text="{Binding QuestionText, Mode=TwoWay}" WidthRequest="300" HeightRequest="100" />
                 <StackLayout Orientation="Horizontal">
                     <StackLayout x:Name ="stackHexagram" WidthRequest="200">
                         <Grid x:Name ="gridHexagram" WidthRequest="200">
@@ -42,7 +42,7 @@
                     </StackLayout>
                 </StackLayout>
                 <StackLayout>
-                    <Editor x:Name ="rtAnswer" IsReadOnly="True" HeightRequest="50"/>
+                    <Editor x:Name ="rtAnswer" IsReadOnly="True" HeightRequest="150"/>
                 </StackLayout>
             </StackLayout>
             <!-- Right column containing Answers editor -->

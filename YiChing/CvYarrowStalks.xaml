@@ -4,17 +4,18 @@
              x:Class="YiChing.CvYarrowStalks">
 
     <StackLayout x:Name="rootLayout">
-        <StackLayout Orientation="Horizontal" HeightRequest="20">
-            <!-- Add content for the top row here -->
+        <StackLayout Orientation="Horizontal" HeightRequest="100">
+            <Editor x:Name="rtQuestion" WidthRequest="300" HeightRequest="100" />
+            <Button x:Name="btnReturn" Text="Return"></Button>
         </StackLayout>
 
-        <StackLayout x:Name="middleLayout" Orientation="Horizontal" Margin="10,0,10,0">
+        <StackLayout x:Name="middleLayout" Orientation="Vertical" Margin="10,0,10,0">
             <Grid x:Name="gridYarrow">
     
             </Grid>
         </StackLayout>
 
-        <StackLayout Orientation="Horizontal" HeightRequest="2">
+        <StackLayout Orientation="Vertical" HeightRequest="2">
             <!-- Add content for the bottom row here -->
         </StackLayout>
     </StackLayout>

@@ -11,6 +11,20 @@ public partial class CvHexagram : ContentView
     private const int HorStart = 20;
     private const int VerStart = 40;
 
+    // TODO encapsulate rtQuestion.Text into property
+    public Editor Question
+    {
+        get {
+            return rtQuestion; }
+        set
+        {
+            mainPage.Title = Title;
+            rtQuestion = value;
+        }
+    }
+
+    public string Title = "Yi Ching for AI by Gerzson";
+
     public MainPage mainPage;
 
     protected CheckBox[,] CheckBoxes = new CheckBox[HG.Hexagram.RowCount, HG.Hexagram.ColCount];
@@ -29,13 +43,14 @@ public partial class CvHexagram : ContentView
     public CvHexagram(MainPage mainPage)
     {
         InitializeComponent();
-
+        mainPage.Title = Title;
         // Add event handlers
         btnCopy.Clicked += btnCopy_Click;
         btnEval.Clicked += btnEval_Click;
         btnClear.Clicked += btnClear_Click;
         btnYarrow.Clicked += btnYarrow_Click;
-
+        rtQuestion.TextChanged += (sender, e) => { Question.Text = e.NewTextValue; };
+        
         DrawHexagram();
         this.mainPage = mainPage;
     }
@@ -92,10 +107,8 @@ public partial class CvHexagram : ContentView
     private void btnYarrow_Click(object sender, EventArgs e)
     {
         ResetIndeterminate();
+        mainPage.CVYarrowStalks.Question.Text = rtQuestion.Text;
         mainPage.Content = mainPage.CVYarrowStalks;
-        //var frm = new frmYarrowStalks();
-        //frm.frmYiWin = this;
-        //frm.ShowDialog();
     }
 
     private void btnCopy_Click(object sender, EventArgs e)
