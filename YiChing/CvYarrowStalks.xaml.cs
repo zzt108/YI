@@ -5,7 +5,7 @@ namespace YiChing;
 public partial class CvYarrowStalks : ContentView
 {
 
-    const int YarrowClickTiming = 2;
+    const int YarrowClickTiming = 4;
     const int StickCount = 49;
 
     private int LineWidth = 4;
@@ -75,6 +75,7 @@ public partial class CvYarrowStalks : ContentView
         controls.RowDefinitions.Clear();
         controls.ColumnDefinitions.Clear();
         controls.ClearLogicalChildren();
+
         controls.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
 
         for (int i = 0; i < stickCount; i++)
@@ -130,15 +131,14 @@ public partial class CvYarrowStalks : ContentView
 
     private void HandleClick(int linesLeft)
     {
+        const int MaxDivisionCount = 18;
 
         piles[clickCount % 3] = helper.GetHand(linesLeft);
 
-        foreach (var line in lines) { line.IsVisible = false; Thread.Sleep(YarrowClickTiming); }
-
-        const int MaxDivisionCount = 18;
         if (clickCount < MaxDivisionCount)
         {
             clickCount++;
+            mainPage.Title = $"{clickCount}/{MaxDivisionCount}";
             if (clickCount % 3 == 0)
             {
                 hexagramRow--;
@@ -151,11 +151,20 @@ public partial class CvYarrowStalks : ContentView
                 ReturnToHexagramPage();
             }
         }
-        mainPage.Title = $"{MaxDivisionCount}/: {clickCount} - 1:{piles[0]} -  2:{piles[1]} - 3:{piles[2]}";
 
-        var b = mainPage.ShowMessageBox($"Lines to the left: {linesLeft}", "Button Click");
+        //gridYarrow.IsEnabled = false;
+        gridYarrow.IsVisible = false;
+        Thread.Sleep(YarrowClickTiming*150); 
+
+        //foreach (var line in lines) { line.BackgroundColor = Colors.Gray; Thread.Sleep(YarrowClickTiming/2); }
+        //foreach (var line in buttons) { line.BackgroundColor = Colors.Gray; Thread.Sleep(YarrowClickTiming/2); }
+        //foreach (var line in lines) { line.HeightRequest = 0; Thread.Sleep(YarrowClickTiming / 2); }
+        //foreach (var line in buttons) { line.HeightRequest = 50; Thread.Sleep(YarrowClickTiming / 2); }
+        gridYarrow.IsEnabled = true;
+        gridYarrow.IsVisible = true;
+
+        //var b = mainPage.ShowMessageBox($"Lines to the left: {linesLeft}", "Button Click");
         GenerateLinesAndButtons(helper.RemainingStalkCount, gridYarrow);
-
     }
 
     private void ReturnToHexagramPage()
@@ -176,6 +185,4 @@ public partial class CvYarrowStalks : ContentView
 
         HandleClick(linesLeft);
     }
-
-
 }

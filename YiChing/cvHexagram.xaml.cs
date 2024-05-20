@@ -15,6 +15,7 @@ public partial class CvHexagram : ContentView
     public Editor Question
     {
         get {
+            mainPage.Title = Title;
             return rtQuestion; }
         set
         {
