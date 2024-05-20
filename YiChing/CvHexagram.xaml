@@ -35,12 +35,23 @@
                         </Button>
                         <Button x:Name="btnCopy" Text="Copy">
                         </Button>
+                        <Button x:Name="btnPerpAI" Text="Perplexity.AI">
+                        </Button>
                         <Button x:Name="btnClear" Text="Clear">
                         </Button>
                         <Button x:Name="btnYarrow" Text="Yarrow Stalks">
                         </Button>
                     </StackLayout>
                 </StackLayout>
+                <!--<StackLayout x:Name ="stackAI" Orientation="Horizontal">
+                    <RadioButton
+                        Content="ChatGpt"
+                        GroupName="AI"
+                        Value="https://www.perplexity.ai/search?s=o&q=%s" />
+                    <RadioButton Content="Claude.AI"  GroupName="AI" Value="https://www.claude.ai/search?q=%s"/>
+                    <RadioButton Content="Perplexity.AI"  GroupName="AI" Value="https://www.perplexity.ai/search?s=o&q=%s"/>
+                    <RadioButton Content="Gemini.AI"  GroupName="AI" Value="https://www.gemini.google.com/search?s=o&q=%s"/>
+                </StackLayout>-->
                 <StackLayout>
                     <Editor x:Name ="rtAnswer" IsReadOnly="True" HeightRequest="150"/>
                 </StackLayout>
@@ -63,13 +74,19 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        --><!-- First column containing another grid --><!--
+        -->
+<!-- First column containing another grid -->
+<!--
         <Grid Grid.Row="0" Grid.Column="0">
             <Grid>
                 <Grid.RowDefinitions>
-                    --><!--Adjusts its height based on content--><!--
+                    -->
+<!--Adjusts its height based on content-->
+<!--
                     <RowDefinition Height="Auto" />
-                    --><!--Takes up remaining vertical space--><!--
+                    -->
+<!--Takes up remaining vertical space-->
+<!--
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Grid.Column="0">
@@ -134,7 +151,9 @@
             </Grid>
         </Grid>
 
-        --><!-- Right column containing Answers editor --><!--
+        -->
+<!-- Right column containing Answers editor -->
+<!--
         <Grid Grid.Row="0" Grid.Column="1">
             <Editor x:Name ="rtAnswer" IsReadOnly="True" />
         </Grid>

@@ -4,58 +4,11 @@ namespace YiChing;
 
 public partial class CvHexagram : ContentView
 {
-    //private Grid grid;
-
+    #region Privates
     private const int HorDist = 100;
     private const int VerDist = 40;
     private const int HorStart = 20;
     private const int VerStart = 40;
-
-    // TODO encapsulate rtQuestion.Text into property
-    public Editor Question
-    {
-        get {
-            mainPage.Title = Title;
-            return rtQuestion; }
-        set
-        {
-            mainPage.Title = Title;
-            rtQuestion = value;
-        }
-    }
-
-    public string Title = "Yi Ching for AI by Gerzson";
-
-    public MainPage mainPage;
-
-    protected CheckBox[,] CheckBoxes = new CheckBox[HG.Hexagram.RowCount, HG.Hexagram.ColCount];
-
-    public void FillCheckBoxes(HG.Values values)
-    {
-        values.UpdateValues<CheckBox>(CheckBoxes, (row, col, value) =>
-        {
-            CheckBox checkBox = CheckBoxes[row, col];
-
-            checkBox.IsChecked = value;
-            return checkBox;
-        });
-    }
-
-    public CvHexagram(MainPage mainPage)
-    {
-        InitializeComponent();
-        mainPage.Title = Title;
-        // Add event handlers
-        btnCopy.Clicked += btnCopy_Click;
-        btnEval.Clicked += btnEval_Click;
-        btnClear.Clicked += btnClear_Click;
-        btnYarrow.Clicked += btnYarrow_Click;
-        rtQuestion.TextChanged += (sender, e) => { Question.Text = e.NewTextValue; };
-        
-        DrawHexagram();
-        this.mainPage = mainPage;
-    }
-
     private void DrawHexagram()
     {
         // Set the initial location for the checkboxes
@@ -87,11 +40,6 @@ public partial class CvHexagram : ContentView
         }
     }
 
-    private void btnClear_Click(object sender, EventArgs e)
-    {
-        ResetIndeterminate();
-    }
-
     private void ResetIndeterminate()
     {
         new HG.Values().UpdateValues(
@@ -105,19 +53,67 @@ public partial class CvHexagram : ContentView
             });
     }
 
-    private void btnYarrow_Click(object sender, EventArgs e)
+    private string GetFullQuestion()
     {
-        ResetIndeterminate();
-        mainPage.CVYarrowStalks.Question.Text = rtQuestion.Text;
-        mainPage.Content = mainPage.CVYarrowStalks;
+        return $"{DateTime.Now:d}\nQuestion to I Ching:\n {rtQuestion.Text}\n"
+            + $"\nI Ching answered:\n{rtAnswer.Text}\nWould you please interpret?";
     }
 
-    private void btnCopy_Click(object sender, EventArgs e)
+    #endregion
+
+    #region Constructor
+    public CvHexagram(MainPage mainPage)
     {
-        var full = $"{DateTime.Now:d}\nQuestion to I Ching:\n {rtQuestion.Text}\n"
-            + $"\nI Ching answered:\n{rtAnswer.Text}\nWould you please interpret?";
-        Clipboard.SetTextAsync(full);
+        InitializeComponent();
+        mainPage.Title = Title;
+        // Add event handlers
+        btnCopy.Clicked += btnCopy_Click;
+        btnEval.Clicked += btnEval_Click;
+        btnClear.Clicked += btnClear_Click;
+        btnYarrow.Clicked += btnYarrow_Click;
+        btnPerpAI.Clicked += btnPerpAI_Click;
+
+        rtQuestion.TextChanged += (sender, e) => { Question.Text = e.NewTextValue; };
+
+        DrawHexagram();
+        this.mainPage = mainPage;
     }
+    #endregion
+
+
+    // TODO encapsulate rtQuestion.Text into property
+    public Editor Question
+    {
+        get
+        {
+            mainPage.Title = Title;
+            return rtQuestion;
+        }
+        set
+        {
+            mainPage.Title = Title;
+            rtQuestion = value;
+        }
+    }
+
+    public string Title = "Yi Ching for AI by Gerzson";
+
+    public MainPage mainPage;
+
+    protected CheckBox[,] CheckBoxes = new CheckBox[HG.Hexagram.RowCount, HG.Hexagram.ColCount];
+
+    public void FillCheckBoxes(HG.Values values)
+    {
+        values.UpdateValues<CheckBox>(CheckBoxes, (row, col, value) =>
+        {
+            CheckBox checkBox = CheckBoxes[row, col];
+
+            checkBox.IsChecked = value;
+            return checkBox;
+        });
+    }
+
+    #region EventHandlers
 
     private void btnEval_Click(object sender, EventArgs e)
     {
@@ -140,6 +136,43 @@ public partial class CvHexagram : ContentView
             rtAnswer.Text += "\n No changing lines ";
 
     }
+
+    private void btnCopy_Click(object sender, EventArgs e)
+    {
+        btnEval_Click(sender, e);
+        string full = GetFullQuestion();
+        Clipboard.SetTextAsync(full);
+    }
+
+    private void btnYarrow_Click(object sender, EventArgs e)
+    {
+        ResetIndeterminate();
+        mainPage.CVYarrowStalks.Question.Text = rtQuestion.Text;
+        mainPage.Content = mainPage.CVYarrowStalks;
+    }
+
+    private void btnClear_Click(object sender, EventArgs e)
+    {
+        ResetIndeterminate();
+    }
+    private async void btnPerpAI_Click(object? sender, EventArgs e)
+    {
+        try
+        {
+            btnEval_Click(sender, e);
+            string question = GetFullQuestion();
+            string url = $"https://www.perplexity.ai/search?s=o&q={question}";
+            Uri uri = new Uri(url);
+            await Browser.Default.OpenAsync(uri, BrowserLaunchMode.External);
+        }
+        catch (Exception ex)
+        {
+            // Handle potential exceptions (e.g., no browser installed)
+            await mainPage.DisplayAlert("Error", "Failed to open web page: " + ex.Message, "OK");
+        }
+    }
+    #endregion
+
 
 }
 
