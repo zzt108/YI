@@ -148,6 +148,8 @@ public partial class CvHexagram : ContentView
     {
         ResetIndeterminate();
         mainPage.CVYarrowStalks.Question.Text = rtQuestion.Text;
+        mainPage.CVYarrowStalks.InitProcess();
+        
         mainPage.Content = mainPage.CVYarrowStalks;
     }
 

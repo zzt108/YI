@@ -45,9 +45,12 @@ public partial class CvYarrowStalks : ContentView
         btnReturn.Clicked += btnReturn_Click;
         lines = new Button[StickCount];
         buttons = new Button[StickCount - 1];
+    }
+
+    public void InitProcess()
+    {
+        clickCount = 0;
         hexagramRow = values.RowCount;
-        this.mainPage = mainPage;
-        
         GenerateLinesAndButtons(helper.RemainingStalkCount, gridYarrow);
     }
 
@@ -180,8 +183,6 @@ public partial class CvYarrowStalks : ContentView
 
         int linesLeft = lineIndex;
         if (lineIndex < helper.RemainingStalkCount / 2) linesLeft++;
-
-        // linesRight = lines.Length - linesLeft;
 
         HandleClick(linesLeft);
     }
