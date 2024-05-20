@@ -155,6 +155,7 @@ public partial class CvHexagram : ContentView
 
     private void btnClear_Click(object sender, EventArgs e)
     {
+        rtQuestion.Text = string.Empty;
         ResetIndeterminate();
     }
     private async void btnPerpAI_Click(object? sender, EventArgs e)
