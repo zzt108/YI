@@ -26,14 +26,9 @@ public partial class CvHexagram : ContentView
         });
     }
 
-
-    public CvHexagram()
+    public CvHexagram(MainPage mainPage)
     {
         InitializeComponent();
-
-
-        // Set the content of the page
-        //            Content = grid;
 
         // Add event handlers
         btnCopy.Clicked += btnCopy_Click;
@@ -42,8 +37,8 @@ public partial class CvHexagram : ContentView
         btnYarrow.Clicked += btnYarrow_Click;
 
         DrawHexagram();
+        this.mainPage = mainPage;
     }
-
 
     private void DrawHexagram()
     {

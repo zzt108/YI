@@ -4,8 +4,8 @@ namespace YiChing
 {
     public partial class MainPage : ContentPage
     {
-        public CvHexagram CVHexagram = new();
-        public CvYarrowStalks CVYarrowStalks = new();
+        public CvHexagram CVHexagram;
+        public CvYarrowStalks CVYarrowStalks;
 
         public async Task<bool> ShowMessageBox(string title, string message, string accept = "OK", string? cancel = null )
         {
@@ -16,8 +16,8 @@ namespace YiChing
         public MainPage()
         {
             InitializeComponent();
-            CVHexagram.mainPage = this;
-            CVYarrowStalks.mainPage = this;
+            CVHexagram = new(this);
+            CVYarrowStalks = new(this);
 
             // Set the content of the page
             Content = CVHexagram;
