@@ -6,14 +6,17 @@ public partial class CvYarrowStalks : ContentView
 {
 
     const int YarrowClickTiming = 2;
-    private const int LineWidth = 4;
-    private const int LineHeight = 800;
-    private const int ButtonWidth = 4;
-    private const int ButtonHeight = LineHeight;
-    private const int Spacing = 3;
+    const int StickCount = 49;
+    private int LineWidth = 8;
+    private int LineHeight = 400;
+    private int ButtonWidth = 4;
+    private int ButtonHeight = 400;
+    private int Spacing = 3;
 
     private Button[] lines;
     private Button[] buttons;
+
+    private Grid yarrowGrid = new Grid();
 
     public int[] divisions = new int[18];
     private YarrowStalksHelper helper = new YarrowStalksHelper();
@@ -23,23 +26,33 @@ public partial class CvYarrowStalks : ContentView
     int hexagramRow;
     public MainPage mainPage;
 
-
-    private Grid gridSticks = new ();
-
     public CvYarrowStalks(MainPage mainPage)
     {
         this.mainPage = mainPage;
         InitializeComponent();
-        Content = gridSticks;
-        GenerateLinesAndButtons(helper.RemainingStalkCount, gridSticks);
+        lines = new Button[StickCount];
+        buttons = new Button[StickCount - 1];
         hexagramRow = values.RowCount;
+        this.mainPage = mainPage;
+        //yarrowGrid = gridMain;
+        Content = yarrowGrid;
+        GenerateLinesAndButtons(helper.RemainingStalkCount, yarrowGrid);
     }
 
     private void GenerateLinesAndButtons(int stickCount, Grid controls)
     {
-        lines = new Button[stickCount];
-        buttons = new Button[stickCount - 1];
-        controls.Clear();
+        // Generate the lines and buttons
+        LineHeight = 400; // (int)(controls.Height - (Spacing * 2));
+        LineWidth = 10; //(int)((controls.Width - (Spacing * 2)) / stickCount);
+
+        ButtonHeight = 400; // (int)(controls.Height - (Spacing * 2));
+        ButtonWidth = 10; //(int)((controls.Width - (Spacing * 2)) / stickCount);
+
+        controls.Children.Clear();
+        controls.RowDefinitions.Clear();
+        controls.ColumnDefinitions.Clear();
+        controls.ClearLogicalChildren();
+        controls.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
 
         int x = Spacing;
         int y = Spacing;
@@ -49,15 +62,16 @@ public partial class CvYarrowStalks : ContentView
             // Create a line
             Button line = new Button
             {
+                MinimumWidthRequest = LineWidth,
                 WidthRequest = LineWidth,
                 HeightRequest = LineHeight,
-                BorderColor = Colors.ForestGreen,
+                BackgroundColor = Colors.ForestGreen,
             };
             line.Clicked += Line_Click;
             lines[i] = line;
             line.Text = i.ToString();
             controls.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
-            controls.SetColumn(line, i);
+            controls.SetColumn(line, controls.ColumnDefinitions.Count - 1);
             controls.Children.Add(line);
 
             // Create a button (if applicable)
@@ -66,15 +80,16 @@ public partial class CvYarrowStalks : ContentView
                 int buttonX = x + LineWidth + Spacing;
                 Button button = new Button
                 {
+                    MinimumWidthRequest = ButtonWidth,
                     WidthRequest = ButtonWidth,
                     HeightRequest = ButtonHeight,
-                    BorderColor = Colors.AliceBlue,
+                    BackgroundColor = Colors.AliceBlue,
                     Text = string.Empty
                 };
                 button.Clicked += Button_Click;
                 buttons[i] = button;
                 controls.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
-                controls.SetColumn(button, i+1);
+                controls.SetColumn(button, controls.ColumnDefinitions.Count - 1);
                 controls.Children.Add(button);
 
                 //x += LineWidth + ButtonWidth + Spacing * 2;
@@ -124,7 +139,7 @@ public partial class CvYarrowStalks : ContentView
         mainPage.Title = $"18/: {clickCount} - 1:{piles[0]} -  2:{piles[1]} - 3:{piles[2]}";
 
         var b = mainPage.ShowMessageBox($"Lines to the left: {linesLeft}", "Button Click");
-        GenerateLinesAndButtons(helper.RemainingStalkCount, gridSticks);
+        GenerateLinesAndButtons(helper.RemainingStalkCount, yarrowGrid);
 
     }
 
