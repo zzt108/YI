@@ -16,6 +16,8 @@ namespace YiChing
         public MainPage()
         {
             InitializeComponent();
+            //BackgroundColor = Colors.DarkBlue;
+            
             CVHexagram = new(this);
             CVYarrowStalks = new(this);
 

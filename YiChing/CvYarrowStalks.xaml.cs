@@ -7,24 +7,24 @@ public partial class CvYarrowStalks : ContentView
 
     const int YarrowClickTiming = 2;
     const int StickCount = 49;
-    private int LineWidth = 8;
+
+    private int LineWidth = 4;
     private int LineHeight = 400;
-    private int ButtonWidth = 4;
+    private int ButtonWidth = 2;
     private int ButtonHeight = 400;
-    private int Spacing = 3;
+    private readonly int Spacing = 3;
 
-    private Button[] lines;
-    private Button[] buttons;
+    private readonly Button[]? lines;
+    private readonly Button[]? buttons;
+    private readonly Grid yarrowGrid = new Grid();
+    private readonly int[] piles = { 0, 0, 0 };
+    private readonly YarrowStalksHelper helper = new YarrowStalksHelper();
+    private readonly MainPage mainPage;
+    private readonly Values values = new Values();
 
-    private Grid yarrowGrid = new Grid();
+    private int clickCount;
+    private int hexagramRow;
 
-    public int[] divisions = new int[18];
-    private YarrowStalksHelper helper = new YarrowStalksHelper();
-    int[] piles = { 0, 0, 0 };
-    int clickCount = 0;
-    public Values values = new Values();
-    int hexagramRow;
-    public MainPage mainPage;
 
     public CvYarrowStalks(MainPage mainPage)
     {
@@ -41,13 +41,19 @@ public partial class CvYarrowStalks : ContentView
 
     private void GenerateLinesAndButtons(int stickCount, Grid controls)
     {
-        // Generate the lines and buttons
-        LineHeight = 400; // (int)(controls.Height - (Spacing * 2));
-        LineWidth = 10; //(int)((controls.Width - (Spacing * 2)) / stickCount);
 
-        ButtonHeight = 400; // (int)(controls.Height - (Spacing * 2));
-        ButtonWidth = 10; //(int)((controls.Width - (Spacing * 2)) / stickCount);
+#if true
 
+#else
+        var width = (controls).Width;
+        var height = (controls).Height;
+
+        LineHeight = (int)(controls.Height - (Spacing * 2));
+        LineWidth = (int)((width - (Spacing * 2)) / stickCount);
+
+        ButtonHeight = (int)(controls.Height - (Spacing * 2));
+        ButtonWidth = (int)((width - (Spacing * 2)) / stickCount);
+#endif
         controls.Children.Clear();
         controls.RowDefinitions.Clear();
         controls.ColumnDefinitions.Clear();

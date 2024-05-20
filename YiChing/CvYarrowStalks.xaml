@@ -2,21 +2,38 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="YiChing.CvYarrowStalks">
-    <Grid x:Name="gridMain">
+
+    <StackLayout x:Name="rootLayout">
+        <StackLayout Orientation="Horizontal" HeightRequest="20">
+            <!-- Add content for the top row here -->
+        </StackLayout>
+
+        <StackLayout x:Name="middleLayout" Orientation="Horizontal" Margin="10,0,10,0">
+            <Grid x:Name="gridYarrow">
+    
+            </Grid>
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal" HeightRequest="2">
+            <!-- Add content for the bottom row here -->
+        </StackLayout>
+    </StackLayout>
+    
+    <!--<Grid x:Name="gridMain">
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="2" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="20" />
         </Grid.ColumnDefinitions>
         
         <Grid x:Name="gridYarrow" Grid.Row="1" Grid.Column="1">
             
         </Grid>
-    </Grid>
+    </Grid>-->
             
 </ContentView>
