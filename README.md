@@ -32,6 +32,7 @@ Your startup project 'DataLayer' doesn't reference Microsoft.EntityFrameworkCore
   - based on user response or position
 - :) Stalk based hexagrams
 - Do UI in MAUI/Android
+- Read char sequence from question as coin throw results. Like oo1, hht, ffi, 001, etc
 
 ## open Perplexity.ai with a question in the URL.
 
