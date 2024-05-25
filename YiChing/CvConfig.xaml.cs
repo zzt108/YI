@@ -9,6 +9,7 @@ public partial class CvConfig : ContentView
     private readonly MainPage _mainPage;
 
     public Settings Settings { get; set; }
+    public Settings Defaults { get; set; }
 
     public CvConfig(MainPage page, IConfiguration configuration)
     {
@@ -16,17 +17,18 @@ public partial class CvConfig : ContentView
         _mainPage = page;
         _configuration = configuration;
         btnReturn.Clicked += btnReturn_Click;
-        BindingContext = this;
         LoadSettings();
+        BindingContext = this;
     }
     private void LoadSettings()
     {
-        Settings = _configuration.GetRequiredSection("Settings").Get<Settings>();
+        Defaults = _configuration?.GetRequiredSection("Settings")?.Get<Settings>();
+        Settings = new Settings(Defaults);
     }
 
     private void btnReturn_Click(object? sender, EventArgs e)
     {
+        Settings.SaveValues();
         _mainPage.Content = _mainPage.CVHexagram;
     }
-
 }

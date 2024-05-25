@@ -3,14 +3,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Maui.Storage;
 
 namespace YiChing
 {
-    public class Settings
+    public class Settings:IDisposable
     {
-        public string AnswerLanguage { get; set; }
-        public string KeyTwo { get; set; }
+        string answerLanguage;
+        string keyTwo;
+
+        #region Constructor
+
+        public void Dispose()
+        {
+            SaveValues();
+        }
+        public Settings(Settings defaults)
+        {
+            LoadValues(defaults);
+        }
+
+        public Settings()
+        {
+            
+        }
+        #endregion
+
+        public string AnswerLanguage { get => answerLanguage; set => answerLanguage = value; }
+        public string KeyTwo { get => keyTwo; set => keyTwo = value; }
         public NestedSettings KeyThree { get; set; }
+
+        #region Methods
+
+        public void LoadValues(Settings? defaults)
+        {
+            AnswerLanguage = Preferences.Default.Get(nameof(AnswerLanguage), defaults?.AnswerLanguage);
+            KeyTwo = Preferences.Default.Get(nameof(KeyTwo), defaults?.KeyTwo);
+            KeyThree = new NestedSettings
+            {
+                Message = Preferences.Default.Get(nameof(KeyThree.Message), defaults?.KeyThree.Message)
+            };
+        }
+        public void SaveValues()
+        {
+            Preferences.Default.Set(nameof(Settings.AnswerLanguage), answerLanguage);
+            Preferences.Default.Set(nameof(Settings.KeyTwo), keyTwo);
+            Preferences.Default.Set(nameof(Settings.KeyThree.Message), KeyThree.Message);
+        }
+        #endregion
     }
 
     public class NestedSettings
