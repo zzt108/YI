@@ -5,9 +5,12 @@ namespace YiChing
 {
     public static class MauiProgram
     {
+        // public static IServiceProvider Services { get; private set; }
+
         public static MauiApp CreateMauiApp()
         {
-            var builder = MauiApp.CreateBuilder();
+
+        var builder = MauiApp.CreateBuilder();
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
@@ -24,8 +27,12 @@ namespace YiChing
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+            builder.Services.AddTransient<MainPage>();
 
-            return builder.Build();
+            MauiApp mauiApp = builder.Build();
+            // Use DI, or set Services here
+            // Services = mauiApp.Services;
+            return mauiApp;
         }
     }
 }

@@ -18,6 +18,6 @@ public partial class CvConfig : ContentView
     }
     private void LoadSettings()
     {
-        Settings = (Settings)_configuration.GetRequiredSection("Settings");
+        Settings = _configuration.GetRequiredSection("Settings").Get<Settings>();
     }
 }
