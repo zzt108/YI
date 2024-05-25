@@ -12,7 +12,7 @@ namespace YiChing
 
         var builder = MauiApp.CreateBuilder();
             var config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
             builder.Configuration.AddConfiguration(config);

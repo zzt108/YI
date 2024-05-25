@@ -32,8 +32,8 @@ namespace YiChing
             CVConfig = new CvConfig(this, config);
 
             // Set the content of the page
-            //Content = CVHexagram;
-            Content = CVConfig;
+            Content = CVHexagram;
+            //Content = CVConfig;
         }
     }
 }

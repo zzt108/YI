@@ -17,12 +17,14 @@ public partial class CvConfig : ContentView
         _mainPage = page;
         _configuration = configuration;
         btnReturn.Clicked += btnReturn_Click;
+        myPicker.SelectedIndexChanged += Picker_SelectedIndexChanged;
         LoadSettings();
         BindingContext = this;
+        myPicker.SelectedItem = Settings.AnswerLanguage;
     }
     private void LoadSettings()
     {
-        Defaults = _configuration?.GetRequiredSection("Settings")?.Get<Settings>();
+        //Defaults = _configuration?.GetRequiredSection("Settings")?.Get<Settings>();
         Settings = new Settings(Defaults);
     }
 
@@ -31,4 +33,19 @@ public partial class CvConfig : ContentView
         Settings.SaveValues();
         _mainPage.Content = _mainPage.CVHexagram;
     }
+
+    private void Picker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        var picker = (Picker)sender;
+        var selectedItem = picker.SelectedItem;
+        txtAnswerLanguage.Text = selectedItem?.ToString();
+        Settings.AnswerLanguage = selectedItem?.ToString();
+
+        //// Perform actions based on the selected item
+        //if (selectedItem != null)
+        //{
+        //    _mainPage.DisplayAlert("Selection", $"You selected: {selectedItem}", "OK");
+        //}
+    }
+
 }

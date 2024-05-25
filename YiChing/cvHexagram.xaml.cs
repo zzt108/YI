@@ -5,6 +5,8 @@ namespace YiChing;
 public partial class CvHexagram : ContentView
 {
     #region Privates
+
+    MainPage _mainPage;
     private const int HorDist = 100;
     private const int VerDist = 40;
     private const int HorStart = 20;
@@ -56,7 +58,7 @@ public partial class CvHexagram : ContentView
     private string GetFullQuestion()
     {
         return $"{DateTime.Now:d}\nQuestion to I Ching:\n {rtQuestion.Text}\n"
-            + $"\nI Ching answered:\n{rtAnswer.Text}\nWould you please interpret?";
+            + $"\nI Ching answered:\n{rtAnswer.Text}\nWould you please interpret?\nPlease translate to {_mainPage.CVConfig.Settings.AnswerLanguage}.";
     }
 
     #endregion
@@ -77,7 +79,7 @@ public partial class CvHexagram : ContentView
         rtQuestion.TextChanged += (sender, e) => { Question.Text = e.NewTextValue; };
 
         DrawHexagram();
-        this.mainPage = mainPage;
+        this._mainPage = mainPage;
     }
     #endregion
 
@@ -87,19 +89,17 @@ public partial class CvHexagram : ContentView
     {
         get
         {
-            mainPage.Title = Title;
+            _mainPage.Title = Title;
             return rtQuestion;
         }
         set
         {
-            mainPage.Title = Title;
+            _mainPage.Title = Title;
             rtQuestion = value;
         }
     }
 
     public string Title = "Yi Ching for AI by Gerzson";
-
-    public MainPage mainPage;
 
     protected CheckBox[,] CheckBoxes = new CheckBox[HG.Hexagram.RowCount, HG.Hexagram.ColCount];
 
@@ -118,7 +118,7 @@ public partial class CvHexagram : ContentView
 
     private void btnConfig_Click(object? sender, EventArgs e)
     {
-        mainPage.Content = mainPage.CVConfig;
+        _mainPage.Content = _mainPage.CVConfig;
     }
 
     private void btnEval_Click(object sender, EventArgs e)
@@ -153,10 +153,10 @@ public partial class CvHexagram : ContentView
     private void btnYarrow_Click(object sender, EventArgs e)
     {
         ResetIndeterminate();
-        mainPage.CVYarrowStalks.Question.Text = rtQuestion.Text;
-        mainPage.CVYarrowStalks.InitProcess();
+        _mainPage.CVYarrowStalks.Question.Text = rtQuestion.Text;
+        _mainPage.CVYarrowStalks.InitProcess();
         
-        mainPage.Content = mainPage.CVYarrowStalks;
+        _mainPage.Content = _mainPage.CVYarrowStalks;
     }
 
     private void btnClear_Click(object sender, EventArgs e)
@@ -177,7 +177,7 @@ public partial class CvHexagram : ContentView
         catch (Exception ex)
         {
             // Handle potential exceptions (e.g., no browser installed)
-            await mainPage.DisplayAlert("Error", "Failed to open web page: " + ex.Message, "OK");
+            await _mainPage.DisplayAlert("Error", "Failed to open web page: " + ex.Message, "OK");
         }
     }
     #endregion
