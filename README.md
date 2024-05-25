@@ -1,10 +1,12 @@
 # YI
 ## Features
-- User can enter a question and a result of coin throws via the UI
-- User can use Yarrow Stalks method to get a divination
-- User can send result of divination to perplexity.ai side as a question
-- User can copy result of divination to clipboard to send other ui sides or save it
-- Auto Version numbers based on date/time
+- 24.525
+  - Ask AI to translate answer to selected language (in configuration)
+  - User can enter a question and a result of coin throws via the UI
+  - User can use Yarrow Stalks method to get a divination
+  - User can send result of divination to perplexity.ai side as a question
+  - User can copy result of divination to clipboard to send other ui sides or save it
+  - Auto Version numbers based on date/time
 
 
 ## Data structure
@@ -29,7 +31,6 @@ Your startup project 'DataLayer' doesn't reference Microsoft.EntityFrameworkCore
 --> Do not just add nuget package but add using Microsoft.EntityFrameworkCore.Design; 
 
 # Plans
-- Open AI web page with suggested answer language
 - Signed APK to ease distribution
 - Continuous saving of data, restore last state when started
   - persist hexagrams to JSON
