@@ -29,7 +29,7 @@ namespace YiChing
             CVHexagram = new(this);
             CVHexagram.Question.Text = "Version: " + version.ToString() + "\nWhat is the answer to the ultimate question of life, the universe, and everything?";
             CVYarrowStalks = new(this);
-            CVConfig = new CvConfig(config);
+            CVConfig = new CvConfig(this, config);
             //MainPage = new NavigationPage(new CvConfig(services.GetRequiredService<IConfiguration>()));
 
             // Set the content of the page

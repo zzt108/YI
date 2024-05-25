@@ -19,22 +19,5 @@
             <!-- Add content for the bottom row here -->
         </StackLayout>
     </StackLayout>
-    
-    <!--<Grid x:Name="gridMain">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="2" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="20" />
-        </Grid.ColumnDefinitions>
-        
-        <Grid x:Name="gridYarrow" Grid.Row="1" Grid.Column="1">
-            
-        </Grid>
-    </Grid>-->
-            
+             
 </ContentView>

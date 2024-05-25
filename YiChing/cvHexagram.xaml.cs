@@ -72,6 +72,7 @@ public partial class CvHexagram : ContentView
         btnClear.Clicked += btnClear_Click;
         btnYarrow.Clicked += btnYarrow_Click;
         btnPerpAI.Clicked += btnPerpAI_Click;
+        btnConfig.Clicked += btnConfig_Click;
 
         rtQuestion.TextChanged += (sender, e) => { Question.Text = e.NewTextValue; };
 
@@ -114,6 +115,11 @@ public partial class CvHexagram : ContentView
     }
 
     #region EventHandlers
+
+    private void btnConfig_Click(object? sender, EventArgs e)
+    {
+        mainPage.Content = mainPage.CVConfig;
+    }
 
     private void btnEval_Click(object sender, EventArgs e)
     {

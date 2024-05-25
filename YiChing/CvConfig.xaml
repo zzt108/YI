@@ -10,5 +10,6 @@
         <Entry Text="{Binding Settings.KeyTwo}" />
         <Label Text="Key Three Message" />
         <Entry Text="{Binding Settings.KeyThree.Message}" />
+        <Button x:Name="btnReturn" Text="Return"></Button>
     </VerticalStackLayout>
 </ContentView>
