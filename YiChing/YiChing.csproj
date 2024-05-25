@@ -25,14 +25,29 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 
-		<!-- Display name -->
+    <!-- Version number properties -->
+    <zztMVersion>0</zztMVersion>
+    <!--<zztMinVersion>1</zztMinVersion>
+    <zztPVersion>1</zztPVersion>-->
+
+    <BuildVersion>$([System.DateTime]::UtcNow.ToString("Hmm"))</BuildVersion>
+    <zztPVersion>$([System.DateTime]::UtcNow.ToString("MMdd"))</zztPVersion>
+    <zztMinVersion>$([System.DateTime]::UtcNow.ToString("yy"))</zztMinVersion>
+    <!--<ApplicationDisplayVersion>$(zztMVersion).$(zztMinVersion).$(zztPVersion).$(BuildVersion)</ApplicationDisplayVersion>-->
+    <ApplicationDisplayVersion>$(zztMVersion).$(zztMinVersion).$(zztPVersion)</ApplicationDisplayVersion>
+    <AssemblyVersion>$(zztMVersion).$(zztMinVersion).$(zztPVersion).$(BuildVersion)</AssemblyVersion>
+    <FileVersion>$(zztMVersion).$(zztMinVersion).$(zztPVersion).$(BuildVersion)</FileVersion>
+
+    <!--<AssemblyVersion>0.1.1.0</AssemblyVersion>
+    <FileVersion>0.1.1.0</FileVersion>-->
+
+    <!-- Display name -->
 		<ApplicationTitle>YiChing</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.PneumaSoft.yiching</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
@@ -42,12 +57,19 @@
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 		<Title>Yi Ching for AI</Title>
-		<AssemblyVersion>0.1.1.0</AssemblyVersion>
-		<FileVersion>0.1.1.0</FileVersion>
 		<Company>$(Authors)</Company>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
+  <!--<Target Name="IncrementVersion" BeforeTargets="Build">
+    <PropertyGroup>
+      <zztPVersion>$([MSBuild]::Add($(zztPVersion), 1))</zztPVersion>
+      <ApplicationDisplayVersion>$(zztMVersion).$(zztMinVersion).$(zztPVersion).$(BuildVersion)</ApplicationDisplayVersion>
+      <AssemblyVersion>$(zztMVersion).$(zztMinVersion).$(zztPVersion).$(BuildVersion)</AssemblyVersion>
+      <FileVersion>$(zztMVersion).$(zztMinVersion).$(zztPVersion).$(BuildVersion)</FileVersion>
+    </PropertyGroup>
+  </Target>-->
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
 	  <Optimize>False</Optimize>
 	</PropertyGroup>
 
