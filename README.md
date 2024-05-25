@@ -2,9 +2,11 @@
 ## Features
 - User can enter a question and a result of coin throws via the UI
 - User can use Yarrow Stalks method to get a divination
-- User can send result of divination to perplexity.ai side
+- User can send result of divination to perplexity.ai side as a question
 - User can copy result of divination to clipboard to send other ui sides or save it
-- 
+- Auto Version numbers based on date/time
+
+
 ## Data structure
 ![Data structure](
 https://www.plantuml.com/plantuml/png/JOun2y8m48Nt-nMt5OGuEZX8nmuT5DJzQ8yOI2wGNAGY_dUDsDhr--xTUsrMIbg2X-ReIVGI_7Q80M3mb3DsF95D59w0w4JnIhuml6RhiiRqg39hScBnL3YhYxASd7dIbU-OHauV2z3qJXYDYKi9xl56TyOT7g3cS6FMJlxOO4zY2rc6-cMcyLi7lrcLB7c0bcKimRy1
@@ -27,16 +29,16 @@ Your startup project 'DataLayer' doesn't reference Microsoft.EntityFrameworkCore
 --> Do not just add nuget package but add using Microsoft.EntityFrameworkCore.Design; 
 
 # Plans
+- Open AI web page with suggested answer language
+- Signed APK to ease distribution
 - Continuous saving of data, restore last state when started
   - persist hexagrams to JSON
   - persist jicsing 2 JSON
 - categorized questions
 - ? Randomized throws
-- Open AI web page with YiWin form summary ?
 - User reaction based coin throws
   - gif
   - based on user response or position
-- :) Stalk based hexagrams
 - Do UI in MAUI/Android
 - Read char sequence from question as coin throw results. Like oo1, hht, ffi, 001, etc
 
