@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="YiChing.CvConfig">
+
+    <VerticalStackLayout>
+        <Label Text="Answer Language" />
+        <Entry x:Name="txtAnswerLanguage" Text="{Binding Settings.AnswerLanguage}" />
+        <Picker Title="Select an Answer Language" x:Name="myPicker" ItemsSource="{Binding Items}">
+            <Picker.SelectedItem>
+                <Binding Path="Settings.AnswerLanguage" Mode="TwoWay" />
+            </Picker.SelectedItem>
+            <Picker.Items>
+                <x:String>English</x:String>
+                <x:String>Danish</x:String>
+                <x:String>Hungarian</x:String>
+            </Picker.Items>
+        </Picker>
+        <!--<Label Text="Key Two" />
+        <Entry Text="{Binding Settings.KeyTwo}" />
+        <Label Text="Key Three Message" />
+        <Entry Text="{Binding Settings.KeyThree.Message}" />-->
+        <Button x:Name="btnReturn" Text="Return"></Button>
+
+    </VerticalStackLayout>
+</ContentView>
