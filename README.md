@@ -31,6 +31,7 @@ Your startup project 'DataLayer' doesn't reference Microsoft.EntityFrameworkCore
 --> Do not just add nuget package but add using Microsoft.EntityFrameworkCore.Design; 
 
 # Plans
+- Accessing https://www.jamesdekorne.com/GBCh/hex{number}.htm for hexagram description
 - Signed APK to ease distribution
 - Continuous saving of data, restore last state when started
   - persist hexagrams to JSON
