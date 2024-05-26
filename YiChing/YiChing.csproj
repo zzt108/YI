@@ -52,7 +52,7 @@
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.1</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">26.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
@@ -60,14 +60,11 @@
 		<Company>$(Authors)</Company>
 	</PropertyGroup>
 
-  <!--<Target Name="IncrementVersion" BeforeTargets="Build">
+  <Target Name="IncrementVersion" BeforeTargets="Build">
     <PropertyGroup>
-      <zztPVersion>$([MSBuild]::Add($(zztPVersion), 1))</zztPVersion>
-      <ApplicationDisplayVersion>$(zztMVersion).$(zztMinVersion).$(zztPVersion).$(BuildVersion)</ApplicationDisplayVersion>
-      <AssemblyVersion>$(zztMVersion).$(zztMinVersion).$(zztPVersion).$(BuildVersion)</AssemblyVersion>
-      <FileVersion>$(zztMVersion).$(zztMinVersion).$(zztPVersion).$(BuildVersion)</FileVersion>
+      <ApplicationVersion>$([MSBuild]::Add($(ApplicationVersion), 1))</ApplicationVersion>
     </PropertyGroup>
-  </Target>-->
+  </Target>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
 	  <Optimize>False</Optimize>

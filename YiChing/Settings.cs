@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Maui.Storage;
 
 namespace YiChing
 {
-    public class Settings:IDisposable
+    public class Settings : IDisposable
     {
         string answerLanguage;
         string keyTwo;
@@ -18,14 +14,19 @@ namespace YiChing
         {
             SaveValues();
         }
-        public Settings(Settings defaults)
+        public Settings(Settings? defaults) : this()
         {
             LoadValues(defaults);
         }
 
         public Settings()
         {
-            
+            answerLanguage = "English";
+            keyTwo = "Value Two";
+            KeyThree = new NestedSettings
+            {
+                Message = "This is a message from the settings"
+            };
         }
         #endregion
 
@@ -55,6 +56,6 @@ namespace YiChing
 
     public class NestedSettings
     {
-        public string Message { get; set; }
+        public string? Message { get; set; }
     }
 }
