@@ -1,5 +1,7 @@
 # YI
 ## Features
+### 24.526
+  - Icon and splash screen fixed
 ### 24.525
   - Ask AI to translate answer to selected language (in configuration)
   - User can enter a question and a result of coin throws via the UI
