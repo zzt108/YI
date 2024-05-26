@@ -12,15 +12,14 @@ public partial class CvYarrowStalks : ContentView
     private int LineHeight = 400;
     private int ButtonWidth = 2;
     private int ButtonHeight = 400;
-    private readonly int Spacing = 3;
 
-    private readonly Button[]? lines;
-    private readonly Button[]? buttons;
+    private readonly Button[] lines = []; // instantiated dynamically later
+    private readonly Button[] buttons = []; // instantiated dynamically later
     //private readonly Grid yarrowGrid = new Grid();
-    private readonly int[] piles = { 0, 0, 0 };
-    private readonly YarrowStalksHelper helper = new YarrowStalksHelper();
+    private readonly int[] piles = [0, 0, 0];
+    private readonly YarrowStalksHelper helper = new();
     private readonly MainPage mainPage;
-    private readonly Values values = new Values();
+    private readonly Values values = new();
 
     private int clickCount;
     private int hexagramRow;
@@ -91,7 +90,9 @@ public partial class CvYarrowStalks : ContentView
                 HeightRequest = LineHeight,
                 BackgroundColor = Colors.ForestGreen,
             };
+#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
             line.Clicked += Line_Click;
+#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
             lines[i] = line;
             line.Text = i.ToString();
             controls.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
@@ -109,7 +110,9 @@ public partial class CvYarrowStalks : ContentView
                     BackgroundColor = Colors.AliceBlue,
                     Text = string.Empty
                 };
+#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
                 button.Clicked += Button_Click;
+#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
                 buttons[i] = button;
                 controls.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
                 controls.SetColumn(button, controls.ColumnDefinitions.Count - 1);
@@ -157,7 +160,7 @@ public partial class CvYarrowStalks : ContentView
 
         //gridYarrow.IsEnabled = false;
         gridYarrow.IsVisible = false;
-        Thread.Sleep(YarrowClickTiming*150); 
+        Thread.Sleep(YarrowClickTiming * 150);
 
         //foreach (var line in lines) { line.BackgroundColor = Colors.Gray; Thread.Sleep(YarrowClickTiming/2); }
         //foreach (var line in buttons) { line.BackgroundColor = Colors.Gray; Thread.Sleep(YarrowClickTiming/2); }

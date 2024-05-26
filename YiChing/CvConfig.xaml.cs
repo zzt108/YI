@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Configuration;
-using Microsoft.Maui.Controls;
 
 namespace YiChing;
 
@@ -8,8 +7,8 @@ public partial class CvConfig : ContentView
     private readonly IConfiguration _configuration;
     private readonly MainPage _mainPage;
 
-    public Settings Settings { get; set; }
-    public Settings Defaults { get; set; }
+    public Settings? Settings { get; set; }
+    public Settings? Defaults { get; set; }
 
     public CvConfig(MainPage page, IConfiguration configuration)
     {
@@ -17,10 +16,12 @@ public partial class CvConfig : ContentView
         _mainPage = page;
         _configuration = configuration;
         btnReturn.Clicked += btnReturn_Click;
+#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
         myPicker.SelectedIndexChanged += Picker_SelectedIndexChanged;
+#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
         LoadSettings();
         BindingContext = this;
-        myPicker.SelectedItem = Settings.AnswerLanguage;
+        myPicker.SelectedItem = Settings?.AnswerLanguage;
     }
     private void LoadSettings()
     {
@@ -30,7 +31,7 @@ public partial class CvConfig : ContentView
 
     private void btnReturn_Click(object? sender, EventArgs e)
     {
-        Settings.SaveValues();
+        Settings?.SaveValues();
         _mainPage.Content = _mainPage.CVHexagram;
     }
 

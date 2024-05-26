@@ -8,10 +8,6 @@ public partial class CvHexagram : ContentView
     #region Privates
 
     MainPage _mainPage;
-    private const int HorDist = 100;
-    private const int VerDist = 40;
-    private const int HorStart = 20;
-    private const int VerStart = 40;
     private void DrawHexagram()
     {
         // Set the initial location for the checkboxes
@@ -70,10 +66,18 @@ public partial class CvHexagram : ContentView
         InitializeComponent();
         mainPage.Title = Title;
         // Add event handlers
+#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
         btnCopy.Clicked += btnCopy_Click;
+#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
+#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
         btnEval.Clicked += btnEval_Click;
+#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
+#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
         btnClear.Clicked += btnClear_Click;
+#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
+#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
         btnYarrow.Clicked += btnYarrow_Click;
+#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
         btnPerpAI.Clicked += btnPerpAI_Click;
         btnConfig.Clicked += btnConfig_Click;
 
@@ -124,7 +128,7 @@ public partial class CvHexagram : ContentView
         _mainPage.Content = _mainPage.CVConfig;
     }
 
-    private void btnEval_Click(object sender, EventArgs e)
+    private void btnEval_Click(object? sender, EventArgs e)
     {
         // Get the text from the RichTextBox control
         string question = rtQuestion.Text;
@@ -158,7 +162,7 @@ public partial class CvHexagram : ContentView
         ResetIndeterminate();
         _mainPage.CVYarrowStalks.Question.Text = rtQuestion.Text;
         _mainPage.CVYarrowStalks.InitProcess();
-        
+
         _mainPage.Content = _mainPage.CVYarrowStalks;
     }
 
