@@ -58,8 +58,8 @@ public partial class CvHexagram : ContentView
 
     private string GetFullQuestion()
     {
-        return $"{DateTime.Now:d}\nQuestion to I Ching:\n {rtQuestion.Text}\n"
-            + $"\nI Ching answered:\n{rtAnswer.Text}\nWould you please interpret?\nPlease translate to {_mainPage.CVConfig.Settings.AnswerLanguage}.";
+        return $"{DateTime.Now:yyyy-MM-dd}\nQuestion to I Ching:\n {rtQuestion.Text}\n"
+            + $"\nI Ching answered:\n{rtAnswer.Text}\nWould you please interpret?\n\nPlease translate to {_mainPage.CVConfig.Settings.AnswerLanguage}.";
     }
 
     #endregion
@@ -99,6 +99,8 @@ public partial class CvHexagram : ContentView
             rtQuestion = value;
         }
     }
+
+    public Editor Answer { get => rtAnswer; set => rtAnswer = value; }
 
     public string Title = "Yi Ching for AI by Gerzson";
 

@@ -1,12 +1,28 @@
 # YI
 ## Features
-- 24.525
+### 24.525
   - Ask AI to translate answer to selected language (in configuration)
   - User can enter a question and a result of coin throws via the UI
   - User can use Yarrow Stalks method to get a divination
   - User can send result of divination to perplexity.ai side as a question
   - User can copy result of divination to clipboard to send other ui sides or save it
   - Auto Version numbers based on date/time
+  - UI in MAUI/Android
+
+# Plans
+- Signed APK to ease distribution
+- Stacked navigation
+- Continuous saving of data, restore last state when started
+  - persist hexagrams to JSON
+  - persist jicsing 2 JSON
+- categorized questions
+- ? Randomized throws
+- User reaction based coin throws
+  - gif
+  - based on user response or position
+
+- Read char sequence from question as coin throw results. Like oo1, hht, ffi, 001, etc
+
 
 
 ## Data structure
@@ -44,7 +60,6 @@ Your startup project 'DataLayer' doesn't reference Microsoft.EntityFrameworkCore
 - Do UI in MAUI/Android
 - Read char sequence from question as coin throw results. Like oo1, hht, ffi, 001, etc
 
-## open Perplexity.ai with a question in the URL.
 
 ### Use the following URL format:
 https://www.perplexity.ai/?s=O&q=your_question_here

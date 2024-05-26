@@ -27,7 +27,7 @@ namespace YiChing
             version = typeof(App).Assembly.GetName().Version;
 
             CVHexagram = new(this);
-            CVHexagram.Question.Text = "Version: " + version.ToString() + "\nWhat is the answer to the ultimate question of life, the universe, and everything?";
+            CVHexagram.Answer.Text = "Version: " + version.ToString() + "\n\nWhat is the answer to the ultimate question of\nlife, the universe, and everything?";
             CVYarrowStalks = new(this);
             CVConfig = new CvConfig(this, config);
 
