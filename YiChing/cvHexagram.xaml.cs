@@ -1,3 +1,4 @@
+using System.Web;
 using HG = HexagramNS;
 
 namespace YiChing;
@@ -169,7 +170,7 @@ public partial class CvHexagram : ContentView
         try
         {
             btnEval_Click(sender, e);
-            string question = GetFullQuestion();
+            string question = HttpUtility.UrlEncode(GetFullQuestion());
             string url = $"https://www.perplexity.ai/search?s=o&q={question}";
             Uri uri = new Uri(url);
             await Browser.Default.OpenAsync(uri, BrowserLaunchMode.External);
