@@ -397,3 +397,5 @@ Directory.Build.Override.props
 # Only the "snapshots" directory should be added to Git, not the "snapshots-diff" directory
 snapshots-diff/
 /MauiApp2/Visual Studio 2022/Visualizers/attribcache*.bin
+/YiChing/publish.cmd
+/YiChing/yiching.keystore

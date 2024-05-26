@@ -1,0 +1,1 @@
+keytool -genkeypair -v -keystore yiching.keystore -alias yiching -keyalg RSA -keysize 2048 -validity 10000
