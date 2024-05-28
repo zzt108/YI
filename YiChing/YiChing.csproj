@@ -58,6 +58,16 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 		<Title>Yi Ching for AI</Title>
 		<Company>$(Authors)</Company>
+		<PackageIcon>appicon.png</PackageIcon>
+		<GenerateAppInstallerFile>True</GenerateAppInstallerFile>
+		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+		<PackageCertificateThumbprint>F5BCA02EE7758E2B2872DAC99C45BF3FEAC70732</PackageCertificateThumbprint>
+		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+		<AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+		<GenerateTestArtifacts>True</GenerateTestArtifacts>
+		<AppInstallerUri>g:\My Drive\Docs\Shared\</AppInstallerUri>
+		<HoursBetweenUpdateChecks>168</HoursBetweenUpdateChecks>
 	</PropertyGroup>
 
   <Target Name="IncrementVersion" BeforeTargets="Build">
@@ -177,6 +187,13 @@
 	  <MauiXaml Update="CvYarrowStalks.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Resources\AppIcon\appicon.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 
