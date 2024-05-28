@@ -1,5 +1,7 @@
 using FluentAssertions;
 using HexagramNS;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace Test;
 
@@ -23,7 +25,7 @@ public class TestHexagram
     {1, 1, 1}
 
     };
-        var hexagram = new HexagramNS.Hexagram(new Values().InitValues(data, (item, row, col) => item > 0));
+        var hexagram = new Hexagram(new Values().InitValues(data, (item, row, col) => item > 0));
         hexagram.Main.Should().Be(11);
         hexagram.Changed.Should().Be(12);
         hexagram.ChangingLines.Should().BeEquivalentTo(new[] {1 , 2, 3, 4, 5, 6});
