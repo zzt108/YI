@@ -159,7 +159,7 @@ public partial class CvHexagram : ContentView
 
     private void btnYarrow_Click(object sender, EventArgs e)
     {
-        ResetIndeterminate();
+        // ResetIndeterminate();
         _mainPage.CVYarrowStalks.Question.Text = rtQuestion.Text;
         _mainPage.CVYarrowStalks.InitProcess();
 
@@ -168,6 +168,11 @@ public partial class CvHexagram : ContentView
 
     private void btnClear_Click(object sender, EventArgs e)
     {
+        //var task = _mainPage.DisplayAlert("Are you sure?", "Clear question and answer?", "Yes", "No");
+        //task.Wait();
+        //if (!task.Result)
+        //    return;
+        _mainPage.DisplayVersionText();
         rtQuestion.Text = string.Empty;
         ResetIndeterminate();
     }

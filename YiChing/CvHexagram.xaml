@@ -31,17 +31,17 @@
                         </Grid>
                     </StackLayout>
                     <StackLayout x:Name ="stackButtons">
+                        <Button x:Name="btnYarrow" Text="Yarrow Stalks" BackgroundColor="DarkGreen">
+                        </Button>
+                        <Button x:Name="btnPerpAI" Text="Perplexity.AI">
+                        </Button>
                         <Button x:Name="btnEval" Text="Eval">
                         </Button>
                         <Button x:Name="btnCopy" Text="Copy">
                         </Button>
-                        <Button x:Name="btnPerpAI" Text="Perplexity.AI">
-                        </Button>
-                        <Button x:Name="btnClear" Text="Clear">
-                        </Button>
-                        <Button x:Name="btnYarrow" Text="Yarrow Stalks">
-                        </Button>
                         <Button x:Name="btnConfig" Text="Configuration">
+                        </Button>
+                        <Button x:Name="btnClear" Text="Clear" BackgroundColor="DarkRed">
                         </Button>
                     </StackLayout>
                 </StackLayout>

@@ -26,13 +26,18 @@ namespace YiChing
             version = typeof(App).Assembly.GetName().Version;
 
             CVHexagram = new(this);
-            CVHexagram.Answer.Text = "Version: " + version?.ToString() + "\n\nWhat is the answer to the ultimate question of\nlife, the universe, and everything?";
+            DisplayVersionText();
             CVYarrowStalks = new(this);
             CVConfig = new CvConfig(this, config);
 
             // Set the content of the page
             Content = CVHexagram;
             //Content = CVConfig;
+        }
+
+        public void DisplayVersionText()
+        {
+            CVHexagram.Answer.Text = "Version: " + version?.ToString() + "\n\nWhat is the answer to the ultimate question of\nlife, the universe, and everything?";
         }
     }
 }
