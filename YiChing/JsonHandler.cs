@@ -38,7 +38,7 @@ namespace YiChing
             }
 
             // Check if the question and hexagrams already exist in the entries
-            bool entryExists = entries.Any(e => e.Question == entry.Question && e.Hexagram == entry.Hexagram && e.ChangedHexagram == entry.ChangedHexagram);
+            bool entryExists = entries.Any(e => e.Question == entry.Question && e.Answer == entry.Answer);
 
             if (!entryExists) // Only add if it does not exist
             {

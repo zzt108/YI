@@ -106,7 +106,8 @@ public partial class CvHexagram : ContentView
         var jsonHandler = new JsonHandler();
         var hexagramDetails = jsonHandler.GetHexagramDetails(selectedHexagram);
 
-        rtAnswer.Text = hexagramDetails?.DisplayText; // Display hexagram description
+        rtAnswer.Text = hexagramDetails?.Answer; // Display hexagram description
+        rtQuestion.Text = hexagramDetails?.Question;
     }
 
     // TODO encapsulate rtQuestion.Text into property
@@ -141,18 +142,6 @@ public partial class CvHexagram : ContentView
         });
     }
 
-    #region EventHandlers
-
-    private void btnConfig_Click(object? sender, EventArgs e)
-    {
-        _mainPage.Content = _mainPage.CVConfig;
-    }
-
-    private void btnEval_Click(object? sender, EventArgs e)
-    {
-        EvalAndSaveHexagram();
-    }
-
     private void EvalAndSaveHexagram()
     {
         string question = rtQuestion.Text;
@@ -179,7 +168,20 @@ public partial class CvHexagram : ContentView
 
         // Save the question and hexagram result
         var jsonHandler = new JsonHandler();
-        jsonHandler.SaveEntry(new HexagramEntry(question, mainHexagram, hexagram.Changed));
+        jsonHandler.SaveEntry(new HexagramEntry(question, rtAnswer.Text));
+    }
+
+
+    #region EventHandlers
+
+    private void btnConfig_Click(object? sender, EventArgs e)
+    {
+        _mainPage.Content = _mainPage.CVConfig;
+    }
+
+    private void btnEval_Click(object? sender, EventArgs e)
+    {
+        EvalAndSaveHexagram();
     }
 
     private void btnCopy_Click(object sender, EventArgs e)

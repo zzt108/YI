@@ -7,16 +7,14 @@ namespace YiChing
     public class HexagramEntry
     {
         public string Question { get; set; }
-        public int Hexagram { get; set; }
-        public int ChangedHexagram { get; set; }
+        public string Answer { get; set; }
         public DateTime Date { get; set; }
 
-        public HexagramEntry(string question, int hexagram, int changedHexagram)
+        public HexagramEntry(string question, string answer)
         {
             Question = question;
-            Hexagram = hexagram;
+            Answer = answer;
             Date = DateTime.Now; // Current date and time
-            ChangedHexagram = changedHexagram;
         }
 
         [JsonIgnore]
