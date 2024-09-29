@@ -70,15 +70,11 @@ public partial class CvHexagram : ContentView
         btnCopy.Clicked += btnCopy_Click;
 #pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
 #pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
-        btnEval.Clicked += btnEval_Click;
-#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
-#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
         btnClear.Clicked += btnClear_Click;
 #pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
 #pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
         btnYarrow.Clicked += btnYarrow_Click;
 #pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
-        btnPerpAI.Clicked += btnPerpAI_Click;
         btnConfig.Clicked += btnConfig_Click;
 
         rtQuestion.TextChanged += (sender, e) => { Question.Text = e.NewTextValue; };
@@ -130,6 +126,11 @@ public partial class CvHexagram : ContentView
 
     private void btnEval_Click(object? sender, EventArgs e)
     {
+        EvalAndsaveHexagram();
+    }
+
+    private void EvalAndsaveHexagram()
+    {
         string question = rtQuestion.Text;
         var hexagram = new HG.Hexagram(new HG.Values().InitValues<CheckBox>(CheckBoxes, (checkBox, row, col) => checkBox.IsChecked));
 
@@ -159,7 +160,7 @@ public partial class CvHexagram : ContentView
 
     private void btnCopy_Click(object sender, EventArgs e)
     {
-        btnEval_Click(sender, e);
+        EvalAndsaveHexagram();
         string full = GetFullQuestion();
         Clipboard.SetTextAsync(full);
     }
@@ -187,7 +188,7 @@ public partial class CvHexagram : ContentView
     {
         try
         {
-            btnEval_Click(sender, e);
+            EvalAndsaveHexagram();
             string question = HttpUtility.UrlEncode(GetFullQuestion());
             string url = $"https://www.perplexity.ai/search?s=o&q={question}";
             Uri uri = new Uri(url);
