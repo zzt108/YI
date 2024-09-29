@@ -35,14 +35,20 @@ public class JsonHandler
             entries = new List<HexagramEntry>();
         }
 
-        // Add the new entry to the list
-        entries.Add(entry);
+        // Check if the question and hexagrams already exist in the entries
+        bool entryExists = entries.Any(e => e.Question == entry.Question && e.Hexagram == entry.Hexagram && e.ChangedHexagram == entry.ChangedHexagram);
 
-        // Sort the entries by date descending
-        entries = entries.OrderByDescending(e => e.Date).ToList();
+        if (!entryExists) // Only add if it does not exist
+        {
+            // Add the new entry to the list
+            entries.Add(entry);
 
-        // Serialize the sorted list back to JSON
-        var newJson = JsonConvert.SerializeObject(entries, Formatting.Indented);
-        File.WriteAllText(filePath, newJson);
+            // Sort the entries by date descending
+            entries = entries.OrderByDescending(e => e.Date).ToList();
+
+            // Serialize the sorted list back to JSON
+            var newJson = JsonConvert.SerializeObject(entries, Formatting.Indented);
+            File.WriteAllText(filePath, newJson);
+        }
     }
 }
