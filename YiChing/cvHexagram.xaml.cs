@@ -81,9 +81,33 @@ public partial class CvHexagram : ContentView
 
         DrawHexagram();
         this._mainPage = mainPage;
+        LoadHexagrams();
     }
     #endregion
 
+    private void LoadHexagrams()
+    {
+        var jsonHandler = new JsonHandler();
+
+        // Assuming you have a method to read the JSON data
+        var hexagramEntries = jsonHandler.ReadHexagramEntriesFromJson(); // Implement this method based on your JSON structure
+
+        foreach (var entry in hexagramEntries)
+        {
+            hexagramPicker.Items.Add($"{entry.DisplayText}"); // Customize the display text as needed
+        }
+    }
+
+    private void OnHexagramSelected(object sender, EventArgs e)
+    {
+        var selectedHexagram = hexagramPicker.SelectedItem.ToString();
+        // Extract corresponding hexagram details, assuming id can be parsed from selectedItem
+        // var hexagramId = int.Parse(new string(selectedHexagram.Where(char.IsDigit).ToArray()));
+        var jsonHandler = new JsonHandler();
+        var hexagramDetails = jsonHandler.GetHexagramDetails(selectedHexagram);
+
+        rtAnswer.Text = hexagramDetails?.DisplayText; // Display hexagram description
+    }
 
     // TODO encapsulate rtQuestion.Text into property
     public Editor Question
@@ -126,10 +150,10 @@ public partial class CvHexagram : ContentView
 
     private void btnEval_Click(object? sender, EventArgs e)
     {
-        EvalAndsaveHexagram();
+        EvalAndSaveHexagram();
     }
 
-    private void EvalAndsaveHexagram()
+    private void EvalAndSaveHexagram()
     {
         string question = rtQuestion.Text;
         var hexagram = new HG.Hexagram(new HG.Values().InitValues<CheckBox>(CheckBoxes, (checkBox, row, col) => checkBox.IsChecked));
@@ -160,7 +184,7 @@ public partial class CvHexagram : ContentView
 
     private void btnCopy_Click(object sender, EventArgs e)
     {
-        EvalAndsaveHexagram();
+        EvalAndSaveHexagram();
         string full = GetFullQuestion();
         Clipboard.SetTextAsync(full);
     }
@@ -188,7 +212,7 @@ public partial class CvHexagram : ContentView
     {
         try
         {
-            EvalAndsaveHexagram();
+            EvalAndSaveHexagram();
             string question = HttpUtility.UrlEncode(GetFullQuestion());
             string url = $"https://www.perplexity.ai/search?s=o&q={question}";
             Uri uri = new Uri(url);

@@ -7,6 +7,9 @@
         <!-- First column containing another stacklayout -->
         <StackLayout Orientation="Horizontal">
             <StackLayout>
+                <!-- Dropdown for Hexagrams -->
+                <Picker x:Name="hexagramPicker" Title="Select Hexagram" SelectedIndexChanged="OnHexagramSelected" />
+
                 <Editor x:Name="rtQuestion" Text="{Binding QuestionText, Mode=TwoWay}" WidthRequest="300" HeightRequest="100" />
                 <StackLayout Orientation="Horizontal">
                     <StackLayout x:Name ="stackHexagram" WidthRequest="200">

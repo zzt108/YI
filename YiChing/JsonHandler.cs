@@ -1,54 +1,74 @@
 ﻿using Newtonsoft.Json;
-namespace YiChing;
-public class JsonHandler
+
+namespace YiChing
 {
-    private readonly string filePath;
-
-    public JsonHandler()
+    public class JsonHandler
     {
-        // Get the local application data path and create a sub-folder if necessary
-        string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        string myAppFolder = Path.Combine(appDataPath, "Yi");
+        private readonly string filePath;
 
-        // Create the directory if it doesn't exist
-        if (!Directory.Exists(myAppFolder))
+        public JsonHandler()
         {
-            Directory.CreateDirectory(myAppFolder);
+            // Get the local application data path and create a sub-folder if necessary
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string myAppFolder = Path.Combine(appDataPath, "Yi");
+
+            // Create the directory if it doesn't exist
+            if (!Directory.Exists(myAppFolder))
+            {
+                Directory.CreateDirectory(myAppFolder);
+            }
+
+            // Set the path for the JSON file
+            filePath = Path.Combine(myAppFolder, "hexagramEntries.json");
         }
 
-        // Set the path for the JSON file
-        filePath = Path.Combine(myAppFolder, "hexagramEntries.json");
-    }
-
-    public void SaveEntry(HexagramEntry entry)
-    {
-        List<HexagramEntry> entries;
-
-        // Check if the file exists. If yes, read the existing entries.
-        if (File.Exists(filePath))
+        public void SaveEntry(HexagramEntry entry)
         {
-            var json = File.ReadAllText(filePath);
-            entries = JsonConvert.DeserializeObject<List<HexagramEntry>>(json) ?? new List<HexagramEntry>();
+            List<HexagramEntry> entries;
+
+            // Check if the file exists. If yes, read the existing entries.
+            if (File.Exists(filePath))
+            {
+                var json = File.ReadAllText(filePath);
+                entries = JsonConvert.DeserializeObject<List<HexagramEntry>>(json) ?? new List<HexagramEntry>();
+            }
+            else
+            {
+                entries = new List<HexagramEntry>();
+            }
+
+            // Check if the question and hexagrams already exist in the entries
+            bool entryExists = entries.Any(e => e.Question == entry.Question && e.Hexagram == entry.Hexagram && e.ChangedHexagram == entry.ChangedHexagram);
+
+            if (!entryExists) // Only add if it does not exist
+            {
+                // Add the new entry to the list
+                entries.Add(entry);
+
+                // Sort the entries by date descending
+                entries = entries.OrderByDescending(e => e.Date).ToList();
+
+                // Serialize the sorted list back to JSON
+                var newJson = JsonConvert.SerializeObject(entries, Formatting.Indented);
+                File.WriteAllText(filePath, newJson);
+            }
         }
-        else
+
+        public List<HexagramEntry> ReadHexagramEntriesFromJson()
         {
-            entries = new List<HexagramEntry>();
+            if (File.Exists(filePath))
+            {
+                var json = File.ReadAllText(filePath);
+                return JsonConvert.DeserializeObject<List<HexagramEntry>>(json) ?? new List<HexagramEntry>();
+            }
+            return new List<HexagramEntry>();
         }
 
-        // Check if the question and hexagrams already exist in the entries
-        bool entryExists = entries.Any(e => e.Question == entry.Question && e.Hexagram == entry.Hexagram && e.ChangedHexagram == entry.ChangedHexagram);
-
-        if (!entryExists) // Only add if it does not exist
+        public HexagramEntry? GetHexagramDetails(string displayText)
         {
-            // Add the new entry to the list
-            entries.Add(entry);
-
-            // Sort the entries by date descending
-            entries = entries.OrderByDescending(e => e.Date).ToList();
-
-            // Serialize the sorted list back to JSON
-            var newJson = JsonConvert.SerializeObject(entries, Formatting.Indented);
-            File.WriteAllText(filePath, newJson);
+            var entries = ReadHexagramEntriesFromJson();
+            var entry = entries.FirstOrDefault(e => e.DisplayText == displayText);
+            return entry;
         }
     }
 }

@@ -1,4 +1,8 @@
-﻿namespace YiChing
+﻿using System;
+using Newtonsoft.Json;
+//using System.Text.Json.Serialization;
+
+namespace YiChing
 {
     public class HexagramEntry
     {
@@ -14,5 +18,8 @@
             Date = DateTime.Now; // Current date and time
             ChangedHexagram = changedHexagram;
         }
+
+        [JsonIgnore]
+        public string DisplayText => $"{Date:yy-MM-dd HH:mm} {Question}";
     }
 }
