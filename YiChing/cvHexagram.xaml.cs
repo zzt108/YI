@@ -130,12 +130,14 @@ public partial class CvHexagram : ContentView
 
     private void btnEval_Click(object? sender, EventArgs e)
     {
-        // Get the text from the RichTextBox control
         string question = rtQuestion.Text;
-
         var hexagram = new HG.Hexagram(new HG.Values().InitValues<CheckBox>(CheckBoxes, (checkBox, row, col) => checkBox.IsChecked));
 
-        rtAnswer.Text = $"\nMain Hexagram {hexagram.Main}\n\n";
+        // Example logic to retrieve the main hexagram.
+        int mainHexagram = hexagram.Main;
+
+        rtAnswer.Text = $"\nMain Hexagram {mainHexagram}\n\n";
+
         if (hexagram.ChangingLines.Any())
         {
             rtAnswer.Text += "Changing lines: ";
@@ -146,8 +148,13 @@ public partial class CvHexagram : ContentView
             rtAnswer.Text += $"\n\nChanging Hexagram {hexagram.Changed}\n";
         }
         else
+        {
             rtAnswer.Text += "\n No changing lines ";
+        }
 
+        // Save the question and hexagram result
+        var jsonHandler = new JsonHandler();
+        jsonHandler.SaveEntry(new HexagramEntry(question, mainHexagram, hexagram.Changed));
     }
 
     private void btnCopy_Click(object sender, EventArgs e)
