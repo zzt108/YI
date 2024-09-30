@@ -37,6 +37,10 @@ namespace YiChing
                 entries = new List<HexagramEntry>();
             }
 
+            // Remove entries older than 2 months
+            DateTime thresholdDate = DateTime.UtcNow.AddMonths(-2);
+            entries = entries.Where(e => e.Date >= thresholdDate).ToList();
+
             // Check if the question and hexagrams already exist in the entries
             bool entryExists = entries.Any(e => e.Question == entry.Question && e.Answer == entry.Answer);
 
