@@ -1,5 +1,11 @@
 # YI
 ## Features
+### 24.930
+- store questions and answers in local storage
+- can select Q/A in a dropdown
+- Q/A deleted after 2 months
+- Perplexity.ai button removed as sending questions to p.ai was not working anymore
+- 
 ### 24.526
   - Icon and splash screen fixed
 ### 24.525
@@ -25,8 +31,14 @@
 
 - Read char sequence from question as coin throw results. Like oo1, hht, ffi, 001, etc
 
-
-
+## TODO
+- Immediately update questions list after copy click
+- Configurable prompt to AI
+- Hexagram names in answers, besides numbers
+- Store questions in GDrive or OneDrive
+  - How to config on Win/Amdroid?
+- access to AI APIs, getting direct answers
+- 
 ## Data structure
 ![Data structure](
 https://www.plantuml.com/plantuml/png/JOun2y8m48Nt-nMt5OGuEZX8nmuT5DJzQ8yOI2wGNAGY_dUDsDhr--xTUsrMIbg2X-ReIVGI_7Q80M3mb3DsF95D59w0w4JnIhuml6RhiiRqg39hScBnL3YhYxASd7dIbU-OHauV2z3qJXYDYKi9xl56TyOT7g3cS6FMJlxOO4zY2rc6-cMcyLi7lrcLB7c0bcKimRy1
