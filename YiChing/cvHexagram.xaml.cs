@@ -169,9 +169,18 @@ public partial class CvHexagram : ContentView
         // Save the question and hexagram result
         var jsonHandler = new JsonHandler();
         jsonHandler.SaveEntry(new HexagramEntry(question, rtAnswer.Text));
+
+        // Refresh the hexagram picker with the updated entries
+        RefreshHexagramPicker();
     }
 
-
+    private void RefreshHexagramPicker()
+    {
+        // Clear existing items
+        hexagramPicker.Items.Clear();
+        // Reload hexagrams from JSON
+        LoadHexagrams();
+    }
     #region EventHandlers
 
     private void btnConfig_Click(object? sender, EventArgs e)
