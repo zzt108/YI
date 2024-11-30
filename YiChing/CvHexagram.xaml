@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:YiChing.ViewModels"
              x:Class="YiChing.CvHexagram">
-    <StackLayout x:Name ="stack">
+    <StackLayout x:Name="stack">
 
         <!-- First column containing another stacklayout -->
         <StackLayout Orientation="Horizontal">
             <StackLayout>
                 <!-- Dropdown for Hexagrams -->
-                <Picker x:Name="hexagramPicker" Title="Select Hexagram" SelectedIndexChanged="OnHexagramSelected" />
+                <Picker ItemsSource="{Binding HexagramEntries}"
+                        SelectedItem="{Binding SelectedHexagram}"
+                        ItemDisplayBinding="{Binding DisplayText}"
+                        Title="Select Hexagram" />
 
-                <Editor x:Name="rtQuestion" Text="{Binding QuestionText, Mode=TwoWay}" WidthRequest="300" HeightRequest="100" />
+                <Editor Text="{Binding Question, Mode=TwoWay}"
+                        WidthRequest="300"
+                        HeightRequest="100" />
                 <StackLayout Orientation="Horizontal">
                     <StackLayout x:Name ="stackHexagram" WidthRequest="200">
                         <Grid x:Name ="gridHexagram" WidthRequest="200">
@@ -34,22 +40,30 @@
                         </Grid>
                     </StackLayout>
                     <StackLayout x:Name ="stackButtons">
-                        <Button x:Name="btnYarrow" Text="Yarrow Stalks" BackgroundColor="DarkGreen">
+                        <Button Command="{Binding YarrowStalksCommand}"
+                                Text="Yarrow Stalks"
+                                BackgroundColor="DarkGreen">
                         </Button>
                         <!--<Button x:Name="btnPerpAI" Text="Perplexity.AI">
                         </Button>
                         <Button x:Name="btnEval" Text="Eval">
                         </Button>-->
-                        <Button x:Name="btnCopy" Text="Copy">
+                        <Button Command="{Binding CopyToClipboardCommand}"
+                                Text="Copy">
                         </Button>
-                        <Button x:Name="btnConfig" Text="Configuration">
+                        <Button Command="{Binding ShowConfigurationCommand}"
+                                Text="Configuration">
                         </Button>
-                        <Button x:Name="btnClear" Text="Clear" BackgroundColor="DarkRed">
+                        <Button Command="{Binding ClearCommand}"
+                                Text="Clear" 
+                                BackgroundColor="DarkRed">
                         </Button>
                     </StackLayout>
                 </StackLayout>
                 <StackLayout>
-                    <Editor x:Name ="rtAnswer" IsReadOnly="True" HeightRequest="150"/>
+                    <Editor Text="{Binding Answer, Mode=OneWay}"
+                            IsReadOnly="True" 
+                            HeightRequest="150"/>
                 </StackLayout>
             </StackLayout>
             <!-- Right column containing Answers editor -->

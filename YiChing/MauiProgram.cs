@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
+using YiChing.ViewModels;
 
 namespace YiChing
 {
@@ -9,13 +10,7 @@ namespace YiChing
 
         public static MauiApp CreateMauiApp()
         {
-
-        var builder = MauiApp.CreateBuilder();
-            var config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .Build();
-
-            builder.Configuration.AddConfiguration(config);
+            var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
@@ -24,15 +19,19 @@ namespace YiChing
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-#if DEBUG
-    		builder.Logging.AddDebug();
-#endif
-            builder.Services.AddTransient<MainPage>();
+            // Register services
+            builder.Services.AddSingleton<IJsonHandler, JsonHandler>();
+            builder.Services.AddTransient<HexagramViewModel>();
+            builder.Services.AddTransient<CvHexagram>();
 
-            MauiApp mauiApp = builder.Build();
-            // Use DI, or set Services here
-            // Services = mauiApp.Services;
-            return mauiApp;
+            // Add logging
+            builder.Services.AddLogging(logging =>
+            {
+                logging.AddDebug();
+                logging.SetMinimumLevel(LogLevel.Debug);
+            });
+
+            return builder.Build();
         }
     }
 }

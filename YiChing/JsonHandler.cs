@@ -1,25 +1,45 @@
 ﻿using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 
 namespace YiChing
 {
-    public class JsonHandler
+    public interface IJsonHandler
     {
-        private readonly string filePath;
+        void SaveEntry(HexagramEntry entry);
+        List<HexagramEntry> ReadHexagramEntriesFromJson();
+        HexagramEntry? GetHexagramDetails(string displayText);
+    }
 
-        public JsonHandler()
+    public class JsonHandler : IJsonHandler
+    {
+        private readonly string _filePath;
+        private readonly ILogger<JsonHandler> _logger;
+        private readonly IConfiguration _configuration;
+        private readonly int _retentionMonths;
+
+        public JsonHandler(ILogger<JsonHandler> logger, IConfiguration configuration)
         {
-            // Get the local application data path and create a sub-folder if necessary
+            _logger = logger;
+            _configuration = configuration;
+            
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             string myAppFolder = Path.Combine(appDataPath, "Yi");
 
-            // Create the directory if it doesn't exist
-            if (!Directory.Exists(myAppFolder))
+            try
             {
-                Directory.CreateDirectory(myAppFolder);
+                if (!Directory.Exists(myAppFolder))
+                {
+                    Directory.CreateDirectory(myAppFolder);
+                }
+                _filePath = Path.Combine(myAppFolder, "hexagramEntries.json");
+                _retentionMonths = _configuration.GetValue<int>("RetentionMonths", 2);
             }
-
-            // Set the path for the JSON file
-            filePath = Path.Combine(myAppFolder, "hexagramEntries.json");
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error initializing JsonHandler");
+                throw;
+            }
         }
 
         private List<HexagramEntry> RemoveDuplicateEntries(List<HexagramEntry> entries)
@@ -30,58 +50,42 @@ namespace YiChing
                 .ToList();
         }
 
+
         public void SaveEntry(HexagramEntry entry)
         {
-            List<HexagramEntry> entries;
-
-            // Check if the file exists. If yes, read the existing entries.
-            if (File.Exists(filePath))
+            try
             {
-                var json = File.ReadAllText(filePath);
-                entries = JsonConvert.DeserializeObject<List<HexagramEntry>>(json) ?? new List<HexagramEntry>();
+                List<HexagramEntry> entries = ReadHexagramEntriesFromJson();
 
-                // Remove duplicate entries
                 entries = RemoveDuplicateEntries(entries);
+
+                // Remove entries older than retention period
+                DateTime thresholdDate = DateTime.UtcNow.AddMonths(-_retentionMonths);
+                entries = entries.Where(e => e.Date >= thresholdDate).ToList();
+
+                bool entryExists = entries.Any(e => e.Question == entry.Question && e.Answer == entry.Answer);
+                if (!entryExists)
+                {
+                    entries.Add(entry);
+                    entries = entries.OrderByDescending(e => e.Date).ToList();
+
+                    var newJson = JsonConvert.SerializeObject(entries, Formatting.Indented);
+                    File.WriteAllText(_filePath, newJson);
+                    _logger.LogInformation("Successfully saved new hexagram entry");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                entries = new List<HexagramEntry>();
-            }
-
-            // Remove entries older than 2 months
-            DateTime thresholdDate = DateTime.UtcNow.AddMonths(-1);
-            entries = entries.Where(e => e.Date >= thresholdDate).ToList();
-
-            // Check if the question and hexagrams already exist in the entries
-            bool questionExists = entries.Any(e => e.DisplayText == entry.DisplayText);
-
-            // If the same question exists, remove it
-            if (questionExists)
-            {
-                entries.RemoveAll(e => e.DisplayText == entry.DisplayText);
-            }
-
-            // Check if the question and hexagrams already exist in the entries
-            bool entryExists = entries.Any(e => e.Question == entry.Question && e.Answer == entry.Answer);
-            if (!entryExists) // Only add if it does not exist
-            {
-                // Add the new entry to the list
-                entries.Add(entry);
-
-                // Sort the entries by date descending
-                entries = entries.OrderByDescending(e => e.Date).ToList();
-
-                // Serialize the sorted list back to JSON
-                var newJson = JsonConvert.SerializeObject(entries, Formatting.Indented);
-                File.WriteAllText(filePath, newJson);
+                _logger.LogError(ex, "Error saving hexagram entry");
+                throw;
             }
         }
 
         public List<HexagramEntry> ReadHexagramEntriesFromJson()
         {
-            if (File.Exists(filePath))
+            if (File.Exists(_filePath))
             {
-                var json = File.ReadAllText(filePath);
+                var json = File.ReadAllText(_filePath);
                 return JsonConvert.DeserializeObject<List<HexagramEntry>>(json) ?? new List<HexagramEntry>();
             }
             return new List<HexagramEntry>();

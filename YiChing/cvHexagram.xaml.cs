@@ -1,4 +1,8 @@
+using AndroidX.Lifecycle;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System.Web;
+using YiChing.ViewModels;
 using HG = HexagramNS;
 
 namespace YiChing;
@@ -7,7 +11,11 @@ public partial class CvHexagram : ContentView
 {
     #region Privates
 
-    MainPage _mainPage;
+    private ILoggerFactory loggerFactory = LoggerFactory.Create(static builder => builder.AddDebug());
+    private ILogger<JsonHandler> logger;
+    private IConfiguration configuration = new ConfigurationBuilder().Build();
+    private readonly HexagramViewModel _viewModel;
+
     private void DrawHexagram()
     {
         // Set the initial location for the checkboxes
@@ -55,16 +63,23 @@ public partial class CvHexagram : ContentView
     private string GetFullQuestion()
     {
         return $"{DateTime.Now:yyyy-MM-dd}\nQuestion to I Ching:\n {rtQuestion.Text}\n"
-            + $"\nI Ching answered:\n{rtAnswer.Text}\nWould you please interpret?\n\nPlease translate to {_mainPage.CVConfig.Settings.AnswerLanguage}.";
+            + $"\nI Ching answered:\n{rtAnswer.Text}\nWould you please interpret?\n\nPlease translate to {_viewModel.Settings.AnswerLanguage}.";
     }
 
     #endregion
 
     #region Constructor
-    public CvHexagram(MainPage mainPage)
+    public CvHexagram(HexagramViewModel viewModel)
     {
         InitializeComponent();
-        mainPage.Title = Title;
+
+        _viewModel = viewModel;
+        BindingContext = _viewModel;
+
+        loggerFactory = LoggerFactory.Create(static builder => builder.AddDebug());
+        logger = loggerFactory.CreateLogger<JsonHandler>();
+        configuration = new ConfigurationBuilder().Build();
+
         // Add event handlers
 #pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
         btnCopy.Clicked += btnCopy_Click;
@@ -80,14 +95,13 @@ public partial class CvHexagram : ContentView
         rtQuestion.TextChanged += (sender, e) => { Question.Text = e.NewTextValue; };
 
         DrawHexagram();
-        this._mainPage = mainPage;
-        LoadHexagrams();
     }
     #endregion
 
     private void LoadHexagrams()
     {
-        var jsonHandler = new JsonHandler();
+        var jsonHandler = new JsonHandler(logger, configuration);
+        // var jsonHandler = new JsonHandler();
 
         // Assuming you have a method to read the JSON data
         var hexagramEntries = jsonHandler.ReadHexagramEntriesFromJson(); // Implement this method based on your JSON structure
@@ -106,7 +120,7 @@ public partial class CvHexagram : ContentView
             var selectedHexagram = hexagramPicker.SelectedItem.ToString();
             // Extract corresponding hexagram details, assuming id can be parsed from selectedItem
             // var hexagramId = int.Parse(new string(selectedHexagram.Where(char.IsDigit).ToArray()));
-            var jsonHandler = new JsonHandler();
+            var jsonHandler = new JsonHandler(logger, configuration);
             var hexagramDetails = jsonHandler.GetHexagramDetails(selectedHexagram);
 
             rtAnswer.Text = hexagramDetails?.Answer; // Display hexagram description
@@ -119,12 +133,10 @@ public partial class CvHexagram : ContentView
     {
         get
         {
-            _mainPage.Title = Title;
             return rtQuestion;
         }
         set
         {
-            _mainPage.Title = Title;
             rtQuestion = value;
         }
     }
@@ -171,7 +183,7 @@ public partial class CvHexagram : ContentView
         }
 
         // Save the question and hexagram result
-        var jsonHandler = new JsonHandler();
+        var jsonHandler = new JsonHandler(logger, configuration);
         jsonHandler.SaveEntry(new HexagramEntry(question, rtAnswer.Text));
 
         // Refresh the hexagram picker with the updated entries
@@ -189,7 +201,7 @@ public partial class CvHexagram : ContentView
 
     private void btnConfig_Click(object? sender, EventArgs e)
     {
-        _mainPage.Content = _mainPage.CVConfig;
+        _viewModel.NavigateToConfig();
     }
 
     private void btnEval_Click(object? sender, EventArgs e)
@@ -207,10 +219,7 @@ public partial class CvHexagram : ContentView
     private void btnYarrow_Click(object sender, EventArgs e)
     {
         // ResetIndeterminate();
-        _mainPage.CVYarrowStalks.Question.Text = rtQuestion.Text;
-        _mainPage.CVYarrowStalks.InitProcess();
-
-        _mainPage.Content = _mainPage.CVYarrowStalks;
+        _viewModel.NavigateToYarrowStalks(rtQuestion.Text);
     }
 
     private void btnClear_Click(object sender, EventArgs e)
@@ -219,7 +228,6 @@ public partial class CvHexagram : ContentView
         //task.Wait();
         //if (!task.Result)
         //    return;
-        _mainPage.DisplayVersionText();
         rtQuestion.Text = string.Empty;
         ResetIndeterminate();
     }
@@ -236,11 +244,8 @@ public partial class CvHexagram : ContentView
         catch (Exception ex)
         {
             // Handle potential exceptions (e.g., no browser installed)
-            await _mainPage.DisplayAlert("Error", "Failed to open web page: " + ex.Message, "OK");
+            await _viewModel.DisplayAlert("Error", "Failed to open web page: " + ex.Message, "OK");
         }
     }
     #endregion
-
-
 }
-
