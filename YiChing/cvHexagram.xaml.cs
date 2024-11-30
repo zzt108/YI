@@ -100,14 +100,18 @@ public partial class CvHexagram : ContentView
 
     private void OnHexagramSelected(object sender, EventArgs e)
     {
-        var selectedHexagram = hexagramPicker.SelectedItem.ToString();
-        // Extract corresponding hexagram details, assuming id can be parsed from selectedItem
-        // var hexagramId = int.Parse(new string(selectedHexagram.Where(char.IsDigit).ToArray()));
-        var jsonHandler = new JsonHandler();
-        var hexagramDetails = jsonHandler.GetHexagramDetails(selectedHexagram);
+        if (hexagramPicker.SelectedItem != null)
+        {
 
-        rtAnswer.Text = hexagramDetails?.Answer; // Display hexagram description
-        rtQuestion.Text = hexagramDetails?.Question;
+            var selectedHexagram = hexagramPicker.SelectedItem.ToString();
+            // Extract corresponding hexagram details, assuming id can be parsed from selectedItem
+            // var hexagramId = int.Parse(new string(selectedHexagram.Where(char.IsDigit).ToArray()));
+            var jsonHandler = new JsonHandler();
+            var hexagramDetails = jsonHandler.GetHexagramDetails(selectedHexagram);
+
+            rtAnswer.Text = hexagramDetails?.Answer; // Display hexagram description
+            rtQuestion.Text = hexagramDetails?.Question;
+        }
     }
 
     // TODO encapsulate rtQuestion.Text into property

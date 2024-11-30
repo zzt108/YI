@@ -22,6 +22,14 @@ namespace YiChing
             filePath = Path.Combine(myAppFolder, "hexagramEntries.json");
         }
 
+        private List<HexagramEntry> RemoveDuplicateEntries(List<HexagramEntry> entries)
+        {
+            return entries
+                .GroupBy(e => e.DisplayText)
+                .Select(g => g.OrderByDescending(e => e.Date).First())
+                .ToList();
+        }
+
         public void SaveEntry(HexagramEntry entry)
         {
             List<HexagramEntry> entries;
@@ -31,6 +39,9 @@ namespace YiChing
             {
                 var json = File.ReadAllText(filePath);
                 entries = JsonConvert.DeserializeObject<List<HexagramEntry>>(json) ?? new List<HexagramEntry>();
+
+                // Remove duplicate entries
+                entries = RemoveDuplicateEntries(entries);
             }
             else
             {
@@ -38,12 +49,20 @@ namespace YiChing
             }
 
             // Remove entries older than 2 months
-            DateTime thresholdDate = DateTime.UtcNow.AddMonths(-2);
+            DateTime thresholdDate = DateTime.UtcNow.AddMonths(-1);
             entries = entries.Where(e => e.Date >= thresholdDate).ToList();
 
             // Check if the question and hexagrams already exist in the entries
-            bool entryExists = entries.Any(e => e.Question == entry.Question && e.Answer == entry.Answer);
+            bool questionExists = entries.Any(e => e.DisplayText == entry.DisplayText);
 
+            // If the same question exists, remove it
+            if (questionExists)
+            {
+                entries.RemoveAll(e => e.DisplayText == entry.DisplayText);
+            }
+
+            // Check if the question and hexagrams already exist in the entries
+            bool entryExists = entries.Any(e => e.Question == entry.Question && e.Answer == entry.Answer);
             if (!entryExists) // Only add if it does not exist
             {
                 // Add the new entry to the list
