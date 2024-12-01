@@ -24,8 +24,10 @@ namespace YiChing
             builder.Logging.AddConsole();
             builder.Logging.SetMinimumLevel(LogLevel.Debug);
             builder.Services.AddSingleton<IAlertService, AlertService>();
+            builder.Services.AddSingleton<INavigationService, NavigationService>();
             builder.Services.AddTransient<HexagramViewModel>();
             builder.Services.AddTransient<CvHexagram>();
+            builder.Services.AddTransient<CvYarrowStalks>();
             builder.Services.AddTransient<MainPage>();
 
             return builder.Build();

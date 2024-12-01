@@ -12,26 +12,29 @@ public partial class CvHexagram : ContentView
 {
     #region Privates
 
-    private HexagramViewModel _viewModel;
-    private IConfiguration configuration;
     private readonly ILoggerFactory _loggerFactory;
+    private readonly IConfiguration configuration;
     private readonly IAlertService _alertService;
+    private readonly INavigationService _navigationService;
+    private readonly HexagramViewModel _viewModel;
 
     #endregion
 
-    public CvHexagram(ILoggerFactory loggerFactory, IConfiguration configuration, IAlertService alertService)
+    public CvHexagram(ILoggerFactory loggerFactory, IConfiguration configuration, IAlertService alertService, INavigationService navigationService)
     {
         InitializeComponent();
 
         this._loggerFactory = loggerFactory;
         this.configuration = configuration;
         this._alertService = alertService;
+        this._navigationService = navigationService;
 
         // Initialize ViewModel
         _viewModel = new HexagramViewModel(
             new JsonHandler(_loggerFactory.CreateLogger<JsonHandler>(), configuration), 
             _loggerFactory.CreateLogger<HexagramViewModel>(),
-            _alertService);
+            _alertService,
+            navigationService);
         BindingContext = _viewModel;
     }
 

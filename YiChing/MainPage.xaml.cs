@@ -7,13 +7,11 @@ namespace YiChing
 {
     public partial class MainPage : ContentPage
     {
-        public CvHexagram CVHexagram;
-        public CvYarrowStalks CVYarrowStalks;
-        public CvConfig CVConfig;
-
-        public Version version = null!;
-        
-        private IConfiguration configuration;
+        public IConfiguration Configuration { get; }
+        public Version Version { get; }
+        public CvHexagram CVHexagram { get; }
+        public CvYarrowStalks CVYarrowStalks { get; }
+        public CvConfig CVConfig { get; }
 
         public async Task<bool> ShowMessageBox(string title, string message, string accept = "OK", string? cancel = null)
         {
@@ -21,24 +19,24 @@ namespace YiChing
             return result;
         }
 
-        public MainPage(IConfiguration config, ILoggerFactory loggerFactory, IAlertService alertService, IJsonHandler jsonHandler)
+        public MainPage(ILoggerFactory loggerFactory, IConfiguration config, IAlertService alertService, INavigationService navigationService)
         {
             // Null checks for critical dependencies
-            ArgumentNullException.ThrowIfNull(config, nameof(config));
             ArgumentNullException.ThrowIfNull(loggerFactory, nameof(loggerFactory));
+            ArgumentNullException.ThrowIfNull(config, nameof(config));
             ArgumentNullException.ThrowIfNull(alertService, nameof(alertService));
-            ArgumentNullException.ThrowIfNull(jsonHandler, nameof(jsonHandler));
+            ArgumentNullException.ThrowIfNull(navigationService, nameof(navigationService));
 
             InitializeComponent();
-            configuration = config;
+            Configuration = config;
 
-            version = typeof(App).Assembly.GetName().Version ?? new Version(0, 0, 0, 0);
+            Version = typeof(App).Assembly.GetName().Version ?? new Version(0, 0, 0, 0);
 
             var logger = loggerFactory.CreateLogger<HexagramViewModel>();
-            CVHexagram = new CvHexagram(loggerFactory, configuration, alertService);
+            CVHexagram = new CvHexagram(loggerFactory, Configuration, alertService, navigationService);
             DisplayVersionText();
             CVYarrowStalks = new(this);
-            CVConfig = new CvConfig(this, config);
+            CVConfig = new CvConfig(this, Configuration);
 
             // Set the content of the page
             Content = CVHexagram ?? throw new InvalidOperationException("CVHexagram cannot be null");
@@ -47,7 +45,7 @@ namespace YiChing
 
         public void DisplayVersionText()
         {
-            ((HexagramViewModel)CVHexagram.BindingContext).Answer = "Version: " + version?.ToString() + "\n\nWhat is the answer to the ultimate question of\nlife, the universe, and everything?";
+            ((HexagramViewModel)CVHexagram.BindingContext).Answer = "Version: " + Version?.ToString() + "\n\nWhat is the answer to the ultimate question of\nlife, the universe, and everything?";
         }
     }
 }

@@ -1,10 +1,12 @@
-﻿namespace YiChing
+using YiChing;
+
+namespace YiChing;
+
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell()
     {
-        public AppShell()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+        Routing.RegisterRoute("CvYarrowStalks", typeof(CvYarrowStalks));
     }
 }

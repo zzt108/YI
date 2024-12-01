@@ -11,6 +11,7 @@ namespace YiChing.ViewModels
         private readonly IJsonHandler _jsonHandler;
         private readonly ILogger<HexagramViewModel> _logger;
         private readonly IAlertService _alertService;
+        private readonly INavigationService _navigationService;
 
         [ObservableProperty]
         private Editor? _rtQuestion;
@@ -74,11 +75,13 @@ namespace YiChing.ViewModels
         public HexagramViewModel(
             IJsonHandler jsonHandler, 
             ILogger<HexagramViewModel> logger,
-            IAlertService alertService)
+            IAlertService alertService,
+            INavigationService navigationService)
         {
             _jsonHandler = jsonHandler;
             _logger = logger;
             _alertService = alertService;
+            _navigationService = navigationService;
             Settings = new AppSettings(); // Initialize with default settings
             _hexagramEntries = new List<HexagramEntry>();
             _question = string.Empty;
@@ -123,10 +126,18 @@ namespace YiChing.ViewModels
         }
 
         [RelayCommand]
-        private void YarrowStalks()
+        private async Task YarrowStalks()
         {
-            // TODO: Implement yarrow stalks calculation
-            _logger.LogInformation("Yarrow stalks calculation requested");
+            try
+            {
+                await _navigationService.NavigateToAsync("CvYarrowStalks");
+                _logger.LogInformation("Navigating to Yarrow Stalks page");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error navigating to Yarrow Stalks page");
+                await _alertService.DisplayAlert("Error", "Could not open Yarrow Stalks page", "OK");
+            }
         }
 
         [RelayCommand]
