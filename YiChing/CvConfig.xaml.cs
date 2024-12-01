@@ -101,7 +101,7 @@ public partial class CvConfig : ContentPage
         }
     }
 
-    private async void OnReturnClicked(object sender, EventArgs e)
+    private async void OnReturnClicked(object? sender, EventArgs e)
     {
         try 
         {
@@ -139,7 +139,7 @@ public partial class CvConfig : ContentPage
         }
     }
 
-    private async void OnSaveClicked(object sender, EventArgs e)
+    private async void OnSaveClicked(object? sender, EventArgs e)
     {
         try 
         {
@@ -160,6 +160,19 @@ public partial class CvConfig : ContentPage
         }
     }
 
+    private void Picker_SelectedIndexChanged(object? sender, EventArgs e)
+    {
+        // Null-safe handling of picker selection
+        if (sender is Picker picker && picker.SelectedItem is string selectedItem)
+        {
+            // Update settings
+            if (Settings != null)
+            {
+                Settings.AnswerLanguage = selectedItem;
+            }
+        }
+    }
+
     private void LoadSettings()
     {
         // Try to load defaults from configuration, fallback to null
@@ -175,18 +188,5 @@ public partial class CvConfig : ContentPage
 
         // Always create a new Settings instance, using Defaults if available
         Settings = new Settings(Defaults ?? new Settings());
-    }
-
-    private void Picker_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        // Null-safe handling of picker selection
-        if (sender is Picker picker && picker.SelectedItem is string selectedItem)
-        {
-            // Update settings
-            if (Settings != null)
-            {
-                Settings.AnswerLanguage = selectedItem;
-            }
-        }
     }
 }

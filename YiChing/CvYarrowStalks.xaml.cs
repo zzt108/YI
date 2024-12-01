@@ -17,9 +17,9 @@ public partial class CvYarrowStalks : ContentPage
     private readonly Button[] buttons = []; // instantiated dynamically later
     //private readonly Grid yarrowGrid = new Grid();
     private readonly int[] piles = [0, 0, 0];
-    private readonly YarrowStalksHelper helper = new();
+    private readonly YarrowStalksHelper helper;
     private readonly MainPage mainPage;
-    private readonly Values values = new();
+    private readonly Values values;
 
     private int clickCount;
     private int hexagramRow;
@@ -44,6 +44,9 @@ public partial class CvYarrowStalks : ContentPage
         btnReturn.Clicked += btnReturn_Click;
         lines = new Button[StickCount];
         buttons = new Button[StickCount - 1];
+        helper = new YarrowStalksHelper();
+        values = new Values();
+        InitProcess();  // Call InitProcess immediately after initialization
     }
 
     public void InitProcess()
@@ -51,6 +54,12 @@ public partial class CvYarrowStalks : ContentPage
         clickCount = 0;
         hexagramRow = values.RowCount;
         GenerateLinesAndButtons(helper.RemainingStalkCount, gridYarrow);
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        InitProcess();
     }
 
     private async void btnReturn_Click(object? sender, EventArgs e)
@@ -61,19 +70,19 @@ public partial class CvYarrowStalks : ContentPage
 
     private void GenerateLinesAndButtons(int stickCount, Grid controls)
     {
+        var width = controls.Width;
+        var height = controls.Height;
 
-#if true
+        // Use default values if width/height not yet set
+        if (width <= 0) width = 400;
+        if (height <= 0) height = 400;
 
-#else
-        var width = (controls).Width;
-        var height = (controls).Height;
+        LineHeight = (int)(height - 20);  // 20 for spacing
+        LineWidth = Math.Max(4, (int)((width - 20) / stickCount));
 
-        LineHeight = (int)(controls.Height - (Spacing * 2));
-        LineWidth = (int)((width - (Spacing * 2)) / stickCount);
+        ButtonHeight = LineHeight;
+        ButtonWidth = Math.Max(2, (int)((width - 20) / stickCount));
 
-        ButtonHeight = (int)(controls.Height - (Spacing * 2));
-        ButtonWidth = (int)((width - (Spacing * 2)) / stickCount);
-#endif
         controls.Children.Clear();
         controls.RowDefinitions.Clear();
         controls.ColumnDefinitions.Clear();
@@ -136,7 +145,7 @@ public partial class CvYarrowStalks : ContentPage
 
     }
 
-    private void HandleClick(int linesLeft)
+    private async void HandleClick(int linesLeft)
     {
         const int MaxDivisionCount = 18;
 
@@ -159,18 +168,11 @@ public partial class CvYarrowStalks : ContentPage
             }
         }
 
-        //gridYarrow.IsEnabled = false;
         gridYarrow.IsVisible = false;
-        Thread.Sleep(YarrowClickTiming * 150);
-
-        //foreach (var line in lines) { line.BackgroundColor = Colors.Gray; Thread.Sleep(YarrowClickTiming/2); }
-        //foreach (var line in buttons) { line.BackgroundColor = Colors.Gray; Thread.Sleep(YarrowClickTiming/2); }
-        //foreach (var line in lines) { line.HeightRequest = 0; Thread.Sleep(YarrowClickTiming / 2); }
-        //foreach (var line in buttons) { line.HeightRequest = 50; Thread.Sleep(YarrowClickTiming / 2); }
+        await Task.Delay(YarrowClickTiming * 150);
         gridYarrow.IsEnabled = true;
         gridYarrow.IsVisible = true;
 
-        //var b = mainPage.ShowMessageBox($"Lines to the left: {linesLeft}", "Button Click");
         GenerateLinesAndButtons(helper.RemainingStalkCount, gridYarrow);
     }
 
