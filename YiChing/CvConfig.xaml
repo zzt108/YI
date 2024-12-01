@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="YiChing.CvConfig">
+             x:Class="YiChing.CvConfig"
+             Title="Configuration">
     <StackLayout>
         <Picker x:Name="myPicker" Title="Select Language">
             <Picker.Items>
@@ -12,6 +13,15 @@
 
         <Label x:Name="txtAnswerLanguage" />
 
-        <Button x:Name="btnReturn" Text="Return" />
+        <Button x:Name="btnReturn" 
+                Text="Return" 
+                Clicked="OnReturnClicked"
+                HorizontalOptions="Center" 
+                VerticalOptions="End" 
+                Margin="0,20,0,20"
+                BackgroundColor="#007AFF"
+                TextColor="White"
+                CornerRadius="8"
+                Padding="20,10"/>
     </StackLayout>
 </ContentPage>

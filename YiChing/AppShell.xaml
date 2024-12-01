@@ -22,4 +22,9 @@
         ContentTemplate="{DataTemplate local:CvYarrowStalks}"
         Route="CvYarrowStalks" />
 
+    <ShellContent
+        Title="Configuration"
+        ContentTemplate="{DataTemplate local:CvConfig}"
+        Route="CvConfig" />
+
 </Shell>

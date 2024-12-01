@@ -21,7 +21,13 @@ public partial class CvHexagram : ContentPage
 
     #endregion
 
-    public CvHexagram(ILogger<CvHexagram> logger, ILoggerFactory loggerFactory, IConfiguration configuration, IAlertService alertService, INavigationService navigationService)
+    public CvHexagram(
+        ILogger<CvHexagram> logger, 
+        ILoggerFactory loggerFactory, 
+        IConfiguration configuration, 
+        IAlertService alertService, 
+        INavigationService navigationService,
+        MainPage mainPage)
     {
         _logger = logger;
         _loggerFactory = loggerFactory;
@@ -36,7 +42,9 @@ public partial class CvHexagram : ContentPage
             new JsonHandler(_loggerFactory.CreateLogger<JsonHandler>(), configuration), 
             _loggerFactory.CreateLogger<HexagramViewModel>(),
             _alertService,
-            navigationService);
+            navigationService,
+            mainPage,
+            configuration);
         BindingContext = _viewModel;
     }
 

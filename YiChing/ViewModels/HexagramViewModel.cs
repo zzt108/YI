@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 using YiChing.Models;
 using YiChing.Services;
 
@@ -12,6 +13,8 @@ namespace YiChing.ViewModels
         private readonly ILogger<HexagramViewModel> _logger;
         private readonly IAlertService _alertService;
         private readonly INavigationService _navigationService;
+        private readonly MainPage _mainPage;
+        private readonly IConfiguration _configuration;
 
         [ObservableProperty]
         private Editor? _rtQuestion;
@@ -76,12 +79,16 @@ namespace YiChing.ViewModels
             IJsonHandler jsonHandler, 
             ILogger<HexagramViewModel> logger,
             IAlertService alertService,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            MainPage mainPage,
+            IConfiguration configuration)
         {
             _jsonHandler = jsonHandler;
             _logger = logger;
             _alertService = alertService;
             _navigationService = navigationService;
+            _mainPage = mainPage;
+            _configuration = configuration;
             Settings = new AppSettings(); // Initialize with default settings
             _hexagramEntries = new List<HexagramEntry>();
             _question = string.Empty;
@@ -142,10 +149,36 @@ namespace YiChing.ViewModels
         }
 
         [RelayCommand]
-        private void ShowConfiguration()
+        private async Task ShowConfiguration()
         {
-            // TODO: Show configuration dialog
-            _logger.LogInformation("Configuration requested");
+            try 
+            {
+                // Attempt navigation to Configuration page
+                var configPage = Shell.Current.CurrentPage.Navigation.NavigationStack
+                    .OfType<CvConfig>()
+                    .FirstOrDefault();
+
+                if (configPage == null)
+                {
+                    // If no existing config page, create a new one and set dependencies
+                    configPage = new CvConfig();
+                    configPage.SetDependencies(_mainPage, _configuration);
+                }
+
+                await Shell.Current.GoToAsync("CvConfig");
+                
+                _logger.LogInformation("Successfully navigated to Configuration page");
+                System.Diagnostics.Debug.WriteLine("Successfully navigated to Configuration page");
+            }
+            catch (Exception ex)
+            {
+                string errorMsg = $"Error navigating to Configuration page: {ex.Message}";
+                _logger.LogError(ex, errorMsg);
+                System.Diagnostics.Debug.WriteLine(errorMsg);
+                
+                await _alertService.DisplayAlert("Navigation Error", 
+                    $"Could not open Configuration page: {ex.Message}", "OK");
+            }
         }
 
         [RelayCommand]

@@ -19,28 +19,57 @@ namespace YiChing
             return result;
         }
 
-        public MainPage(ILoggerFactory loggerFactory, IConfiguration config, IAlertService alertService, INavigationService navigationService)
+        public MainPage(
+            ILogger<MainPage> logger,
+            IConfiguration configuration,
+            IAlertService alertService,
+            INavigationService navigationService,
+            ILoggerFactory loggerFactory)
         {
+            InitializeComponent();
+
             // Null checks for critical dependencies
             ArgumentNullException.ThrowIfNull(loggerFactory, nameof(loggerFactory));
-            ArgumentNullException.ThrowIfNull(config, nameof(config));
+            ArgumentNullException.ThrowIfNull(configuration, nameof(configuration));
             ArgumentNullException.ThrowIfNull(alertService, nameof(alertService));
             ArgumentNullException.ThrowIfNull(navigationService, nameof(navigationService));
 
-            InitializeComponent();
-            Configuration = config;
+            Configuration = configuration;
 
             Version = typeof(App).Assembly.GetName().Version ?? new Version(0, 0, 0, 0);
 
+            // Create Hexagram page with this MainPage as a parameter
             CVHexagram = new CvHexagram(
-                loggerFactory.CreateLogger<CvHexagram>(), 
-                loggerFactory, 
-                Configuration, 
-                alertService, 
-                navigationService);
+                loggerFactory.CreateLogger<CvHexagram>(),
+                loggerFactory,
+                configuration,
+                alertService,
+                navigationService,
+                this);  // Pass this MainPage instance
+
             DisplayVersionText();
             CVYarrowStalks = new(this);
-            CVConfig = new CvConfig(this, Configuration);
+            CVConfig = new CvConfig(this, configuration, alertService);
+
+            // Log navigation details
+            System.Diagnostics.Debug.WriteLine($"MainPage Loaded");
+            System.Diagnostics.Debug.WriteLine($"MainPage Shell: {Shell.Current}");
+            System.Diagnostics.Debug.WriteLine($"MainPage Current Page: {Shell.Current?.CurrentPage?.GetType().Name}");
+
+            // Ensure routes are registered
+            try 
+            {
+                Routing.RegisterRoute("CvHexagram", typeof(CvHexagram));
+                Routing.RegisterRoute("CvConfig", typeof(CvConfig));
+                Routing.RegisterRoute("MainPage", typeof(MainPage));
+                Routing.RegisterRoute("CvYarrowStalks", typeof(CvYarrowStalks));
+
+                System.Diagnostics.Debug.WriteLine("Routes registered in MainPage constructor");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Route registration error in MainPage: {ex.Message}");
+            }
 
             // Navigate to Hexagram page after a short delay to ensure Shell is fully initialized
             Loaded += async (s, e) => 
@@ -73,6 +102,26 @@ namespace YiChing
             else
             {
                 System.Diagnostics.Debug.WriteLine("Could not set version text: CVHexagram or BindingContext is null");
+            }
+        }
+
+        // Add this method to navigate to Configuration page
+        public async Task NavigateToConfigPage()
+        {
+            try 
+            {
+                if (Shell.Current != null)
+                {
+                    await Shell.Current.GoToAsync("CvConfig");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("Shell.Current is null, cannot navigate to Configuration");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Navigation to Configuration error: {ex.Message}");
             }
         }
     }
