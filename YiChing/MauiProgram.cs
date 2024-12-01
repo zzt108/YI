@@ -27,8 +27,9 @@ namespace YiChing
             builder.Services.AddSingleton<INavigationService, NavigationService>();
             builder.Services.AddTransient<HexagramViewModel>();
             builder.Services.AddTransient<CvHexagram>();
-            builder.Services.AddTransient<CvYarrowStalks>();
             builder.Services.AddTransient<MainPage>();
+            builder.Services.AddTransient<CvYarrowStalks>(provider => 
+                new CvYarrowStalks(provider.GetRequiredService<MainPage>()));
 
             return builder.Build();
         }
