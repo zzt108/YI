@@ -137,6 +137,7 @@ namespace YiChing.ViewModels
             {
                 _logger.LogError(ex, "Error navigating to Yarrow Stalks page");
                 await _alertService.DisplayAlert("Error", "Could not open Yarrow Stalks page", "OK");
+                throw;
             }
         }
 

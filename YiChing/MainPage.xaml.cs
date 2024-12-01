@@ -32,8 +32,12 @@ namespace YiChing
 
             Version = typeof(App).Assembly.GetName().Version ?? new Version(0, 0, 0, 0);
 
-            var logger = loggerFactory.CreateLogger<HexagramViewModel>();
-            CVHexagram = new CvHexagram(loggerFactory, Configuration, alertService, navigationService);
+            CVHexagram = new CvHexagram(
+                loggerFactory.CreateLogger<CvHexagram>(), 
+                loggerFactory, 
+                Configuration, 
+                alertService, 
+                navigationService);
             DisplayVersionText();
             CVYarrowStalks = new(this);
             CVConfig = new CvConfig(this, Configuration);

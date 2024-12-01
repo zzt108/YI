@@ -6,6 +6,9 @@ public class NavigationService : INavigationService
     {
         if (Shell.Current != null)
         {
+            if (!route.StartsWith("/"))
+                route = $"///{route}";
+                
             await Shell.Current.GoToAsync(route);
         }
         else

@@ -2,7 +2,7 @@ using HexagramNS;
 
 namespace YiChing;
 
-public partial class CvYarrowStalks : ContentView
+public partial class CvYarrowStalks : ContentPage
 {
 
     const int YarrowClickTiming = 4;

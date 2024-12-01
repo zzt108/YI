@@ -12,6 +12,7 @@ public partial class CvHexagram : ContentView
 {
     #region Privates
 
+    private readonly ILogger<CvHexagram> _logger;
     private readonly ILoggerFactory _loggerFactory;
     private readonly IConfiguration configuration;
     private readonly IAlertService _alertService;
@@ -20,14 +21,15 @@ public partial class CvHexagram : ContentView
 
     #endregion
 
-    public CvHexagram(ILoggerFactory loggerFactory, IConfiguration configuration, IAlertService alertService, INavigationService navigationService)
+    public CvHexagram(ILogger<CvHexagram> logger, ILoggerFactory loggerFactory, IConfiguration configuration, IAlertService alertService, INavigationService navigationService)
     {
-        InitializeComponent();
-
-        this._loggerFactory = loggerFactory;
+        _logger = logger;
+        _loggerFactory = loggerFactory;
         this.configuration = configuration;
         this._alertService = alertService;
         this._navigationService = navigationService;
+
+        InitializeComponent();
 
         // Initialize ViewModel
         _viewModel = new HexagramViewModel(
@@ -166,17 +168,36 @@ public partial class CvHexagram : ContentView
     //     Clipboard.SetTextAsync(full);
     // }
 
-    // private void btnYarrow_Click(object sender, EventArgs e)
-    // {
-    //     // ResetIndeterminate();
-    //     _viewModel.NavigateToYarrowStalks(rtQuestion.Text);
-    // }
+    private async void btnYarrow_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            // Add a retry mechanism with a small delay
+            for (int i = 0; i < 3; i++)
+            {
+                try
+                {
+                    await _navigationService.NavigateToAsync("CvYarrowStalks");
+                    _logger.LogInformation("Navigating to Yarrow Stalks page");
+                    return; // Exit if navigation is successful
+                }
+                catch (InvalidOperationException)
+                {
+                    // Wait a short time before retrying
+                    await Task.Delay(100);
+                }
+            }
 
-    // private void btnClear_Click(object sender, EventArgs e)
-    // {
-    //     Question.Text = string.Empty;
-    //     _viewModel.SelectedHexagram = null;
-    // }
+            // If all attempts fail, show an alert
+            await _alertService.DisplayAlert("Error", "Could not open Yarrow Stalks page", "OK");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error navigating to Yarrow Stalks page");
+            await _alertService.DisplayAlert("Error", "An unexpected error occurred", "OK");
+            throw;
+        }
+    }
 
     private async void btnPerpAI_Click(object? sender, EventArgs e)
     {

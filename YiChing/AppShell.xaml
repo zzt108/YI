@@ -12,4 +12,9 @@
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
+    <ShellContent
+        Title="Yarrow Stalks"
+        ContentTemplate="{DataTemplate local:CvYarrowStalks}"
+        Route="CvYarrowStalks" />
+
 </Shell>

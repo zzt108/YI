@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 
 namespace YiChing
 {
@@ -8,9 +8,7 @@ namespace YiChing
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(page);
-
-            //MainPage = new AppShell();
+            MainPage = new AppShell();
         }
     }
 }
