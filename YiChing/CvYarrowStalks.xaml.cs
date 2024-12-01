@@ -8,10 +8,10 @@ public partial class CvYarrowStalks : ContentPage
     const int YarrowClickTiming = 4;
     const int StickCount = 49;
 
-    private int LineWidth = 4;
-    private int LineHeight = 400;
-    private int ButtonWidth = 2;
-    private int ButtonHeight = 400;
+    private const int LineWidth = 10;
+    private const int LineHeight = 400;
+    private const int ButtonWidth = 5;
+    private const int ButtonHeight = 400;
 
     private readonly Button[] lines = []; // instantiated dynamically later
     private readonly Button[] buttons = []; // instantiated dynamically later
@@ -70,19 +70,6 @@ public partial class CvYarrowStalks : ContentPage
 
     private void GenerateLinesAndButtons(int stickCount, Grid controls)
     {
-        var width = controls.Width;
-        var height = controls.Height;
-
-        // Use default values if width/height not yet set
-        if (width <= 0) width = 400;
-        if (height <= 0) height = 400;
-
-        LineHeight = (int)(height - 20);  // 20 for spacing
-        LineWidth = Math.Max(4, (int)((width - 20) / stickCount));
-
-        ButtonHeight = LineHeight;
-        ButtonWidth = Math.Max(2, (int)((width - 20) / stickCount));
-
         controls.Children.Clear();
         controls.RowDefinitions.Clear();
         controls.ColumnDefinitions.Clear();
@@ -100,9 +87,9 @@ public partial class CvYarrowStalks : ContentPage
                 HeightRequest = LineHeight,
                 BackgroundColor = Colors.ForestGreen,
             };
-#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
+#pragma warning disable CS8622 
             line.Clicked += Line_Click;
-#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
+#pragma warning restore CS8622
             lines[i] = line;
             line.Text = i.ToString();
             controls.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
@@ -120,17 +107,15 @@ public partial class CvYarrowStalks : ContentPage
                     BackgroundColor = Colors.AliceBlue,
                     Text = string.Empty
                 };
-#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
+#pragma warning disable CS8622
                 button.Clicked += Button_Click;
-#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
+#pragma warning restore CS8622
                 buttons[i] = button;
                 controls.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
                 controls.SetColumn(button, controls.ColumnDefinitions.Count - 1);
                 controls.Children.Add(button);
             }
         }
-
-        //ClientSize = new Size(x + Spacing, LineHeight + Spacing * 2);
     }
 
     private void Button_Click(object sender, EventArgs e)
