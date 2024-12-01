@@ -4,10 +4,16 @@ namespace YiChing;
 
 public partial class AppShell : Shell
 {
-    public AppShell()
+    public AppShell(MainPage mainPage)
     {
         InitializeComponent();
         RegisterRoutes();
+        
+        // Set the first page of the shell
+        CurrentItem = new ShellContent
+        {
+            Content = mainPage
+        };
     }
 
     private void RegisterRoutes()

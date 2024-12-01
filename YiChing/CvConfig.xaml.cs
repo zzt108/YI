@@ -2,7 +2,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace YiChing;
 
-public partial class CvConfig : ContentView
+public partial class CvConfig : ContentPage
 {
     private readonly IConfiguration _configuration;
     private readonly MainPage _mainPage;
@@ -23,16 +23,17 @@ public partial class CvConfig : ContentView
         BindingContext = this;
         myPicker.SelectedItem = Settings?.AnswerLanguage;
     }
+
+    private async void btnReturn_Click(object? sender, EventArgs e)
+    {
+        Settings?.SaveValues();
+        await Shell.Current.GoToAsync("/CvHexagram");
+    }
+
     private void LoadSettings()
     {
         //Defaults = _configuration?.GetRequiredSection("Settings")?.Get<Settings>();
         Settings = new Settings(Defaults);
-    }
-
-    private void btnReturn_Click(object? sender, EventArgs e)
-    {
-        Settings?.SaveValues();
-        _mainPage.Content = _mainPage.CVHexagram;
     }
 
     private void Picker_SelectedIndexChanged(object sender, EventArgs e)

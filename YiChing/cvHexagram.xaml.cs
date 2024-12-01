@@ -8,7 +8,7 @@ using HG = HexagramNS;
 
 namespace YiChing;
 
-public partial class CvHexagram : ContentView
+public partial class CvHexagram : ContentPage
 {
     #region Privates
 
@@ -216,7 +216,7 @@ public partial class CvHexagram : ContentView
         }
     }
 
-    public string Title = "Yi Ching for AI by Gerzson";
+    public new string Title { get; set; } = "Yi Ching for AI by Gerzson";
 
     protected CheckBox[,] CheckBoxes = new CheckBox[HG.Hexagram.RowCount, HG.Hexagram.ColCount];
 

@@ -53,9 +53,10 @@ public partial class CvYarrowStalks : ContentPage
         GenerateLinesAndButtons(helper.RemainingStalkCount, gridYarrow);
     }
 
-    private void btnReturn_Click(object? sender, EventArgs e)
+    private async void btnReturn_Click(object? sender, EventArgs e)
     {
-        ReturnToHexagramPage();
+        mainPage.CVHexagram.ViewModel.Question = rtQuestion.Text;
+        await Shell.Current.GoToAsync("/CvHexagram");
     }
 
     private void GenerateLinesAndButtons(int stickCount, Grid controls)
@@ -173,10 +174,10 @@ public partial class CvYarrowStalks : ContentPage
         GenerateLinesAndButtons(helper.RemainingStalkCount, gridYarrow);
     }
 
-    private void ReturnToHexagramPage()
+    private async void ReturnToHexagramPage()
     {
         mainPage.CVHexagram.ViewModel.Question = rtQuestion.Text;
-        mainPage.Content = mainPage.CVHexagram;
+        await Shell.Current.GoToAsync("/CvHexagram");
     }
 
     private void Line_Click(object sender, EventArgs e)

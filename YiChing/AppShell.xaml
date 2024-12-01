@@ -13,6 +13,11 @@
         Route="MainPage" />
 
     <ShellContent
+        Title="Hexagram"
+        ContentTemplate="{DataTemplate local:CvHexagram}"
+        Route="CvHexagram" />
+
+    <ShellContent
         Title="Yarrow Stalks"
         ContentTemplate="{DataTemplate local:CvYarrowStalks}"
         Route="CvYarrowStalks" />

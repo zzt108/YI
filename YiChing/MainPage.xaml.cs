@@ -42,14 +42,38 @@ namespace YiChing
             CVYarrowStalks = new(this);
             CVConfig = new CvConfig(this, Configuration);
 
-            // Set the content of the page
-            Content = CVHexagram ?? throw new InvalidOperationException("CVHexagram cannot be null");
-            //Content = CVConfig;
+            // Navigate to Hexagram page after a short delay to ensure Shell is fully initialized
+            Loaded += async (s, e) => 
+            {
+                try 
+                {
+                    await Task.Delay(500); // Small delay to ensure Shell is ready
+                    if (Shell.Current != null)
+                    {
+                        await Shell.Current.GoToAsync("CvHexagram");
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("Shell.Current is null, cannot navigate");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Navigation error: {ex.Message}");
+                }
+            };
         }
 
         public void DisplayVersionText()
         {
-            ((HexagramViewModel)CVHexagram.BindingContext).Answer = "Version: " + Version?.ToString() + "\n\nWhat is the answer to the ultimate question of\nlife, the universe, and everything?";
+            if (CVHexagram?.BindingContext is HexagramViewModel viewModel)
+            {
+                viewModel.Answer = "Version: " + Version?.ToString() + "\n\nWhat is the answer to the ultimate question of\nlife, the universe, and everything?";
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("Could not set version text: CVHexagram or BindingContext is null");
+            }
         }
     }
 }
