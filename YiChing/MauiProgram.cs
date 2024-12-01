@@ -1,13 +1,13 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging.Console;
 using YiChing.ViewModels;
+using YiChing.Services;
 
 namespace YiChing
 {
     public static class MauiProgram
     {
-        // public static IServiceProvider Services { get; private set; }
-
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
@@ -21,15 +21,12 @@ namespace YiChing
 
             // Register services
             builder.Services.AddSingleton<IJsonHandler, JsonHandler>();
+            builder.Logging.AddConsole();
+            builder.Logging.SetMinimumLevel(LogLevel.Debug);
+            builder.Services.AddSingleton<IAlertService, AlertService>();
             builder.Services.AddTransient<HexagramViewModel>();
             builder.Services.AddTransient<CvHexagram>();
-
-            // Add logging
-            builder.Services.AddLogging(logging =>
-            {
-                logging.AddDebug();
-                logging.SetMinimumLevel(LogLevel.Debug);
-            });
+            builder.Services.AddTransient<MainPage>();
 
             return builder.Build();
         }

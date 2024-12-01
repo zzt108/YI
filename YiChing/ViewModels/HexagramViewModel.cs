@@ -3,6 +3,10 @@ using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Controls;
+using System.Windows;
+using YiChing.Models;
+using YiChing.Services;
 
 namespace YiChing.ViewModels
 {
@@ -10,12 +14,13 @@ namespace YiChing.ViewModels
     {
         private readonly IJsonHandler _jsonHandler;
         private readonly ILogger<HexagramViewModel> _logger;
+        private readonly IAlertService _alertService;
 
         [ObservableProperty]
-        private string question;
+        private Editor rtQuestion;
 
         [ObservableProperty]
-        private string answer;
+        private Editor rtAnswer;
 
         [ObservableProperty]
         private List<HexagramEntry> hexagramEntries;
@@ -23,10 +28,62 @@ namespace YiChing.ViewModels
         [ObservableProperty]
         private HexagramEntry selectedHexagram;
 
-        public HexagramViewModel(IJsonHandler jsonHandler, ILogger<HexagramViewModel> logger)
+        private string _question;
+        private string _answer;
+
+        public string Question 
+        { 
+            get => _question; 
+            set
+            {
+                if (SetProperty(ref _question, value))
+                {
+                    OnQuestionChanged();
+                }
+            }
+        }
+
+        public string Answer
+        {
+            get => _answer;
+            set => SetProperty(ref _answer, value);
+        }
+
+        private void OnQuestionChanged()
+        {
+            if (RtQuestion != null && RtQuestion.Text != Question)
+            {
+                RtQuestion.Text = Question;
+            }
+        }
+
+        partial void OnRtQuestionChanged(Editor value)
+        {
+            if (value != null)
+            {
+                value.TextChanged += (s, e) => Question = e.NewTextValue;
+            }
+        }
+
+        partial void OnRtAnswerChanged(Editor value)
+        {
+            if (value != null)
+            {
+                value.TextChanged += (s, e) => Answer = e.NewTextValue;
+            }
+        }
+
+        public AppSettings Settings { get; private set; }
+
+        public HexagramViewModel(
+            IJsonHandler jsonHandler, 
+            ILogger<HexagramViewModel> logger,
+            IAlertService alertService)
         {
             _jsonHandler = jsonHandler;
             _logger = logger;
+            _alertService = alertService;
+            Settings = new AppSettings(); // Initialize with default settings
             LoadHexagrams();
         }
 
@@ -34,8 +91,8 @@ namespace YiChing.ViewModels
         {
             if (value != null)
             {
-                Question = value.Question;
-                Answer = value.Answer;
+                RtQuestion.Text = value.Question;
+                RtAnswer.Text = value.Answer;
             }
         }
 
@@ -55,8 +112,8 @@ namespace YiChing.ViewModels
         [RelayCommand]
         private void Clear()
         {
-            Question = string.Empty;
-            Answer = string.Empty;
+            RtQuestion.Text = string.Empty;
+            RtAnswer.Text = string.Empty;
             SelectedHexagram = null;
         }
 
@@ -79,7 +136,7 @@ namespace YiChing.ViewModels
         {
             try
             {
-                await Application.Current.Clipboard.SetTextAsync(GetFullQuestion());
+                await Clipboard.SetTextAsync(GetFullQuestion());
                 _logger.LogInformation("Text copied to clipboard");
             }
             catch (Exception ex)
@@ -88,8 +145,13 @@ namespace YiChing.ViewModels
             }
         }
 
+        public async Task ShowAlert(string title, string message, string cancel)
+        {
+            await _alertService.DisplayAlert(title, message, cancel);
+        }
+
         private string GetFullQuestion() =>
-            $"{DateTime.Now:yyyy-MM-dd}\nQuestion to I Ching:\n {Question}\n" +
-            $"\nI Ching answered:\n{Answer}";
+            $"{DateTime.Now:yyyy-MM-dd}\nQuestion to I Ching:\n {RtQuestion.Text}\n" +
+            $"\nI Ching answered:\n{RtAnswer.Text}";
     }
 }

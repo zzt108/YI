@@ -175,7 +175,7 @@ public partial class CvYarrowStalks : ContentView
 
     private void ReturnToHexagramPage()
     {
-        mainPage.CVHexagram.Question.Text = rtQuestion.Text;
+        mainPage.CVHexagram.ViewModel.Question = rtQuestion.Text;
         mainPage.Content = mainPage.CVHexagram;
     }
 

@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using YiChing.Services;
+using YiChing.ViewModels;
 
 namespace YiChing
 {
@@ -18,14 +21,14 @@ namespace YiChing
             return result;
         }
 
-        public MainPage(IConfiguration config)
+        public MainPage(IConfiguration config, ILoggerFactory loggerFactory, IAlertService alertService)
         {
             InitializeComponent();
             configuration = config;
 
             version = typeof(App).Assembly.GetName().Version;
 
-            CVHexagram = new(this);
+            CVHexagram = new(loggerFactory, config, alertService);
             DisplayVersionText();
             CVYarrowStalks = new(this);
             CVConfig = new CvConfig(this, config);
@@ -37,7 +40,7 @@ namespace YiChing
 
         public void DisplayVersionText()
         {
-            CVHexagram.Answer.Text = "Version: " + version?.ToString() + "\n\nWhat is the answer to the ultimate question of\nlife, the universe, and everything?";
+            ((HexagramViewModel)CVHexagram.BindingContext).Answer = "Version: " + version?.ToString() + "\n\nWhat is the answer to the ultimate question of\nlife, the universe, and everything?";
         }
     }
 }

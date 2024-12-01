@@ -1,8 +1,9 @@
-using AndroidX.Lifecycle;
+// using AndroidX.Lifecycle;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Web;
 using YiChing.ViewModels;
+using YiChing.Services;
 using HG = HexagramNS;
 
 namespace YiChing;
@@ -11,10 +12,28 @@ public partial class CvHexagram : ContentView
 {
     #region Privates
 
-    private ILoggerFactory loggerFactory = LoggerFactory.Create(static builder => builder.AddDebug());
-    private ILogger<JsonHandler> logger;
-    private IConfiguration configuration = new ConfigurationBuilder().Build();
-    private readonly HexagramViewModel _viewModel;
+    private HexagramViewModel _viewModel;
+    private IConfiguration configuration;
+    private readonly ILoggerFactory _loggerFactory;
+    private readonly IAlertService _alertService;
+
+    #endregion
+
+    public CvHexagram(ILoggerFactory loggerFactory, IConfiguration configuration, IAlertService alertService)
+    {
+        InitializeComponent();
+
+        this._loggerFactory = loggerFactory;
+        this.configuration = configuration;
+        this._alertService = alertService;
+
+        // Initialize ViewModel
+        _viewModel = new HexagramViewModel(
+            new JsonHandler(_loggerFactory.CreateLogger<JsonHandler>(), configuration), 
+            _loggerFactory.CreateLogger<HexagramViewModel>(),
+            _alertService);
+        BindingContext = _viewModel;
+    }
 
     private void DrawHexagram()
     {
@@ -62,129 +81,37 @@ public partial class CvHexagram : ContentView
 
     private string GetFullQuestion()
     {
-        return $"{DateTime.Now:yyyy-MM-dd}\nQuestion to I Ching:\n {rtQuestion.Text}\n"
-            + $"\nI Ching answered:\n{rtAnswer.Text}\nWould you please interpret?\n\nPlease translate to {_viewModel.Settings.AnswerLanguage}.";
-    }
-
-    #endregion
-
-    #region Constructor
-    public CvHexagram(HexagramViewModel viewModel)
-    {
-        InitializeComponent();
-
-        _viewModel = viewModel;
-        BindingContext = _viewModel;
-
-        loggerFactory = LoggerFactory.Create(static builder => builder.AddDebug());
-        logger = loggerFactory.CreateLogger<JsonHandler>();
-        configuration = new ConfigurationBuilder().Build();
-
-        // Add event handlers
-#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
-        btnCopy.Clicked += btnCopy_Click;
-#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
-#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
-        btnClear.Clicked += btnClear_Click;
-#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
-#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
-        btnYarrow.Clicked += btnYarrow_Click;
-#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
-        btnConfig.Clicked += btnConfig_Click;
-
-        rtQuestion.TextChanged += (sender, e) => { Question.Text = e.NewTextValue; };
-
-        DrawHexagram();
-    }
-    #endregion
-
-    private void LoadHexagrams()
-    {
-        var jsonHandler = new JsonHandler(logger, configuration);
-        // var jsonHandler = new JsonHandler();
-
-        // Assuming you have a method to read the JSON data
-        var hexagramEntries = jsonHandler.ReadHexagramEntriesFromJson(); // Implement this method based on your JSON structure
-
-        foreach (var entry in hexagramEntries)
-        {
-            hexagramPicker.Items.Add($"{entry.DisplayText}"); // Customize the display text as needed
-        }
-    }
-
-    private void OnHexagramSelected(object sender, EventArgs e)
-    {
-        if (hexagramPicker.SelectedItem != null)
-        {
-
-            var selectedHexagram = hexagramPicker.SelectedItem.ToString();
-            // Extract corresponding hexagram details, assuming id can be parsed from selectedItem
-            // var hexagramId = int.Parse(new string(selectedHexagram.Where(char.IsDigit).ToArray()));
-            var jsonHandler = new JsonHandler(logger, configuration);
-            var hexagramDetails = jsonHandler.GetHexagramDetails(selectedHexagram);
-
-            rtAnswer.Text = hexagramDetails?.Answer; // Display hexagram description
-            rtQuestion.Text = hexagramDetails?.Question;
-        }
-    }
-
-    // TODO encapsulate rtQuestion.Text into property
-    public Editor Question
-    {
-        get
-        {
-            return rtQuestion;
-        }
-        set
-        {
-            rtQuestion = value;
-        }
-    }
-
-    public Editor Answer { get => rtAnswer; set => rtAnswer = value; }
-
-    public string Title = "Yi Ching for AI by Gerzson";
-
-    protected CheckBox[,] CheckBoxes = new CheckBox[HG.Hexagram.RowCount, HG.Hexagram.ColCount];
-
-    public void FillCheckBoxes(HG.Values values)
-    {
-        values.UpdateValues<CheckBox>(CheckBoxes, (row, col, value) =>
-        {
-            CheckBox checkBox = CheckBoxes[row, col];
-
-            checkBox.IsChecked = value;
-            return checkBox;
-        });
+        return $"{DateTime.Now:yyyy-MM-dd}\nQuestion to I Ching:\n {_viewModel.RtQuestion.Text}\n"
+            + $"\nI Ching answered:\n{_viewModel.RtAnswer.Text}\nWould you please interpret?\n\nPlease translate to {_viewModel.Settings.AnswerLanguage}.";
     }
 
     private void EvalAndSaveHexagram()
     {
-        string question = rtQuestion.Text;
+        string question = _viewModel.RtQuestion.Text;
         var hexagram = new HG.Hexagram(new HG.Values().InitValues<CheckBox>(CheckBoxes, (checkBox, row, col) => checkBox.IsChecked));
 
         // Example logic to retrieve the main hexagram.
         int mainHexagram = hexagram.Main;
 
-        rtAnswer.Text = $"\nMain Hexagram {mainHexagram}\n\n";
+        _viewModel.RtAnswer.Text = $"\nMain Hexagram {mainHexagram}\n\n";
 
         if (hexagram.ChangingLines.Any())
         {
-            rtAnswer.Text += "Changing lines: ";
+            _viewModel.RtAnswer.Text += "Changing lines: ";
             foreach (int line in hexagram.ChangingLines)
             {
-                rtAnswer.Text += line + ", ";
+                _viewModel.RtAnswer.Text += line + ", ";
             }
-            rtAnswer.Text += $"\n\nChanging Hexagram {hexagram.Changed}\n";
+            _viewModel.RtAnswer.Text += $"\n\nChanging Hexagram {hexagram.Changed}\n";
         }
         else
         {
-            rtAnswer.Text += "\n No changing lines ";
+            _viewModel.RtAnswer.Text += "\n No changing lines ";
         }
 
         // Save the question and hexagram result
-        var jsonHandler = new JsonHandler(logger, configuration);
-        jsonHandler.SaveEntry(new HexagramEntry(question, rtAnswer.Text));
+        var jsonHandler = new JsonHandler(_loggerFactory.CreateLogger<JsonHandler>(), configuration);
+        jsonHandler.SaveEntry(new HexagramEntry(question, _viewModel.RtAnswer.Text));
 
         // Refresh the hexagram picker with the updated entries
         RefreshHexagramPicker();
@@ -192,45 +119,48 @@ public partial class CvHexagram : ContentView
 
     private void RefreshHexagramPicker()
     {
-        // Clear existing items
-        hexagramPicker.Items.Clear();
-        // Reload hexagrams from JSON
-        LoadHexagrams();
+        // Instead of clearing a non-existent hexagramPicker, 
+        // reload hexagram entries in the ViewModel
+        _viewModel.HexagramEntries = LoadHexagrams();
     }
+
+    private List<HexagramEntry> LoadHexagrams()
+    {
+        var jsonHandler = new JsonHandler(_loggerFactory.CreateLogger<JsonHandler>(), configuration);
+        return jsonHandler.ReadHexagramEntriesFromJson();
+    }
+
     #region EventHandlers
 
-    private void btnConfig_Click(object? sender, EventArgs e)
-    {
-        _viewModel.NavigateToConfig();
-    }
+    // private void btnConfig_Click(object? sender, EventArgs e)
+    // {
+    //     _viewModel.NavigateToConfig();
+    // }
 
-    private void btnEval_Click(object? sender, EventArgs e)
-    {
-        EvalAndSaveHexagram();
-    }
+    // private void btnEval_Click(object? sender, EventArgs e)
+    // {
+    //     EvalAndSaveHexagram();
+    // }
 
-    private void btnCopy_Click(object sender, EventArgs e)
-    {
-        EvalAndSaveHexagram();
-        string full = GetFullQuestion();
-        Clipboard.SetTextAsync(full);
-    }
+    // private void btnCopy_Click(object sender, EventArgs e)
+    // {
+    //     EvalAndSaveHexagram();
+    //     string full = GetFullQuestion();
+    //     Clipboard.SetTextAsync(full);
+    // }
 
-    private void btnYarrow_Click(object sender, EventArgs e)
-    {
-        // ResetIndeterminate();
-        _viewModel.NavigateToYarrowStalks(rtQuestion.Text);
-    }
+    // private void btnYarrow_Click(object sender, EventArgs e)
+    // {
+    //     // ResetIndeterminate();
+    //     _viewModel.NavigateToYarrowStalks(rtQuestion.Text);
+    // }
 
-    private void btnClear_Click(object sender, EventArgs e)
-    {
-        //var task = _mainPage.DisplayAlert("Are you sure?", "Clear question and answer?", "Yes", "No");
-        //task.Wait();
-        //if (!task.Result)
-        //    return;
-        rtQuestion.Text = string.Empty;
-        ResetIndeterminate();
-    }
+    // private void btnClear_Click(object sender, EventArgs e)
+    // {
+    //     Question.Text = string.Empty;
+    //     _viewModel.SelectedHexagram = null;
+    // }
+
     private async void btnPerpAI_Click(object? sender, EventArgs e)
     {
         try
@@ -243,9 +173,27 @@ public partial class CvHexagram : ContentView
         }
         catch (Exception ex)
         {
-            // Handle potential exceptions (e.g., no browser installed)
-            await _viewModel.DisplayAlert("Error", "Failed to open web page: " + ex.Message, "OK");
+            // Use the new ShowAlert method from ViewModel
+            await _viewModel.ShowAlert("Error", "Failed to open web page: " + ex.Message, "OK");
         }
     }
-    #endregion
+
+    public string Title = "Yi Ching for AI by Gerzson";
+
+    protected CheckBox[,] CheckBoxes = new CheckBox[HG.Hexagram.RowCount, HG.Hexagram.ColCount];
+
+    public HexagramViewModel ViewModel => _viewModel;
+
+    public void FillCheckBoxes(HG.Values values)
+    {
+        values.UpdateValues<CheckBox>(CheckBoxes, (row, col, value) =>
+        {
+            CheckBox checkBox = CheckBoxes[row, col];
+
+            checkBox.IsChecked = value;
+            return checkBox;
+        });
+    }
 }
+
+#endregion
