@@ -46,6 +46,20 @@ public partial class CvHexagram : ContentPage
             mainPage,
             configuration);
         BindingContext = _viewModel;
+
+        // Dynamically create CheckBoxes
+        for (int row = 0; row < HG.Hexagram.RowCount; row++)
+        {
+            for (int col = 0; col < HG.Hexagram.ColCount; col++)
+            {
+                var checkBox = new CheckBox
+                {
+                    IsChecked = false
+                };
+                gridHexagram.Add(checkBox, col + 1, row + 1);
+                CheckBoxes[row, col] = checkBox;
+            }
+        }
     }
 
     private void DrawHexagram()

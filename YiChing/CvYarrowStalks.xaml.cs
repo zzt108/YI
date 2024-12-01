@@ -154,7 +154,11 @@ public partial class CvYarrowStalks : ContentPage
         if (clickCount < MaxDivisionCount)
         {
             clickCount++;
+            
+            // Update progress label
+            lblProgress.Text = $"Yarrow Stalks: {clickCount}/18 clicks";
             mainPage.Title = $"{clickCount}/{MaxDivisionCount}";
+
             if (clickCount % 3 == 0)
             {
                 hexagramRow--;

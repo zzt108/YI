@@ -9,6 +9,11 @@
             <Button x:Name="btnReturn" Text="Return"></Button>
         </StackLayout>
 
+        <Label x:Name="lblProgress" 
+               HorizontalOptions="Center" 
+               FontSize="Medium" 
+               Text="Yarrow Stalks: 0/18 clicks" />
+
         <StackLayout x:Name="middleLayout" Orientation="Vertical" Margin="10,0,10,0">
             <Grid x:Name="gridYarrow">
     
