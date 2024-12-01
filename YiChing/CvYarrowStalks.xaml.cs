@@ -147,8 +147,20 @@ public partial class CvYarrowStalks : ContentPage
             if (clickCount % 3 == 0)
             {
                 hexagramRow--;
-                values.SetHexagramRow(hexagramRow, YarrowStalksHelper.GetHexagramLine(piles));
+                
+                // Diagnostic logging
+                int lineValue = YarrowStalksHelper.GetHexagramLine(piles);
+                System.Diagnostics.Debug.WriteLine($"Generating Line - Row: {hexagramRow}, Line Value: {lineValue}");
+                System.Console.WriteLine($"Generating Line - Row: {hexagramRow}, Line Value: {lineValue}");
+
+                values.SetHexagramRow(hexagramRow, lineValue);
+                
                 mainPage.CVHexagram.FillCheckBoxes(values);
+                
+                // Additional logging after filling checkboxes
+                System.Diagnostics.Debug.WriteLine($"Filled Checkboxes for Row: {hexagramRow}");
+                System.Console.WriteLine($"Filled Checkboxes for Row: {hexagramRow}");
+
                 helper.Reset();
             }
             if (clickCount == MaxDivisionCount)

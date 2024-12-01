@@ -1,6 +1,6 @@
-// using AndroidX.Lifecycle;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using System.Web;
 using YiChing.ViewModels;
 using YiChing.Services;
@@ -18,6 +18,8 @@ public partial class CvHexagram : ContentPage
     private readonly IAlertService _alertService;
     private readonly INavigationService _navigationService;
     private readonly HexagramViewModel _viewModel;
+    private HG.Values _values;
+    private CheckBox[,] CheckBoxes = new CheckBox[HG.Hexagram.RowCount, HG.Hexagram.ColCount];
 
     #endregion
 
@@ -34,6 +36,9 @@ public partial class CvHexagram : ContentPage
         this.configuration = configuration;
         this._alertService = alertService;
         this._navigationService = navigationService;
+
+        // Initialize Values
+        _values = new HG.Values();
 
         InitializeComponent();
 
@@ -57,6 +62,7 @@ public partial class CvHexagram : ContentPage
                     IsChecked = false
                 };
                 gridHexagram.Add(checkBox, col + 1, row + 1);
+                _values.SetValue(row, col, false);
                 CheckBoxes[row, col] = checkBox;
             }
         }
@@ -64,10 +70,6 @@ public partial class CvHexagram : ContentPage
 
     private void DrawHexagram()
     {
-        // Set the initial location for the checkboxes
-        //int x = HorStart;
-        //int y = VerStart;
-
         // Add CheckBoxes to the Panel in a 6x3 arrangement
         for (int row = 0; row < HG.Hexagram.RowCount; row++)
         {
@@ -82,39 +84,107 @@ public partial class CvHexagram : ContentPage
 
             for (int col = 0; col < HG.Hexagram.ColCount; col++)
             {
-                CheckBox checkBox = new CheckBox();
-                CheckBoxes[row, col] = checkBox;
+                CheckBox checkBox = CheckBoxes[row, col];
                 checkBox.WidthRequest = 40;
 
-                // checkBox.Location = new Point(x, y);
                 gridHexagram.Add(checkBox, col + 1, row + 1);
-                //x += HorDist; // Adjust the horizontal spacing between checkboxes
             }
         }
     }
 
     private void ResetIndeterminate()
     {
-        new HG.Values().UpdateValues(
-            CheckBoxes,
-            (row, col, value) =>
+        for (int row = 0; row < HG.Hexagram.RowCount; row++)
+        {
+            for (int col = 0; col < HG.Hexagram.ColCount; col++)
             {
-
                 CheckBox checkBox = CheckBoxes[row, col];
                 checkBox.IsChecked = false;
-                return checkBox;
-            });
+                _values.SetValue(row, col, false);
+            }
+        }
     }
 
     private string GetFullQuestion()
     {
-        return $"{DateTime.Now:yyyy-MM-dd}\nQuestion to I Ching:\n {_viewModel.RtQuestion?.Text ?? string.Empty}\n"
-            + $"\nI Ching answered:\n{_viewModel.RtAnswer?.Text ?? string.Empty}\nWould you please interpret?\n\nPlease translate to {_viewModel.Settings.AnswerLanguage}.";
+        // Null checks for _viewModel and its properties
+        if (_viewModel == null)
+        {
+            _logger?.LogWarning("ViewModel is null in GetFullQuestion");
+            return string.Empty;
+        }
+
+        // Initialize the values based on CheckBox states
+        for (int row = 0; row < HG.Hexagram.RowCount; row++)
+        {
+            for (int col = 0; col < HG.Hexagram.ColCount; col++)
+            {
+                _values.SetValue(row, col, CheckBoxes[row, col].IsChecked);
+            }
+        }
+
+        string question = _viewModel.RtQuestion?.Text ?? string.Empty;
+        var hexagram = new HG.Hexagram(_values);
+
+        // Example logic to retrieve the main hexagram.
+        int mainHexagram = hexagram.Main;
+
+        // Null checks for RtAnswer
+        if (_viewModel.RtAnswer == null)
+        {
+            _logger?.LogWarning("RtAnswer is null in GetFullQuestion");
+            return string.Empty;
+        }
+
+        _viewModel.RtAnswer.Text = $"\nMain Hexagram {mainHexagram}\n\n";
+
+        if (hexagram.ChangingLines?.Any() == true)
+        {
+            _viewModel.RtAnswer.Text += "Changing lines: ";
+            foreach (int line in hexagram.ChangingLines)
+            {
+                _viewModel.RtAnswer.Text += line + ", ";
+            }
+            _viewModel.RtAnswer.Text += $"\n\nChanging Hexagram {hexagram.Changed}\n";
+        }
+        else
+        {
+            _viewModel.RtAnswer.Text += "\n No changing lines ";
+        }
+
+        // Null checks for JsonHandler dependencies
+        var jsonHandler = new JsonHandler(
+            _loggerFactory?.CreateLogger<JsonHandler>() ?? NullLogger<JsonHandler>.Instance, 
+            configuration ?? new ConfigurationBuilder().Build()
+        );
+
+        // Null-safe saving of entry
+        try 
+        {
+            jsonHandler.SaveEntry(new HexagramEntry(question, _viewModel.RtAnswer.Text));
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogError(ex, "Error saving hexagram entry");
+        }
+
+        // Null-safe refresh of hexagram picker
+        try 
+        {
+            RefreshHexagramPicker();
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogError(ex, "Error refreshing hexagram picker");
+        }
+
+        return $"{DateTime.Now:yyyy-MM-dd}\nQuestion to I Ching:\n {question}\n"
+            + $"\nI Ching answered:\n{_viewModel.RtAnswer?.Text ?? string.Empty}\nWould you please interpret?\n\nPlease translate to {_viewModel.Settings?.AnswerLanguage ?? "default language"}.";
     }
 
     private void EvalAndSaveHexagram()
     {
-        // Add null checks for _viewModel and its properties
+        // Null checks for _viewModel and its properties
         if (_viewModel?.RtQuestion == null)
         {
             // Optionally log or handle the case where RtQuestion is null
@@ -122,12 +192,12 @@ public partial class CvHexagram : ContentPage
         }
 
         string question = _viewModel.RtQuestion.Text;
-        var hexagram = new HG.Hexagram(new HG.Values().InitValues<CheckBox>(CheckBoxes, (checkBox, row, col) => checkBox.IsChecked));
+        var hexagram = new HG.Hexagram(_values);
 
         // Example logic to retrieve the main hexagram.
         int mainHexagram = hexagram.Main;
 
-        // Add null check for RtAnswer before accessing
+        // Null checks for RtAnswer
         if (_viewModel?.RtAnswer == null)
         {
             // Optionally log or handle the case where RtAnswer is null
@@ -150,12 +220,31 @@ public partial class CvHexagram : ContentPage
             _viewModel.RtAnswer.Text += "\n No changing lines ";
         }
 
-        // Save the question and hexagram result
-        var jsonHandler = new JsonHandler(_loggerFactory.CreateLogger<JsonHandler>(), configuration);
-        jsonHandler.SaveEntry(new HexagramEntry(question, _viewModel.RtAnswer.Text));
+        // Null checks for JsonHandler dependencies
+        var jsonHandler = new JsonHandler(
+            _loggerFactory?.CreateLogger<JsonHandler>() ?? NullLogger<JsonHandler>.Instance, 
+            configuration ?? new ConfigurationBuilder().Build()
+        );
 
-        // Refresh the hexagram picker with the updated entries
-        RefreshHexagramPicker();
+        // Null-safe saving of entry
+        try 
+        {
+            jsonHandler.SaveEntry(new HexagramEntry(question, _viewModel.RtAnswer.Text));
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogError(ex, "Error saving hexagram entry");
+        }
+
+        // Null-safe refresh of hexagram picker
+        try 
+        {
+            RefreshHexagramPicker();
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogError(ex, "Error refreshing hexagram picker");
+        }
     }
 
     private void RefreshHexagramPicker()
@@ -240,18 +329,29 @@ public partial class CvHexagram : ContentPage
 
     public new string Title { get; set; } = "Yi Ching for AI by Gerzson";
 
-    protected CheckBox[,] CheckBoxes = new CheckBox[HG.Hexagram.RowCount, HG.Hexagram.ColCount];
-
     public HexagramViewModel ViewModel => _viewModel;
 
     public void FillCheckBoxes(HG.Values values)
     {
-        values.UpdateValues<CheckBox>(CheckBoxes, (row, col, value) =>
+        MainThread.BeginInvokeOnMainThread(() =>
         {
-            CheckBox checkBox = CheckBoxes[row, col];
+            System.Diagnostics.Debug.WriteLine("FillCheckBoxes called on Main Thread");
+            System.Console.WriteLine("FillCheckBoxes called on Main Thread");
 
-            checkBox.IsChecked = value;
-            return checkBox;
+            for (int row = 0; row < HG.Hexagram.RowCount; row++)
+            {
+                for (int col = 0; col < HG.Hexagram.ColCount; col++)
+                {
+                    CheckBox checkBox = CheckBoxes[row, col];
+                    bool value = values.GetValue(row, col);
+
+                    // More diagnostic logging
+                    System.Diagnostics.Debug.WriteLine($"Setting CheckBox - Row: {row}, Col: {col}, Value: {value}");
+                    System.Console.WriteLine($"Setting CheckBox - Row: {row}, Col: {col}, Value: {value}");
+
+                    checkBox.IsChecked = value;
+                }
+            }
         });
     }
 }
