@@ -39,9 +39,13 @@ public partial class CvConfig : ContentView
     {
         var picker = (Picker)sender;
         var selectedItem = picker.SelectedItem;
-        txtAnswerLanguage.Text = selectedItem?.ToString();
-        Settings.AnswerLanguage = selectedItem?.ToString();
-
+        txtAnswerLanguage.Text = selectedItem?.ToString() ?? string.Empty;
+        
+        // Add null check for Settings
+        if (Settings != null)
+        {
+            Settings.AnswerLanguage = selectedItem?.ToString() ?? string.Empty;
+        }
         //// Perform actions based on the selected item
         //if (selectedItem != null)
         //{

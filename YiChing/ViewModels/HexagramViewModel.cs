@@ -1,10 +1,6 @@
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Controls;
-using System.Windows;
 using YiChing.Models;
 using YiChing.Services;
 
@@ -17,23 +13,23 @@ namespace YiChing.ViewModels
         private readonly IAlertService _alertService;
 
         [ObservableProperty]
-        private Editor rtQuestion;
+        private Editor? _rtQuestion;
 
         [ObservableProperty]
-        private Editor rtAnswer;
+        private Editor? _rtAnswer;
 
         [ObservableProperty]
-        private List<HexagramEntry> hexagramEntries;
+        private List<HexagramEntry>? _hexagramEntries;
 
         [ObservableProperty]
-        private HexagramEntry selectedHexagram;
+        private HexagramEntry? _selectedHexagram;
 
-        private string _question;
-        private string _answer;
+        private string? _question;
+        private string? _answer;
 
         public string Question 
         { 
-            get => _question; 
+            get => _question ?? string.Empty; 
             set
             {
                 if (SetProperty(ref _question, value))
@@ -45,7 +41,7 @@ namespace YiChing.ViewModels
 
         public string Answer
         {
-            get => _answer;
+            get => _answer ?? string.Empty;
             set => SetProperty(ref _answer, value);
         }
 
@@ -57,7 +53,7 @@ namespace YiChing.ViewModels
             }
         }
 
-        partial void OnRtQuestionChanged(Editor value)
+        partial void OnRtQuestionChanged(Editor? value)
         {
             if (value != null)
             {
@@ -65,7 +61,7 @@ namespace YiChing.ViewModels
             }
         }
 
-        partial void OnRtAnswerChanged(Editor value)
+        partial void OnRtAnswerChanged(Editor? value)
         {
             if (value != null)
             {
@@ -84,10 +80,13 @@ namespace YiChing.ViewModels
             _logger = logger;
             _alertService = alertService;
             Settings = new AppSettings(); // Initialize with default settings
+            _hexagramEntries = new List<HexagramEntry>();
+            _question = string.Empty;
+            _answer = string.Empty;
             LoadHexagrams();
         }
 
-        partial void OnSelectedHexagramChanged(HexagramEntry value)
+        partial void OnSelectedHexagramChanged(HexagramEntry? value)
         {
             if (value != null)
             {
@@ -112,8 +111,14 @@ namespace YiChing.ViewModels
         [RelayCommand]
         private void Clear()
         {
-            RtQuestion.Text = string.Empty;
-            RtAnswer.Text = string.Empty;
+            if (RtQuestion != null)
+            {
+                RtQuestion.Text = string.Empty;
+            }
+            if (RtAnswer != null)
+            {
+                RtAnswer.Text = string.Empty;
+            }
             SelectedHexagram = null;
         }
 
@@ -151,7 +156,7 @@ namespace YiChing.ViewModels
         }
 
         private string GetFullQuestion() =>
-            $"{DateTime.Now:yyyy-MM-dd}\nQuestion to I Ching:\n {RtQuestion.Text}\n" +
-            $"\nI Ching answered:\n{RtAnswer.Text}";
+            $"{DateTime.Now:yyyy-MM-dd}\nQuestion to I Ching:\n {RtQuestion?.Text ?? string.Empty}\n" +
+            $"\nI Ching answered:\n{RtAnswer?.Text ?? string.Empty}";
     }
 }

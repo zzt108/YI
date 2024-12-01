@@ -81,17 +81,31 @@ public partial class CvHexagram : ContentView
 
     private string GetFullQuestion()
     {
-        return $"{DateTime.Now:yyyy-MM-dd}\nQuestion to I Ching:\n {_viewModel.RtQuestion.Text}\n"
-            + $"\nI Ching answered:\n{_viewModel.RtAnswer.Text}\nWould you please interpret?\n\nPlease translate to {_viewModel.Settings.AnswerLanguage}.";
+        return $"{DateTime.Now:yyyy-MM-dd}\nQuestion to I Ching:\n {_viewModel.RtQuestion?.Text ?? string.Empty}\n"
+            + $"\nI Ching answered:\n{_viewModel.RtAnswer?.Text ?? string.Empty}\nWould you please interpret?\n\nPlease translate to {_viewModel.Settings.AnswerLanguage}.";
     }
 
     private void EvalAndSaveHexagram()
     {
+        // Add null checks for _viewModel and its properties
+        if (_viewModel?.RtQuestion == null)
+        {
+            // Optionally log or handle the case where RtQuestion is null
+            return;
+        }
+
         string question = _viewModel.RtQuestion.Text;
         var hexagram = new HG.Hexagram(new HG.Values().InitValues<CheckBox>(CheckBoxes, (checkBox, row, col) => checkBox.IsChecked));
 
         // Example logic to retrieve the main hexagram.
         int mainHexagram = hexagram.Main;
+
+        // Add null check for RtAnswer before accessing
+        if (_viewModel?.RtAnswer == null)
+        {
+            // Optionally log or handle the case where RtAnswer is null
+            return;
+        }
 
         _viewModel.RtAnswer.Text = $"\nMain Hexagram {mainHexagram}\n\n";
 
