@@ -91,8 +91,8 @@ namespace YiChing.ViewModels
         {
             if (value != null)
             {
-                RtQuestion.Text = value.Question;
-                RtAnswer.Text = value.Answer;
+                Question = value.Question;
+                Answer = value.Answer;
             }
         }
 
