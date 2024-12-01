@@ -3,25 +3,85 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="YiChing.CvConfig"
              Title="Configuration">
-    <StackLayout>
-        <Picker x:Name="myPicker" Title="Select Language">
-            <Picker.Items>
-                <x:String>English</x:String>
-                <x:String>Chinese</x:String>
-            </Picker.Items>
-        </Picker>
+    
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+            <Label 
+                Text="Configuration"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                HorizontalOptions="Center" />
 
-        <Label x:Name="txtAnswerLanguage" />
+            <!-- Answer Language Section -->
+            <Frame BorderColor="Gray" Padding="10" CornerRadius="5">
+                <VerticalStackLayout Spacing="10">
+                    <Label 
+                        Text="Answer Language"
+                        FontSize="20"
+                        FontAttributes="Bold"/>
+                    
+                    <Picker x:Name="myPicker"
+                            Title="Select Language">
+                        <Picker.Items>
+                            <x:String>English</x:String>
+                            <x:String>中文</x:String>
+                        </Picker.Items>
+                    </Picker>
+                    
+                    <Entry x:Name="txtAnswerLanguage" 
+                           Text="{Binding Settings.AnswerLanguage}"
+                           Placeholder="Answer Language"/>
+                </VerticalStackLayout>
+            </Frame>
 
-        <Button x:Name="btnReturn" 
-                Text="Return" 
-                Clicked="OnReturnClicked"
-                HorizontalOptions="Center" 
-                VerticalOptions="End" 
-                Margin="0,20,0,20"
-                BackgroundColor="#007AFF"
-                TextColor="White"
-                CornerRadius="8"
-                Padding="20,10"/>
-    </StackLayout>
+            <!-- Key Two Section -->
+            <Frame BorderColor="Gray" Padding="10" CornerRadius="5">
+                <VerticalStackLayout Spacing="10">
+                    <Label 
+                        Text="Key Two"
+                        FontSize="20"
+                        FontAttributes="Bold"/>
+                    
+                    <Entry x:Name="txtKeyTwo" 
+                           Text="{Binding Settings.KeyTwo}"
+                           Placeholder="Enter Key Two value"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Key Three Message Section -->
+            <Frame BorderColor="Gray" Padding="10" CornerRadius="5">
+                <VerticalStackLayout Spacing="10">
+                    <Label 
+                        Text="Key Three Message"
+                        FontSize="20"
+                        FontAttributes="Bold"/>
+                    
+                    <Editor x:Name="txtKeyThreeMessage" 
+                            Text="{Binding Settings.KeyThree.Message}"
+                            Placeholder="Enter message"
+                            HeightRequest="100"
+                            AutoSize="TextChanges"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Save and Return Buttons -->
+            <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
+                <Button x:Name="btnSave" 
+                        Text="Save" 
+                        Clicked="OnSaveClicked"
+                        BackgroundColor="#28a745"
+                        TextColor="White"
+                        CornerRadius="8"
+                        Padding="20,10"/>
+
+                <Button x:Name="btnReturn" 
+                        Text="Return" 
+                        Clicked="OnReturnClicked"
+                        BackgroundColor="#007AFF"
+                        TextColor="White"
+                        CornerRadius="8"
+                        Padding="20,10"/>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

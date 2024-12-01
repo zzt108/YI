@@ -65,6 +65,17 @@ public partial class CvConfig : ContentPage
             System.Diagnostics.Debug.WriteLine("CvConfig Constructor: myPicker is null, cannot add event handler");
         }
 
+        // Null-safe event binding with additional logging
+        if (btnSave != null)
+        {
+            btnSave.Clicked += OnSaveClicked;
+            System.Diagnostics.Debug.WriteLine("CvConfig Constructor: btnSave event handler ADDED");
+        }
+        else 
+        {
+            System.Diagnostics.Debug.WriteLine("CvConfig Constructor: btnSave is null, cannot add event handler");
+        }
+
         // Final constructor logging
         System.Diagnostics.Debug.WriteLine("CvConfig Constructor: COMPLETED");
     }
@@ -128,6 +139,27 @@ public partial class CvConfig : ContentPage
         }
     }
 
+    private async void OnSaveClicked(object sender, EventArgs e)
+    {
+        try 
+        {
+            // Save settings
+            Settings?.SaveValues();
+            
+            // Show success message
+            await DisplayAlert("Success", "Settings saved successfully", "OK");
+        }
+        catch (Exception ex)
+        {
+            // Log and display any errors
+            System.Diagnostics.Debug.WriteLine($"Settings save error: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Stack Trace: {ex.StackTrace}");
+            
+            await DisplayAlert("Error", 
+                $"Could not save settings: {ex.Message}", "OK");
+        }
+    }
+
     private void LoadSettings()
     {
         // Try to load defaults from configuration, fallback to null
@@ -145,14 +177,11 @@ public partial class CvConfig : ContentPage
         Settings = new Settings(Defaults ?? new Settings());
     }
 
-    private void Picker_SelectedIndexChanged(object? sender, EventArgs e)
+    private void Picker_SelectedIndexChanged(object sender, EventArgs e)
     {
         // Null-safe handling of picker selection
         if (sender is Picker picker && picker.SelectedItem is string selectedItem)
         {
-            // Update text field
-            txtAnswerLanguage.Text = selectedItem;
-            
             // Update settings
             if (Settings != null)
             {
