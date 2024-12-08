@@ -1,4 +1,4 @@
-namespace HexagramNS;
+﻿namespace HexagramNS;
 
 public class Values
 {
@@ -177,21 +177,17 @@ public class Hexagram
         var rowStr = string.Empty;
         ChangingLines.Clear();
 
-        string[] trigrams = new string[] { "", "" };
-        string[] changedTrigrams = new string[] { "", "" };
+        string[] trigrams = new string[2];
+        string[] changedTrigrams = new string[2];
 
+        //for (int row = RowCount - 1; row >= 0; row--)
         for (int row = 0; row < RowCount; row++)
         {
+            
             UpdateTrigrams(row, trigrams, changedTrigrams);
         }
 
-        lastTrigrams = new int[] 
-        { 
-            int.Parse(trigrams[0] == "" ? "0" : trigrams[0]), 
-            int.Parse(trigrams[1] == "" ? "0" : trigrams[1]), 
-            int.Parse(changedTrigrams[0] == "" ? "0" : changedTrigrams[0]), 
-            int.Parse(changedTrigrams[1] == "" ? "0" : changedTrigrams[1]) 
-        };
+        lastTrigrams = new int[] { int.Parse(trigrams[0]), int.Parse(trigrams[1]), int.Parse(changedTrigrams[0]), int.Parse(changedTrigrams[1]) };
     }
 
     void UpdateTrigrams(int row, string[] trigrams, string[] changedTrigrams)
@@ -206,36 +202,36 @@ public class Hexagram
                 ChangingLines.Add(RowCount - row);
                 break;
             case 7:
-                trigrams[trigramIndex] += "1";
-                changedTrigrams[trigramIndex] += "1";
+                changedTrigrams[trigramIndex] += "0";
+                trigrams[trigramIndex] += "0";
                 break;
             case 8:
-                trigrams[trigramIndex] += "0";
-                changedTrigrams[trigramIndex] += "0";
+                changedTrigrams[trigramIndex] += "1";
+                trigrams[trigramIndex] += "1";
                 break;
             case 9:
-                trigrams[trigramIndex] += "1";
                 changedTrigrams[trigramIndex] += "0";
+                trigrams[trigramIndex] += "1";
                 ChangingLines.Add(RowCount - row);
                 break;
         }
     }
 
-    private int GetLine(int row)
+    int GetLine(int row)
     {
-        bool first = _values.GetValue(row, 0);
-        bool second = _values.GetValue(row, 1);
-        bool third = _values.GetValue(row, 2);
-
-        if (!first && !second && !third) return 8;  // 000
-        if (!first && !second && third) return 7;   // 001
-        if (!first && second && !third) return 7;   // 010
-        if (!first && second && third) return 9;    // 011
-        if (first && !second && !third) return 7;   // 100
-        if (first && !second && third) return 9;    // 101
-        if (first && second && !third) return 6;    // 110
-        if (first && second && third) return 9;     // 111
-
-        return 8; // Default case
+        var line = 0;
+        for (int col = 0; col < ColCount; col++)
+        {
+            var coinValue = _values.GetValue(row, col);
+            if (coinValue)
+            {
+                line += 3;
+            }
+            else
+            {
+                line += 2;
+            }
+        }
+        return line;
     }
 }
