@@ -1,109 +1,30 @@
-﻿namespace HexagramNS;
+﻿﻿namespace HexagramNS;
 
-public class Values
-{
-    private bool[,] values;
-    public bool Changed { get; set; }
+/*
+1. Six Lines Stacked:
+A hexagram consists of six lines, stacked one on top of the other.
+The lines are read from the bottom up, meaning the first line is at the bottom, and the sixth line is at the top. This order is crucial for understanding the hexagram's development and meaning.
 
-    public int RowCount { get => values.GetLength(0); }
+2. Trigrams:
+The six lines of a hexagram can be further divided into two trigrams (三卦 - sān guà):
+Lower Trigram (內卦 - nèi guà): Composed of the bottom three lines. It is often associated with the internal situation, personal feelings, or inner world.
+Upper Trigram (外卦 - wài guà): Composed of the top three lines. It is often associated with the external situation, relationships with others, or the outer world.
+There are eight possible trigrams, each representing a fundamental concept or aspect of reality:
 
-    public Values(int rowCount = Hexagram.RowCount, int colCount = Hexagram.ColCount)
-    { values = new bool[rowCount, colCount];
-    Changed = false;}
+☰ Qian (乾): Heaven, creative, strong (three solid lines)
+☷ Kun (坤): Earth, receptive, yielding (three broken lines)
+☳ Zhen (震): Thunder, arousing, initiating (solid line, broken line, broken line)
+☶ Gen (艮): Mountain, stillness, stopping (broken line, broken line, solid line)
+☴ Xun (巽): Wind/Wood, gentle, penetrating (broken line, solid line, solid line)
+☵ Kan (坎): Water, abyss, dangerous (solid line, broken line, solid line)
+☲ Li (離): Fire, clinging, radiant (broken line, solid line, broken line)
+☱ Dui (兌): Lake, joyful, open (solid line, solid line, broken line)
 
-    // TODO contsructor that takes an 2 dimensional array and a bool function to initialize the array
-
-    // Example usage:
-    public bool GetValue(int row, int col) { return values[row, col]; }
-
-    public void SetValue(int row, int col, bool value) { values[row, col] = value; 
-    Changed = true;}
-
-    public void SetValues<T>(T[] array, Func<T, int, int, bool> func)
-    {
-        for (int i = 0; i < array.Length; i++)
-        {
-            int row = i / values.GetLength(1);
-            int col = i % values.GetLength(1);
-            values[row, col] = func(array[i], row, col);
-        }
-        Changed = true;
-    }
-    public void SetHexagramRow(int hexagramRow, int value)
-    {
-        switch (value)
-        {
-            case 6:
-                SetValue(hexagramRow, 0, false);
-                SetValue(hexagramRow, 1, false);
-                SetValue(hexagramRow, 2, false);
-                break;
-            case 7:
-                SetValue(hexagramRow, 0, true);
-                SetValue(hexagramRow, 1, true);
-                SetValue(hexagramRow, 2, false);
-                break;
-            case 8:
-                SetValue(hexagramRow, 0, false);
-                SetValue(hexagramRow, 1, false);
-                SetValue(hexagramRow, 2, true);
-                break;
-            case 9:
-                SetValue(hexagramRow, 0, true);
-                SetValue(hexagramRow, 1, true);
-                SetValue(hexagramRow, 2, true);
-                break;
-        }
-    }
-    
-    /// <summary>
-    /// Initializes the values in a two-dimensional array based on a given function.
-    /// </summary>
-    /// <typeparam name="T">The type of elements in the array.</typeparam>
-    /// <param name="array">The two-dimensional array to initialize.</param>
-    /// <param name="func">The function used to determine the value for each element in the array.</param>
-    /// <exception cref="ArgumentNullException">Thrown when the array or func parameter is null.</exception>
-    /// <returns>The updated Values object.</returns>
-    public Values InitValues<T>(T[,] array, Func<T, int, int, bool> func)
-    {
-        if (array == null)
-        {
-            throw new ArgumentNullException(nameof(array));
-        }
-
-        if (func == null)
-        {
-            throw new ArgumentNullException(nameof(func));
-        }
-
-        int rows = array.GetLength(0);
-        int cols = array.GetLength(1);
-
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < cols; j++)
-            {
-                values[i, j] = func(array[i, j], i, j);
-            }
-        }
-        Changed = true;
-        return this;
-    }
-
-    public void UpdateValues<T>(T[,] array, Func< int, int, bool, T> func)
-    {
-        int rows = array.GetLength(0);
-        int cols = array.GetLength(1);
-
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < cols; j++)
-            {
-                array[i, j] = func(i, j , values[i, j]);
-            }
-        }
-    }
-}
+3. Formation of Hexagrams:
+By combining any two trigrams, you create one of the 64 possible hexagrams.
+Each of the 64 hexagrams has a unique name, associated meaning, and often a story or interpretation connected to its particular combination of lines and trigrams.
+The positions of the solid and broken lines within the hexagram are important. They determine not just the overall meaning of the hexagram but also nuances in its interpretation.
+*/
 
 /// <summary>
 /// Represents a Hexagram, which is a 6x3 grid of coins.
@@ -145,6 +66,18 @@ public class Hexagram
     public List<int> ChangingLines { get; } = [];
 
     /*
+This is the main documentation for Hexagram values. Never change this.
+|   |111 | 0  | 010|101 | 001| 100| 110| 011|
+|111| 1  | 11 | 5  | 14 | 34 | 26 | 9  | 43 |
+|000| 12 | 2  | 8  | 35 | 16 | 23 | 20 | 45 |
+|010| 6  | 7  | 29 | 64 | 40 | 4  | 59 | 47 |
+|101| 13 | 36 | 63 | 30 | 55 | 22 | 37 | 49 |
+|001| 25 | 24 | 3  | 21 | 51 | 27 | 42 | 17 |
+|100| 33 | 15 | 39 | 56 | 62 | 52 | 53 | 31 |
+|110| 44 | 46 | 48 | 50 | 32 | 18 | 57 | 28 |
+|011| 10 | 19 | 60 | 38 | 54 | 41 | 61 | 58 |
+
+    111 000 = 11
 
 |   |111 | 001| 010| 100| 0  | 110|101 | 011|
 |111| 1  | 34 | 5  | 26 | 11 | 9  | 14 | 43 |
@@ -156,8 +89,9 @@ public class Hexagram
 |101| 13 | 55 | 63 | 22 | 36 | 37 | 30 | 49 |
 |011| 10 | 54 | 60 | 41 | 19 | 61 | 38 | 58 |
 
-    111 000 = 11
     */
+
+    // this is the representation of the above hexagram values.
     private static readonly Dictionary<int, Dictionary<int, int>> hexagramLookup = new()
 {
 { 111, new Dictionary<int, int> { { 111,  1 }, { 1, 34 }, { 10, 5  }, { 100, 26 }, { 0, 11 }, { 110, 9  }, { 11, 43 }, { 101, 14 } } },
@@ -187,6 +121,7 @@ public class Hexagram
             UpdateTrigrams(row, trigrams, changedTrigrams);
         }
 
+        // Trigrams returned as strings like "101" the hexagramLookup dictionary uses these as decimal int keys for looking up trigram numbers
         lastTrigrams = new int[] { int.Parse(trigrams[0]), int.Parse(trigrams[1]), int.Parse(changedTrigrams[0]), int.Parse(changedTrigrams[1]) };
     }
 
