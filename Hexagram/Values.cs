@@ -20,6 +20,14 @@ public class Values
     // Example usage:
     public bool GetValue(int row, int col) { return values[row, col]; }
 
+
+
+/// <summary>
+/// A hexagram line is changing when a row has 3 columns with the same values 
+/// </summary>
+/// <param name="row"></param>
+/// <param name="col"></param>
+/// <param name="value"></param>
     public void SetValue(int row, int col, bool value) { values[row, col] = value; 
     Changed = true;}
 
@@ -33,10 +41,12 @@ public class Values
         }
         Changed = true;
     }
+
     public void SetHexagramRow(int hexagramRow, int value)
     {
         switch (value)
         {
+            // Changing line
             case 6:
                 SetValue(hexagramRow, 0, false);
                 SetValue(hexagramRow, 1, false);
@@ -52,6 +62,7 @@ public class Values
                 SetValue(hexagramRow, 1, false);
                 SetValue(hexagramRow, 2, true);
                 break;
+            // Changing line
             case 9:
                 SetValue(hexagramRow, 0, true);
                 SetValue(hexagramRow, 1, true);

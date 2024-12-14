@@ -1,4 +1,4 @@
-﻿﻿namespace HexagramNS;
+﻿﻿﻿﻿namespace HexagramNS;
 
 /*
 1. Six Lines Stacked:
@@ -63,7 +63,7 @@ public class Hexagram
             return Hexagram.hexagramLookup[lastTrigrams[2]][lastTrigrams[3]];
         }
     }
-    public List<int> ChangingLines { get; } = [];
+    public List<int> ChangingLines { get; } = new List<int>();
 
     /*
 This is the main documentation for Hexagram values. Never change this.
@@ -88,8 +88,7 @@ This is the main documentation for Hexagram values. Never change this.
 |110| 44 | 32 | 48 | 18 | 46 | 57 | 50 | 28 |
 |101| 13 | 55 | 63 | 22 | 36 | 37 | 30 | 49 |
 |011| 10 | 54 | 60 | 41 | 19 | 61 | 38 | 58 |
-
-    */
+*/
 
     // this is the representation of the above hexagram values.
     private static readonly Dictionary<int, Dictionary<int, int>> hexagramLookup = new()
@@ -114,10 +113,8 @@ This is the main documentation for Hexagram values. Never change this.
         string[] trigrams = new string[2];
         string[] changedTrigrams = new string[2];
 
-        //for (int row = RowCount - 1; row >= 0; row--)
         for (int row = 0; row < RowCount; row++)
         {
-            
             UpdateTrigrams(row, trigrams, changedTrigrams);
         }
 
@@ -134,21 +131,24 @@ This is the main documentation for Hexagram values. Never change this.
             case 6:
                 trigrams[trigramIndex] += "0";
                 changedTrigrams[trigramIndex] += "1";
-                ChangingLines.Add(RowCount - row);
+                
                 break;
             case 7:
-                changedTrigrams[trigramIndex] += "0";
+                changedTrigrams[trigramIndex] += "1";
                 trigrams[trigramIndex] += "0";
                 break;
             case 8:
-                changedTrigrams[trigramIndex] += "1";
+                changedTrigrams[trigramIndex] += "0";
                 trigrams[trigramIndex] += "1";
                 break;
             case 9:
                 changedTrigrams[trigramIndex] += "0";
                 trigrams[trigramIndex] += "1";
-                ChangingLines.Add(RowCount - row);
                 break;
+        }
+        if (IsChangingLine(row))
+        {
+            ChangingLines.Add(RowCount - row);
         }
     }
 
@@ -168,5 +168,18 @@ This is the main documentation for Hexagram values. Never change this.
             }
         }
         return line;
+    }
+
+    private bool IsChangingLine(int row)
+    {
+        bool firstValue = _values.GetValue(row, 0);
+        for (int col = 1; col < ColCount; col++)
+        {
+            if (_values.GetValue(row, col) != firstValue)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
