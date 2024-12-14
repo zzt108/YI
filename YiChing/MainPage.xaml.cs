@@ -23,7 +23,7 @@ namespace YiChing
             InitializeComponent();
             configuration = config;
 
-            version = typeof(App).Assembly.GetName().Version;
+            version = typeof(App).Assembly.GetName().Version ?? new Version(1, 0); // Default version if null
 
             CVHexagram = new(this);
             DisplayVersionText();
@@ -37,7 +37,10 @@ namespace YiChing
 
         public void DisplayVersionText()
         {
-            CVHexagram.Answer.Text = "Version: " + version?.ToString() + "\n\nWhat is the answer to the ultimate question of\nlife, the universe, and everything?";
+            if (version != null) // Check if version is not null
+            {
+                CVHexagram.Answer.Text = "Version: " + version.ToString() + "\n\nWhat is the answer to the ultimate question of\nlife, the universe, and everything?";
+            }
         }
     }
 }

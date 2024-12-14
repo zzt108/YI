@@ -45,7 +45,6 @@ public partial class CvHexagram : ContentView
             CheckBoxes,
             (row, col, value) =>
             {
-
                 CheckBox checkBox = CheckBoxes[row, col];
                 checkBox.IsChecked = false;
                 return checkBox;
@@ -54,8 +53,12 @@ public partial class CvHexagram : ContentView
 
     private string GetFullQuestion()
     {
-        return $"{DateTime.Now:yyyy-MM-dd}\nQuestion to I Ching:\n {rtQuestion.Text}\n"
-            + $"\nI Ching answered:\n{rtAnswer.Text}\nWould you please interpret?\n\nPlease translate to {_mainPage.CVConfig.Settings.AnswerLanguage}.";
+        if (_mainPage != null) // Check if _mainPage is not null
+        {
+            return $"{DateTime.Now:yyyy-MM-dd}\nQuestion to I Ching:\n {rtQuestion.Text}\n"
+                + $"\nI Ching answered:\n{rtAnswer.Text}\nWould you please interpret?\n\nPlease translate to {_mainPage.CVConfig.Settings.AnswerLanguage}.";
+        }
+        return string.Empty; // Return an empty string if _mainPage is null
     }
 
     #endregion
@@ -102,10 +105,8 @@ public partial class CvHexagram : ContentView
     {
         if (hexagramPicker.SelectedItem != null)
         {
-
             var selectedHexagram = hexagramPicker.SelectedItem.ToString();
             // Extract corresponding hexagram details, assuming id can be parsed from selectedItem
-            // var hexagramId = int.Parse(new string(selectedHexagram.Where(char.IsDigit).ToArray()));
             var jsonHandler = new JsonHandler();
             var hexagramDetails = jsonHandler.GetHexagramDetails(selectedHexagram);
 
@@ -240,7 +241,4 @@ public partial class CvHexagram : ContentView
         }
     }
     #endregion
-
-
 }
-

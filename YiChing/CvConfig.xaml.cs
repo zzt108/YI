@@ -48,5 +48,4 @@ public partial class CvConfig : ContentView
         //    _mainPage.DisplayAlert("Selection", $"You selected: {selectedItem}", "OK");
         //}
     }
-
 }

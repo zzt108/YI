@@ -38,11 +38,11 @@ namespace YiChing
 
         public void LoadValues(Settings? defaults)
         {
-            AnswerLanguage = Preferences.Default.Get(nameof(AnswerLanguage), defaults?.AnswerLanguage);
-            KeyTwo = Preferences.Default.Get(nameof(KeyTwo), defaults?.KeyTwo);
+            AnswerLanguage = Preferences.Default.Get(nameof(AnswerLanguage), defaults?.AnswerLanguage ?? "English");
+            KeyTwo = Preferences.Default.Get(nameof(KeyTwo), defaults?.KeyTwo ?? "Value Two");
             KeyThree = new NestedSettings
             {
-                Message = Preferences.Default.Get(nameof(KeyThree.Message), defaults?.KeyThree.Message)
+                Message = Preferences.Default.Get(nameof(KeyThree.Message), defaults?.KeyThree?.Message ?? "Default Message")
             };
         }
         public void SaveValues()
