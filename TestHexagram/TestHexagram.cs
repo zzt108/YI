@@ -2,6 +2,7 @@ using FluentAssertions;
 using HexagramNS;
 
 namespace Test;
+[TestFixture]
 
 public class TestHexagram
 {
@@ -26,7 +27,7 @@ public class TestHexagram
         var hexagram = new HexagramNS.Hexagram(new Values().InitValues(data, (item, row, col) => item > 0));
         hexagram.Main.Should().Be(11);
         hexagram.Changed.Should().Be(12);
-        hexagram.ChangingLines.Should().BeEquivalentTo(new[] {1 , 2, 3, 4, 5, 6});
+        hexagram.ChangingLines.Should().BeEquivalentTo(new[] { 1, 2, 3, 4, 5, 6 });
     }
     [Test]
     public void Test03_12()
@@ -44,6 +45,6 @@ public class TestHexagram
         var hexagram = new HexagramNS.Hexagram(new Values().InitValues(data, (item, row, col) => item > 0));
         hexagram.Main.Should().Be(3);
         hexagram.Changed.Should().Be(50);
-        hexagram.ChangingLines.Should().BeEquivalentTo(new[] {1 , 2, 3, 4, 5, 6});
+        hexagram.ChangingLines.Should().BeEquivalentTo(new[] { 1, 2, 3, 4, 5, 6 });
     }
 }
