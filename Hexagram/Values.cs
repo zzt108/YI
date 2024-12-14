@@ -3,7 +3,11 @@ namespace HexagramNS;
 public class Values
 {
     private bool[,] values;
-    public bool Changed { get; set; }
+    /// <summary>
+    /// Gets a value indicating whether the hexagram values have changed.
+    /// This property is set to true when SetValue, SetValues, SetHexagramRow or InitValues methods are called.
+    /// </summary>
+    public bool Changed { get; private set; }
 
     public int RowCount { get => values.GetLength(0); }
 
