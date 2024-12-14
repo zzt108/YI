@@ -48,7 +48,7 @@ public class Hexagram
 
     // TODO add int Hexagram number and changed hexagram number
     // Variable to represent the hexagram number
-    public int Main
+    public int Current
     {
         get
         {
@@ -58,7 +58,7 @@ public class Hexagram
     }
 
     // Variable to represent the changed hexagram number
-    public int Changed
+    public int New
     {
         get
         {

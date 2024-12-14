@@ -1,3 +1,4 @@
+using HexagramNS;
 using System.Web;
 using HG = HexagramNS;
 
@@ -153,9 +154,10 @@ public partial class CvHexagram : ContentView
         var hexagram = new HG.Hexagram(new HG.Values().InitValues<CheckBox>(CheckBoxes, (checkBox, row, col) => checkBox.IsChecked));
 
         // Example logic to retrieve the main hexagram.
-        int mainHexagram = hexagram.Main;
+        int mainHexagram = hexagram.Current;
+        var hexagramName = HexagramNameProvider.GetHexagramName(mainHexagram, HexagramNameProvider.Language.English);
 
-        rtAnswer.Text = $"\nMain Hexagram {mainHexagram}\n\n";
+        rtAnswer.Text = $"\nMain Hexagram {mainHexagram}: {hexagramName}\n\n";
 
         if (hexagram.ChangingLines.Any())
         {
@@ -164,7 +166,9 @@ public partial class CvHexagram : ContentView
             {
                 rtAnswer.Text += line + ", ";
             }
-            rtAnswer.Text += $"\n\nChanging Hexagram {hexagram.Changed}\n";
+            var hexagramChangedName = HexagramNameProvider.GetHexagramName(hexagram.New, HexagramNameProvider.Language.English);
+
+            rtAnswer.Text += $"\n\nChanging Hexagram {hexagram.New}: {hexagramChangedName}\n";
         }
         else
         {

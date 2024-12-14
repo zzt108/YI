@@ -43,8 +43,8 @@ namespace TestHexagram
             // Act
 
             // Assert
-            _hexagram.Main.Should().Be(1);
-            _hexagram.Changed.Should().Be(2);
+            _hexagram.Current.Should().Be(1);
+            _hexagram.New.Should().Be(2);
             _hexagram.ChangingLines.Should().BeEquivalentTo(new [] {1,2,3,4,5,6});
 
         }
@@ -111,7 +111,7 @@ namespace TestHexagram
             // Act
 
             // Assert
-            _hexagram.Main.Should().Be(30);
+            _hexagram.Current.Should().Be(30);
             _hexagram.ChangingLines.Should().BeEquivalentTo(new int[] { });
         }
 
@@ -141,7 +141,7 @@ namespace TestHexagram
             // Act
 
             // Assert
-            _hexagram.Changed.Should().Be(29);
+            _hexagram.New.Should().Be(29);
         }
 
         [Test]
