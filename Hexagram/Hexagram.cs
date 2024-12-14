@@ -145,12 +145,14 @@ This is the main documentation for Hexagram values. Never change this.
                 
                 break;
             case 7:
-                changedTrigrams[trigramIndex] += "1";
-                trigrams[trigramIndex] += "0";
+                var noChange0 = "0";
+                changedTrigrams[trigramIndex] += noChange0;
+                trigrams[trigramIndex] += noChange0;
                 break;
             case 8:
-                changedTrigrams[trigramIndex] += "0";
-                trigrams[trigramIndex] += "1";
+                var noChange1 = "1";
+                changedTrigrams[trigramIndex] += noChange1;
+                trigrams[trigramIndex] += noChange1;
                 break;
             case 9:
                 changedTrigrams[trigramIndex] += "0";
@@ -159,7 +161,7 @@ This is the main documentation for Hexagram values. Never change this.
         }
         if (IsChangingLine(row))
         {
-            _changingLines.Add(row + 1); // Módosítva: RowCount - row helyett row + 1
+            _changingLines.Add(RowCount - row); // Módosítva: RowCount - row helyett row + 1
         }
     }
 

@@ -59,7 +59,7 @@ namespace TestHexagram
             _values.SetValue(0, 1, true); // 1
             _values.SetValue(0, 2, true); // 1
 
-            _values.SetValue(1, 0, false); // 0
+            _values.SetValue(1, 0, false); // 0 // line 5
             _values.SetValue(1, 1, false); // 0
             _values.SetValue(1, 2, true); // 1
 
@@ -82,7 +82,7 @@ namespace TestHexagram
             // Act
 
             // Assert
-            _hexagram.ChangingLines.Should().BeEquivalentTo(new int [] {1, 3, 4, 5, 6 });
+            _hexagram.ChangingLines.Should().BeEquivalentTo(new int [] {1, 2, 3, 4, 6 });
         }
 
         [Test]
@@ -141,7 +141,7 @@ namespace TestHexagram
             // Act
 
             // Assert
-            _hexagram.New.Should().Be(29);
+            _hexagram.New.Should().Be(56);
         }
 
         [Test]
@@ -151,26 +151,31 @@ namespace TestHexagram
             _values.SetValue(0, 0, true);
             _values.SetValue(0, 1, false);
             _values.SetValue(0, 2, true);
+
             _values.SetValue(1, 0, false);
             _values.SetValue(1, 1, true);
             _values.SetValue(1, 2, false);
+
             _values.SetValue(2, 0, true);
             _values.SetValue(2, 1, false);
             _values.SetValue(2, 2, true);
+
             _values.SetValue(3, 0, true);
             _values.SetValue(3, 1, false);
             _values.SetValue(3, 2, true);
+
             _values.SetValue(4, 0, false);
             _values.SetValue(4, 1, true);
             _values.SetValue(4, 2, false);
-            _values.SetValue(5, 0, true);
+
+            _values.SetValue(5, 0, true); // line 1
             _values.SetValue(5, 1, true);
             _values.SetValue(5, 2, true);
 
             // Act
 
             // Assert
-            _hexagram.ChangingLines.Should().BeEquivalentTo(new[] { 6 });
+            _hexagram.ChangingLines.Should().BeEquivalentTo(new[] { 1 });
         }
 
         [Test]
@@ -180,26 +185,31 @@ namespace TestHexagram
             _values.SetValue(0, 0, true);
             _values.SetValue(0, 1, false);
             _values.SetValue(0, 2, true);
+
             _values.SetValue(1, 0, false);
             _values.SetValue(1, 1, true);
             _values.SetValue(1, 2, false);
-            _values.SetValue(2, 0, true);
+
+            _values.SetValue(2, 0, true); // line 4
             _values.SetValue(2, 1, true);
             _values.SetValue(2, 2, true);
+
             _values.SetValue(3, 0, true);
             _values.SetValue(3, 1, false);
             _values.SetValue(3, 2, true);
+
             _values.SetValue(4, 0, false);
             _values.SetValue(4, 1, true);
             _values.SetValue(4, 2, false);
-            _values.SetValue(5, 0, true);
+
+            _values.SetValue(5, 0, true); // line 1
             _values.SetValue(5, 1, true);
             _values.SetValue(5, 2, true);
 
             // Act
 
             // Assert
-            _hexagram.ChangingLines.Should().BeEquivalentTo(new[] { 3, 6 });
+            _hexagram.ChangingLines.Should().BeEquivalentTo(new[] { 1, 4 });
         }
     }
 
