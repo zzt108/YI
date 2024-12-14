@@ -31,7 +31,7 @@ public class TestHexagram
     }
 
     [Test]
-    public void Test2_1()
+    public void Test2_12()
     {
         int[,] data = new int[,]
         {
@@ -45,8 +45,8 @@ public class TestHexagram
     };
         var hexagram = new HexagramNS.Hexagram(new Values().InitValues(data, (item, row, col) => item > 0));
         hexagram.Current.Should().Be(2);
-        hexagram.New.Should().Be(1);
-        hexagram.ChangingLines.Should().BeEquivalentTo(new[] {1, 2, 3 });
+        hexagram.New.Should().Be(12);
+        hexagram.ChangingLines.Should().BeEquivalentTo(new[] {  4, 5, 6 });
     }
 
     [Test]
