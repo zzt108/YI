@@ -1,4 +1,4 @@
-﻿﻿﻿﻿namespace HexagramNS;
+﻿﻿namespace HexagramNS;
 
 /*
 1. Six Lines Stacked:
@@ -63,7 +63,15 @@ public class Hexagram
             return Hexagram.hexagramLookup[lastTrigrams[2]][lastTrigrams[3]];
         }
     }
-    public List<int> ChangingLines { get; } = new List<int>();
+
+    public List<int> ChangingLines
+    {
+        get
+        {
+            GetTrigrams();
+            return new List<int>(ChangingLines);
+        }
+    }
 
     /*
 This is the main documentation for Hexagram values. Never change this.
