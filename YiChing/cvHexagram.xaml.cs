@@ -162,7 +162,9 @@ public partial class CvHexagram : ContentView
         if (hexagram.ChangingLines.Any())
         {
             rtAnswer.Text += "Changing lines: ";
-            foreach (int line in hexagram.ChangingLines)
+            var changingLines = hexagram.ChangingLines;
+            changingLines.Reverse();
+            foreach (int line in changingLines)
             {
                 rtAnswer.Text += line + ", ";
             }
