@@ -58,18 +58,23 @@ namespace TestHexagram
             _values.SetValue(0, 0, true); // 1
             _values.SetValue(0, 1, true); // 1
             _values.SetValue(0, 2, true); // 1
+
             _values.SetValue(1, 0, false); // 0
             _values.SetValue(1, 1, false); // 0
             _values.SetValue(1, 2, true); // 1
+
             _values.SetValue(2, 0, true); // 1
             _values.SetValue(2, 1, true); // 1
             _values.SetValue(2, 2, true); // 1
+
             _values.SetValue(3, 0, true); // 1
             _values.SetValue(3, 1, true); // 1
             _values.SetValue(3, 2, true); // 1
+
             _values.SetValue(4, 0, true); // 1
             _values.SetValue(4, 1, true); // 1
             _values.SetValue(4, 2, true); // 1
+
             _values.SetValue(5, 0, true); // 1
             _values.SetValue(5, 1, true); // 1
             _values.SetValue(5, 2, true); // 1
@@ -77,7 +82,7 @@ namespace TestHexagram
             // Act
 
             // Assert
-            _hexagram.ChangingLines.Should().BeEquivalentTo(new int [] { });
+            _hexagram.ChangingLines.Should().BeEquivalentTo(new int [] {1, 3, 4, 5, 6 });
         }
 
         [Test]
@@ -107,6 +112,7 @@ namespace TestHexagram
 
             // Assert
             _hexagram.Main.Should().Be(30);
+            _hexagram.ChangingLines.Should().BeEquivalentTo(new int[] { });
         }
 
         [Test]
