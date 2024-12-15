@@ -57,8 +57,20 @@ public partial class CvHexagram : ContentView
         if (_mainPage != null) // Check if _mainPage is not null
         {
             var settings = _mainPage.CVConfig.Settings;
-            return $"{DateTime.Now:yyyy-MM-dd}\n{settings.QuestionPrefix}\n {rtQuestion.Text}\n"
-                + $"\n{settings.AnswerPrefix}\n{rtAnswer.Text}\n{settings.InterpretationRequest}\n\n{settings.TranslationRequest} {_mainPage.CVConfig.Settings.AnswerLanguage}.";
+            return $"{settings.TranslationRequest} {settings.AnswerLanguage} and provide an interpretation of the result.\n\n" +
+                   $"Date: {DateTime.Now:yyyy-MM-dd}\n" +
+                   $"{settings.QuestionPrefix} {rtQuestion.Text}\n\n" +
+                   $"{settings.AnswerPrefix}\n\n" +
+                   $"{rtAnswer.Text}\n\n" +
+                   $"{settings.StepsHeader}\n\n" +
+                   $"1. {settings.Step1}\n" +
+                   $"2. {settings.Step2}\n" +
+                   $"3. {settings.Step3}\n\n" +
+                   $"{settings.OutputFormatHeader}\n\n" +
+                   $"Provide a paragraph in {settings.AnswerLanguage} that includes the translated question, hexagrams, and a detailed interpretation of the I Ching reading.\n\n" +
+                   $"{settings.NotesHeader}\n\n" +
+                   $"{settings.Note1}\n" +
+                   $"{settings.Note2}";
         }
         return string.Empty; // Return an empty string if _mainPage is null
     }
