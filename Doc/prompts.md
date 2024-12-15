@@ -114,3 +114,10 @@ Provide a paragraph in {_mainPage.CVConfig.Settings.AnswerLanguage} that include
 
 - Pay attention to the meanings of both hexagrams and how the changing lines transition the reading from the main to the changing hexagram.
 - Ensure the interpretation reflects the philosophical concepts of the I Ching in the context of the question asked.
+
+# 4
+
+remove the folloving properties from settings.cs and cvConfig:
+
+            keyTwo = "Value Two";
+            interpretationRequest = "Would you please interpret?";
