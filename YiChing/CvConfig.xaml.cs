@@ -16,9 +16,10 @@ public partial class CvConfig : ContentView
         _mainPage = page;
         _configuration = configuration;
         btnReturn.Clicked += btnReturn_Click;
-#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
+        btnReset.Clicked += btnReset_Click;
+        #pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
         myPicker.SelectedIndexChanged += Picker_SelectedIndexChanged;
-#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
+        #pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
         LoadSettings();
         BindingContext = this;
         myPicker.SelectedItem = Settings?.AnswerLanguage ?? "English"; // Default to "English" if null
@@ -46,4 +47,29 @@ public partial class CvConfig : ContentView
             Settings.AnswerLanguage = selectedItem?.ToString();
         }
     }
-}
+    
+    private void btnReset_Click(object? sender, EventArgs e)
+    {
+        // Létrehozunk egy ideiglenes Settings példányt az alapértelmezett értékekkel
+        var defaultSettings = new Settings();
+        
+        // Egyenként beállítjuk az értékeket, hogy a PropertyChanged események kiváltódjanak
+        if (Settings != null)
+        {
+            Settings.AnswerLanguage = defaultSettings.AnswerLanguage;
+            Settings.QuestionPrefix = defaultSettings.QuestionPrefix;
+            Settings.AnswerPrefix = defaultSettings.AnswerPrefix;
+            Settings.TranslationRequest = defaultSettings.TranslationRequest;
+            Settings.StepsHeader = defaultSettings.StepsHeader;
+            Settings.OutputFormatHeader = defaultSettings.OutputFormatHeader;
+            Settings.NotesHeader = defaultSettings.NotesHeader;
+            Settings.KeyThree = defaultSettings.KeyThree;
+            
+            // Frissítjük a Picker értékét
+            myPicker.SelectedItem = Settings.AnswerLanguage;
+            
+            // Elmentjük az alapértelmezett értékeket
+            Settings.SaveValues();
+        }
+    }
+    }

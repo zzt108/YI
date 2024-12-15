@@ -1,17 +1,25 @@
-﻿﻿using System;
+﻿﻿﻿﻿using System;
 using System.Linq;
+using System.ComponentModel;
 
 namespace YiChing
 {
-    public class Settings : IDisposable
+    public class Settings : IDisposable, INotifyPropertyChanged
     {
-        string answerLanguage;
-        string questionPrefix;
-        string answerPrefix;
-        string translationRequest;
-        string stepsHeader;
-        string outputFormatHeader;
-        string notesHeader;
+        private string answerLanguage;
+        private string questionPrefix;
+        private string answerPrefix;
+        private string translationRequest;
+        private string stepsHeader;
+        private string outputFormatHeader;
+        private string notesHeader;
+    
+        public event PropertyChangedEventHandler? PropertyChanged;
+    
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         #region Constructor
 
@@ -43,13 +51,96 @@ namespace YiChing
         }
         #endregion
 
-        public string AnswerLanguage { get => answerLanguage; set => answerLanguage = value; }
-        public string QuestionPrefix { get => questionPrefix; set => questionPrefix = value; }
-        public string AnswerPrefix { get => answerPrefix; set => answerPrefix = value; }
-        public string TranslationRequest { get => translationRequest; set => translationRequest = value; }
-        public string StepsHeader { get => stepsHeader; set => stepsHeader = value; }
-        public string OutputFormatHeader { get => outputFormatHeader; set => outputFormatHeader = value; }
-        public string NotesHeader { get => notesHeader; set => notesHeader = value; }
+        public string AnswerLanguage
+        {
+            get => answerLanguage;
+            set
+            {
+                if (answerLanguage != value)
+                {
+                    answerLanguage = value;
+                    OnPropertyChanged(nameof(AnswerLanguage));
+                }
+            }
+        }
+        
+        public string QuestionPrefix
+        {
+            get => questionPrefix;
+            set
+            {
+                if (questionPrefix != value)
+                {
+                    questionPrefix = value;
+                    OnPropertyChanged(nameof(QuestionPrefix));
+                }
+            }
+        }
+        
+        public string AnswerPrefix
+        {
+            get => answerPrefix;
+            set
+            {
+                if (answerPrefix != value)
+                {
+                    answerPrefix = value;
+                    OnPropertyChanged(nameof(AnswerPrefix));
+                }
+            }
+        }
+        
+        public string TranslationRequest
+        {
+            get => translationRequest;
+            set
+            {
+                if (translationRequest != value)
+                {
+                    translationRequest = value;
+                    OnPropertyChanged(nameof(TranslationRequest));
+                }
+            }
+        }
+        
+        public string StepsHeader
+        {
+            get => stepsHeader;
+            set
+            {
+                if (stepsHeader != value)
+                {
+                    stepsHeader = value;
+                    OnPropertyChanged(nameof(StepsHeader));
+                }
+            }
+        }
+        
+        public string OutputFormatHeader
+        {
+            get => outputFormatHeader;
+            set
+            {
+                if (outputFormatHeader != value)
+                {
+                    outputFormatHeader = value;
+                    OnPropertyChanged(nameof(OutputFormatHeader));
+                }
+            }
+        }
+        
+        public string NotesHeader
+        {
+            get => notesHeader;
+            set
+            {
+                if (notesHeader != value)
+                {
+                    notesHeader = value;
+                    OnPropertyChanged(nameof(NotesHeader));
+                }
+            }
+        }
         public NestedSettings KeyThree { get; set; }
 
         #region Methods
