@@ -1,16 +1,43 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Maui.Controls;
 
 namespace YiChing
 {
     public partial class MainPage : ContentPage
     {
-        public CvHexagram CVHexagram;
-        public CvYarrowStalks CVYarrowStalks;
-        public CvConfig CVConfig;
+        private CvHexagram? _cvHexagram;
+        private CvYarrowStalks? _cvYarrowStalks;
+        private CvConfig? _cvConfig;
+
+        public CvHexagram CVHexagram 
+        { 
+            get 
+            {
+                _cvHexagram ??= new(this);
+                return _cvHexagram;
+            }
+        }
+        
+        public CvYarrowStalks CVYarrowStalks 
+        { 
+            get 
+            {
+                _cvYarrowStalks ??= new(this);
+                return _cvYarrowStalks;
+            }
+        }
+        
+        public CvConfig CVConfig 
+        { 
+            get 
+            {
+                _cvConfig ??= new CvConfig(this, configuration);
+                return _cvConfig;
+            }
+        }
 
         public Version version;
-
-        private IConfiguration configuration;
+        private readonly IConfiguration configuration;
 
         public async Task<bool> ShowMessageBox(string title, string message, string accept = "OK", string? cancel = null)
         {
@@ -22,22 +49,25 @@ namespace YiChing
         {
             InitializeComponent();
             configuration = config;
+            version = typeof(App).Assembly.GetName().Version ?? new Version(1, 0);
 
-            version = typeof(App).Assembly.GetName().Version ?? new Version(1, 0); // Default version if null
-
-            CVHexagram = new(this);
-            DisplayVersionText();
-            CVYarrowStalks = new(this);
-            CVConfig = new CvConfig(this, config);
-
-            // Set the content of the page
-            Content = CVHexagram;
-            //Content = CVConfig;
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                try
+                {
+                    Content = CVHexagram;
+                    DisplayVersionText();
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error setting content: {ex}");
+                }
+            });
         }
 
         public void DisplayVersionText()
         {
-            if (version != null) // Check if version is not null
+            if (version != null && CVHexagram?.Answer != null)
             {
                 CVHexagram.Answer.Text = "Version: " + version.ToString() + "\n\nWhat is the answer to the ultimate question of\nlife, the universe, and everything?";
             }
