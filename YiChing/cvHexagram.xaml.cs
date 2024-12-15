@@ -115,12 +115,34 @@ public partial class CvHexagram : ContentView
         if (hexagramPicker.SelectedItem != null)
         {
             var selectedHexagram = hexagramPicker.SelectedItem.ToString();
-            // Extract corresponding hexagram details, assuming id can be parsed from selectedItem
             var jsonHandler = new JsonHandler();
             var hexagramDetails = jsonHandler.GetHexagramDetails(selectedHexagram);
-
-            rtAnswer.Text = hexagramDetails?.Answer; // Display hexagram description
-            rtQuestion.Text = hexagramDetails?.Question;
+    
+            if (hexagramDetails != null)
+            {
+                rtAnswer.Text = hexagramDetails.Answer;
+                rtQuestion.Text = hexagramDetails.Question;
+    
+                // Létrehozunk két Values objektumot a jelenlegi és az új hexagramhoz
+                var currentValues = new HG.Values();
+                var newValues = new HG.Values();
+    
+                // Beállítjuk az értékeket a hexagramok alapján
+                for (int i = 0; i < 6; i++)
+                {
+                    int mask = 1 << i;
+                    currentValues.SetValue(5 - i, 0, (hexagramDetails.CurrentHexagram & mask) != 0);
+                    currentValues.SetValue(5 - i, 1, (hexagramDetails.CurrentHexagram & mask) != 0);
+                    currentValues.SetValue(5 - i, 2, (hexagramDetails.CurrentHexagram & mask) != 0);
+    
+                    newValues.SetValue(5 - i, 0, (hexagramDetails.NewHexagram & mask) != 0);
+                    newValues.SetValue(5 - i, 1, (hexagramDetails.NewHexagram & mask) != 0);
+                    newValues.SetValue(5 - i, 2, (hexagramDetails.NewHexagram & mask) != 0);
+                }
+    
+                // Frissítjük a jelölőnégyzeteket
+                FillCheckBoxes(currentValues);
+            }
         }
     }
 
@@ -187,7 +209,12 @@ public partial class CvHexagram : ContentView
 
         // Save the question and hexagram result
         var jsonHandler = new JsonHandler();
-        jsonHandler.SaveEntry(new HexagramEntry(question, rtAnswer.Text));
+        jsonHandler.SaveEntry(new HexagramEntry(
+            question,
+            rtAnswer.Text,
+            hexagram.Current,
+            hexagram.New
+        ));
 
         // Refresh the hexagram picker with the updated entries
         RefreshHexagramPicker();
