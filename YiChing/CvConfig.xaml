@@ -30,6 +30,30 @@
         <Label Text="Translation Request" />
         <Entry x:Name="txtTranslationRequest" Text="{Binding Settings.TranslationRequest}" />
 
+        <Label Text="Steps Header" />
+        <Entry x:Name="txtStepsHeader" Text="{Binding Settings.StepsHeader}" />
+
+        <Label Text="Output Format Header" />
+        <Entry x:Name="txtOutputFormatHeader" Text="{Binding Settings.OutputFormatHeader}" />
+
+        <Label Text="Notes Header" />
+        <Entry x:Name="txtNotesHeader" Text="{Binding Settings.NotesHeader}" />
+
+        <Label Text="Step 1" />
+        <Entry x:Name="txtStep1" Text="{Binding Settings.Step1}" />
+
+        <Label Text="Step 2" />
+        <Entry x:Name="txtStep2" Text="{Binding Settings.Step2}" />
+
+        <Label Text="Step 3" />
+        <Entry x:Name="txtStep3" Text="{Binding Settings.Step3}" />
+
+        <Label Text="Note 1" />
+        <Entry x:Name="txtNote1" Text="{Binding Settings.Note1}" />
+
+        <Label Text="Note 2" />
+        <Entry x:Name="txtNote2" Text="{Binding Settings.Note2}" />
+
         <Button x:Name="btnReturn" Text="Return"></Button>
     </VerticalStackLayout>
 </ContentView>
