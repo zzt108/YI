@@ -33,7 +33,7 @@
             <Editor x:Name="txtSteps" Text="{Binding Settings.StepsHeader}" HeightRequest="200" />
             
             <Label Text="Output Format Header" />
-            <Entry x:Name="txtOutputFormatHeader" Text="{Binding Settings.OutputFormatHeader}" />
+            <Editor x:Name="txtOutputFormatHeader" Text="{Binding Settings.OutputFormatHeader}" HeightRequest="200" />
             
             <Label Text="Notes" />
             <Editor x:Name="txtNotes" Text="{Binding Settings.NotesHeader}" HeightRequest="200" />
