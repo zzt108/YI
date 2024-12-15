@@ -138,9 +138,9 @@ public partial class CvYarrowStalks : ContentView
     private void HandleClick(int linesLeft)
     {
         const int MaxDivisionCount = 18;
-
+    
         piles[clickCount % 3] = helper.GetHand(linesLeft);
-
+    
         if (clickCount < MaxDivisionCount)
         {
             clickCount++;
@@ -157,20 +157,63 @@ public partial class CvYarrowStalks : ContentView
                 ReturnToHexagramPage();
             }
         }
-
-        //gridYarrow.IsEnabled = false;
-        gridYarrow.IsVisible = false;
-        Thread.Sleep(YarrowClickTiming * 150);
-
-        //foreach (var line in lines) { line.BackgroundColor = Colors.Gray; Thread.Sleep(YarrowClickTiming/2); }
-        //foreach (var line in buttons) { line.BackgroundColor = Colors.Gray; Thread.Sleep(YarrowClickTiming/2); }
-        //foreach (var line in lines) { line.HeightRequest = 0; Thread.Sleep(YarrowClickTiming / 2); }
-        //foreach (var line in buttons) { line.HeightRequest = 50; Thread.Sleep(YarrowClickTiming / 2); }
-        gridYarrow.IsEnabled = true;
-        gridYarrow.IsVisible = true;
-
-        //var b = mainPage.ShowMessageBox($"Lines to the left: {linesLeft}", "Button Click");
+    
+        // Vizuális visszajelzés a felosztásról
+        ShowDivision(linesLeft);
+        
+        // Most már nem kell extra várakozás, mert a ShowDivision kezeli
+        
+        // Újrageneráljuk a pálcikákat
         GenerateLinesAndButtons(helper.RemainingStalkCount, gridYarrow);
+    }
+    
+    private void ShowDivision(int linesLeft)
+    {
+        // Eredeti színek mentése
+        var originalLineColor = Colors.ForestGreen;
+        var originalButtonColor = Colors.AliceBlue;
+    
+        try
+        {
+            // Bal oldali pálcikák és gombok megjelölése
+            for (int i = 0; i < linesLeft; i++)
+            {
+                lines[i].BackgroundColor = new Color(255, 0, 0); // Pure Red
+                lines[i].HeightRequest = LineHeight * 0.8;
+                
+                if (i < buttons.Length && i < linesLeft - 1)
+                {
+                    buttons[i].BackgroundColor = new Color(0, 0, 0); // Pure Black
+                }
+            }
+    
+            // Jobb oldali pálcikák és gombok megjelölése
+            for (int i = linesLeft; i < lines.Length; i++)
+            {
+                lines[i].BackgroundColor = new Color(0, 0, 0); // Pure Black
+                lines[i].HeightRequest = LineHeight * 0.6;
+                
+                if (i < buttons.Length)
+                {
+                    buttons[i].BackgroundColor = new Color(0, 0, 0); // Pure Black
+                }
+            }
+    
+            // Hosszabb késleltetés a vizuális hatás érzékeléséhez
+            Thread.Sleep(YarrowClickTiming * 200);
+        }
+        finally
+        {
+            // Visszaállítjuk az eredeti színeket
+            for (int i = 0; i < lines.Length; i++)
+            {
+                lines[i].BackgroundColor = originalLineColor;
+                if (i < buttons.Length)
+                {
+                    buttons[i].BackgroundColor = originalButtonColor;
+                }
+            }
+        }
     }
 
     private void ReturnToHexagramPage()

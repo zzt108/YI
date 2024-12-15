@@ -63,7 +63,6 @@ public partial class CvConfig : ContentView
             Settings.StepsHeader = defaultSettings.StepsHeader;
             Settings.OutputFormatHeader = defaultSettings.OutputFormatHeader;
             Settings.NotesHeader = defaultSettings.NotesHeader;
-            Settings.KeyThree = defaultSettings.KeyThree;
 
             // Frissítjük a Picker értékét
             myPicker.SelectedItem = Settings.AnswerLanguage;

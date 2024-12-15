@@ -11,10 +11,10 @@ namespace YiChing.Configuration
         public const string DEFAULT_ANSWER_PREFIX = "I Ching answered:";
         public const string DEFAULT_TRANSLATION_REQUEST = "Please translate to";
         public const string DEFAULT_STEPS_HEADER = "# Steps\n\n1. Translate the hexagrams and question into English.\n2. Provide an interpretation of the main hexagram and how the changing lines influence its meaning.\n3. Explain how the changing hexagram provides additional insight or guidance.";
-        public const string DEFAULT_OUTPUT_FORMAT_HEADER = "# Output Format\n\nProvide a paragraph in the requested translation that includes the translated question, hexagrams, and a detailed interpretation of the I Ching reading.";
+        public const string DEFAULT_OUTPUT_FORMAT_HEADER = "# Output Format\n\nProvide a paragraph in the requested translation that includes the translated question, hexagrams, and a detailed interpretation of the I Ching reading.\n\nFinally summarise the answer to the reading";
         public const string DEFAULT_NOTES_HEADER = "# Notes\n\n" +
             "- Pay attention to the meanings of both hexagrams and how the changing lines transition the reading from the main to the changing hexagram.\n\n" +
-            "- Ensure the interpretation reflects the philosophical concepts of the I Ching in the context of the question asked.";
+            "- Ensure the interpretation reflects the philosophical concepts of the I Ching and C. G. Jung views in the context of the question asked.";
         public const string DEFAULT_MESSAGE = "Default Message";
     }
 
@@ -48,20 +48,13 @@ namespace YiChing.Configuration
 
         public Settings()
         {
-            answerLanguage = "English";
-            questionPrefix = "Question to I Ching:";
-            answerPrefix = "I Ching answered:";
-            translationRequest = "Please translate to";
-            stepsHeader = "# Steps\n\n1. Translate the hexagrams and question into English.\n2. Provide an interpretation of the main hexagram and how the changing lines influence its meaning.\n3. Explain how the changing hexagram provides additional insight or guidance.";
-            outputFormatHeader = "# Output Format\n\n" +
-                        "Provide a paragraph in the requested translation that includes the translated question, hexagrams, and a detailed interpretation of the I Ching reading.";
-            notesHeader = "# Notes\n\n" +
-                         "- Pay attention to the meanings of both hexagrams and how the changing lines transition the reading from the main to the changing hexagram.\n\n" +
-                         "- Ensure the interpretation reflects the philosophical concepts of the I Ching in the context of the question asked.";
-            KeyThree = new NestedSettings
-            {
-                Message = "This is a message from the settings"
-            };
+            answerLanguage = DefaultTexts.DEFAULT_ANSWER_LANGUAGE;
+            questionPrefix = DefaultTexts.DEFAULT_QUESTION_PREFIX;
+            answerPrefix = DefaultTexts.DEFAULT_ANSWER_PREFIX;
+            translationRequest = DefaultTexts.DEFAULT_TRANSLATION_REQUEST;
+            stepsHeader = DefaultTexts.DEFAULT_STEPS_HEADER;
+            outputFormatHeader = DefaultTexts.DEFAULT_OUTPUT_FORMAT_HEADER;
+            notesHeader = DefaultTexts.DEFAULT_NOTES_HEADER;
         }
         #endregion
 
@@ -155,7 +148,6 @@ namespace YiChing.Configuration
                 }
             }
         }
-        public NestedSettings KeyThree { get; set; }
 
         #region Methods
 
@@ -168,10 +160,6 @@ namespace YiChing.Configuration
             StepsHeader = Preferences.Default.Get(nameof(StepsHeader), defaults?.StepsHeader ?? DefaultTexts.DEFAULT_STEPS_HEADER);
             OutputFormatHeader = Preferences.Default.Get(nameof(OutputFormatHeader), defaults?.OutputFormatHeader ?? DefaultTexts.DEFAULT_OUTPUT_FORMAT_HEADER);
             NotesHeader = Preferences.Default.Get(nameof(NotesHeader), defaults?.NotesHeader ?? DefaultTexts.DEFAULT_NOTES_HEADER);
-            KeyThree = new NestedSettings
-            {
-                Message = Preferences.Default.Get(nameof(KeyThree.Message), defaults?.KeyThree?.Message ?? "Default Message")
-            };
         }
         public void SaveValues()
         {
@@ -182,13 +170,7 @@ namespace YiChing.Configuration
             Preferences.Default.Set(nameof(Settings.StepsHeader), stepsHeader);
             Preferences.Default.Set(nameof(Settings.OutputFormatHeader), outputFormatHeader);
             Preferences.Default.Set(nameof(Settings.NotesHeader), notesHeader);
-            Preferences.Default.Set(nameof(Settings.KeyThree.Message), KeyThree.Message);
         }
         #endregion
-    }
-
-    public class NestedSettings
-    {
-        public string? Message { get; set; }
     }
 }
