@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿using System;
+﻿﻿using System;
 using System.Linq;
 
 namespace YiChing
@@ -12,9 +12,9 @@ namespace YiChing
         string stepsHeader;
         string outputFormatHeader;
         string notesHeader;
-        
+
         #region Constructor
-        
+
         public void Dispose()
         {
             SaveValues();
@@ -30,8 +30,9 @@ namespace YiChing
             questionPrefix = "Question to I Ching:";
             answerPrefix = "I Ching answered:";
             translationRequest = "Please translate to";
-            stepsHeader = "# Steps\n\n1. Translate the hexagrams and question into {AnswerLanguage}.\n2. Provide an interpretation of the main hexagram and how the changing lines influence its meaning.\n3. Explain how the changing hexagram provides additional insight or guidance.";
-            outputFormatHeader = "# Output Format";
+            stepsHeader = "# Steps\n\n1. Translate the hexagrams and question into English.\n2. Provide an interpretation of the main hexagram and how the changing lines influence its meaning.\n3. Explain how the changing hexagram provides additional insight or guidance.";
+            outputFormatHeader = "# Output Format\n\n" +
+                        "Provide a paragraph in the requested translation that includes the translated question, hexagrams, and a detailed interpretation of the I Ching reading.";
             notesHeader = "# Notes\n\n" +
                          "- Pay attention to the meanings of both hexagrams and how the changing lines transition the reading from the main to the changing hexagram.\n\n" +
                          "- Ensure the interpretation reflects the philosophical concepts of the I Ching in the context of the question asked.";
