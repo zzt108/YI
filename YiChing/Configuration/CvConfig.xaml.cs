@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 
-namespace YiChing;
+namespace YiChing.Configuration;
 
 public partial class CvConfig : ContentView
 {

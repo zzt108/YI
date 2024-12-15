@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Maui.Controls;
+using YiChing.Configuration;
 
 namespace YiChing
 {

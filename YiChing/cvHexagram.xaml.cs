@@ -1,6 +1,7 @@
 using HexagramNS;
 using System.Web;
 using HG = HexagramNS;
+using YiChing.Configuration;
 
 namespace YiChing;
 

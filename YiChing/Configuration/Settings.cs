@@ -1,8 +1,8 @@
-﻿﻿﻿﻿using System;
+using System;
 using System.Linq;
 using System.ComponentModel;
 
-namespace YiChing
+namespace YiChing.Configuration
 {
     public static class DefaultTexts
     {
