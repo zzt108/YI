@@ -24,9 +24,6 @@
         <Label Text="Answer Prefix" />
         <Entry x:Name="txtAnswerPrefix" Text="{Binding Settings.AnswerPrefix}" />
 
-        <Label Text="Interpretation Request" />
-        <Entry x:Name="txtInterpretationRequest" Text="{Binding Settings.InterpretationRequest}" />
-
         <Label Text="Translation Request" />
         <Entry x:Name="txtTranslationRequest" Text="{Binding Settings.TranslationRequest}" />
 
