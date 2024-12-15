@@ -4,6 +4,20 @@ using System.ComponentModel;
 
 namespace YiChing
 {
+    public static class DefaultTexts
+    {
+        public const string DEFAULT_ANSWER_LANGUAGE = "English";
+        public const string DEFAULT_QUESTION_PREFIX = "Question to I Ching:";
+        public const string DEFAULT_ANSWER_PREFIX = "I Ching answered:";
+        public const string DEFAULT_TRANSLATION_REQUEST = "Please translate to";
+        public const string DEFAULT_STEPS_HEADER = "# Steps\n\n1. Translate the hexagrams and question into English.\n2. Provide an interpretation of the main hexagram and how the changing lines influence its meaning.\n3. Explain how the changing hexagram provides additional insight or guidance.";
+        public const string DEFAULT_OUTPUT_FORMAT_HEADER = "# Output Format\n\nProvide a paragraph in the requested translation that includes the translated question, hexagrams, and a detailed interpretation of the I Ching reading.";
+        public const string DEFAULT_NOTES_HEADER = "# Notes\n\n" +
+            "- Pay attention to the meanings of both hexagrams and how the changing lines transition the reading from the main to the changing hexagram.\n\n" +
+            "- Ensure the interpretation reflects the philosophical concepts of the I Ching in the context of the question asked.";
+        public const string DEFAULT_MESSAGE = "Default Message";
+    }
+
     public class Settings : IDisposable, INotifyPropertyChanged
     {
         private string answerLanguage;
@@ -147,16 +161,13 @@ namespace YiChing
 
         public void LoadValues(Settings? defaults)
         {
-            AnswerLanguage = Preferences.Default.Get(nameof(AnswerLanguage), defaults?.AnswerLanguage ?? "English");
-            QuestionPrefix = Preferences.Default.Get(nameof(QuestionPrefix), defaults?.QuestionPrefix ?? "Question to I Ching:");
-            AnswerPrefix = Preferences.Default.Get(nameof(AnswerPrefix), defaults?.AnswerPrefix ?? "I Ching answered:");
-            TranslationRequest = Preferences.Default.Get(nameof(TranslationRequest), defaults?.TranslationRequest ?? "Please translate to");
-            StepsHeader = Preferences.Default.Get(nameof(StepsHeader), defaults?.StepsHeader ?? "# Steps\n\n1. Translate the hexagrams and question into {AnswerLanguage}.\n2. Provide an interpretation of the main hexagram and how the changing lines influence its meaning.\n3. Explain how the changing hexagram provides additional insight or guidance.");
-            OutputFormatHeader = Preferences.Default.Get(nameof(OutputFormatHeader), defaults?.OutputFormatHeader ?? "# Output Format");
-            NotesHeader = Preferences.Default.Get(nameof(NotesHeader), defaults?.NotesHeader ??
-                "# Notes\n\n" +
-                "- Pay attention to the meanings of both hexagrams and how the changing lines transition the reading from the main to the changing hexagram.\n\n" +
-                "- Ensure the interpretation reflects the philosophical concepts of the I Ching in the context of the question asked.");
+            AnswerLanguage = Preferences.Default.Get(nameof(AnswerLanguage), defaults?.AnswerLanguage ?? DefaultTexts.DEFAULT_ANSWER_LANGUAGE);
+            QuestionPrefix = Preferences.Default.Get(nameof(QuestionPrefix), defaults?.QuestionPrefix ?? DefaultTexts.DEFAULT_QUESTION_PREFIX);
+            AnswerPrefix = Preferences.Default.Get(nameof(AnswerPrefix), defaults?.AnswerPrefix ?? DefaultTexts.DEFAULT_ANSWER_PREFIX);
+            TranslationRequest = Preferences.Default.Get(nameof(TranslationRequest), defaults?.TranslationRequest ?? DefaultTexts.DEFAULT_TRANSLATION_REQUEST);
+            StepsHeader = Preferences.Default.Get(nameof(StepsHeader), defaults?.StepsHeader ?? DefaultTexts.DEFAULT_STEPS_HEADER);
+            OutputFormatHeader = Preferences.Default.Get(nameof(OutputFormatHeader), defaults?.OutputFormatHeader ?? DefaultTexts.DEFAULT_OUTPUT_FORMAT_HEADER);
+            NotesHeader = Preferences.Default.Get(nameof(NotesHeader), defaults?.NotesHeader ?? DefaultTexts.DEFAULT_NOTES_HEADER);
             KeyThree = new NestedSettings
             {
                 Message = Preferences.Default.Get(nameof(KeyThree.Message), defaults?.KeyThree?.Message ?? "Default Message")
