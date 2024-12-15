@@ -63,14 +63,9 @@ public partial class CvHexagram : ContentView
                    $"{settings.AnswerPrefix}\n\n" +
                    $"{rtAnswer.Text}\n\n" +
                    $"{settings.StepsHeader}\n\n" +
-                   $"1. {settings.Step1}\n" +
-                   $"2. {settings.Step2}\n" +
-                   $"3. {settings.Step3}\n\n" +
                    $"{settings.OutputFormatHeader}\n\n" +
                    $"Provide a paragraph in {settings.AnswerLanguage} that includes the translated question, hexagrams, and a detailed interpretation of the I Ching reading.\n\n" +
-                   $"{settings.NotesHeader}\n\n" +
-                   $"{settings.Note1}\n" +
-                   $"{settings.Note2}";
+                   $"{settings.NotesHeader}";
         }
         return string.Empty; // Return an empty string if _mainPage is null
     }

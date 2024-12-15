@@ -121,3 +121,24 @@ remove the folloving properties from settings.cs and cvConfig:
 
             keyTwo = "Value Two";
             interpretationRequest = "Would you please interpret?";
+
+# 4.1
+
+@/YiChing/cvHexagram.xaml.cs 
+
+                   $"{settings.StepsHeader}\n\n" +
+                   $"1. {settings.Step1}\n" +
+                   $"2. {settings.Step2}\n" +
+                   $"3. {settings.Step3}\n\n" +
+Make StepsHeader and Step1-3 one multiline string and a multiline edit control on cvConfigurations. Concatenate their default values too.
+
+# 4.2
+@/YiChing/cvHexagram.xaml.cs 
+
+                   $"{settings.NotesHeader}\n\n" +
+                   $"{settings.Note1}\n" +
+                   $"{settings.Note2}";
+Make NotesHeader andNote1-2 one multiline string and a multiline edit control on cvConfigurations. Concatenate their default values too.
+
+# 5
+        public NestedSettings KeyThree { get; set; } should be removed
