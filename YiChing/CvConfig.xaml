@@ -16,11 +16,20 @@
                 <x:String>Hungarian</x:String>
             </Picker.Items>
         </Picker>
-        <!--<Label Text="Key Two" />
-        <Entry Text="{Binding Settings.KeyTwo}" />
-        <Label Text="Key Three Message" />
-        <Entry Text="{Binding Settings.KeyThree.Message}" />-->
-        <Button x:Name="btnReturn" Text="Return"></Button>
 
+        <!-- New configuration entries for text elements -->
+        <Label Text="Question Prefix" />
+        <Entry x:Name="txtQuestionPrefix" Text="{Binding Settings.QuestionPrefix}" />
+
+        <Label Text="Answer Prefix" />
+        <Entry x:Name="txtAnswerPrefix" Text="{Binding Settings.AnswerPrefix}" />
+
+        <Label Text="Interpretation Request" />
+        <Entry x:Name="txtInterpretationRequest" Text="{Binding Settings.InterpretationRequest}" />
+
+        <Label Text="Translation Request" />
+        <Entry x:Name="txtTranslationRequest" Text="{Binding Settings.TranslationRequest}" />
+
+        <Button x:Name="btnReturn" Text="Return"></Button>
     </VerticalStackLayout>
 </ContentView>

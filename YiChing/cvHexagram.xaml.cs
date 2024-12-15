@@ -56,8 +56,9 @@ public partial class CvHexagram : ContentView
     {
         if (_mainPage != null) // Check if _mainPage is not null
         {
-            return $"{DateTime.Now:yyyy-MM-dd}\nQuestion to I Ching:\n {rtQuestion.Text}\n"
-                + $"\nI Ching answered:\n{rtAnswer.Text}\nWould you please interpret?\n\nPlease translate to {_mainPage.CVConfig.Settings.AnswerLanguage}.";
+            var settings = _mainPage.CVConfig.Settings;
+            return $"{DateTime.Now:yyyy-MM-dd}\n{settings.QuestionPrefix}\n {rtQuestion.Text}\n"
+                + $"\n{settings.AnswerPrefix}\n{rtAnswer.Text}\n{settings.InterpretationRequest}\n\n{settings.TranslationRequest} {_mainPage.CVConfig.Settings.AnswerLanguage}.";
         }
         return string.Empty; // Return an empty string if _mainPage is null
     }
