@@ -146,7 +146,7 @@ public partial class CvHexagram : ContentView
 
     public string Title = "Yi Ching for AI by Gerzson";
 
-    protected CheckBox[,] CheckBoxes = new CheckBox[HG.Hexagram.RowCount, HG.Hexagram.ColCount];
+    public CheckBox[,] CheckBoxes = new CheckBox[HG.Hexagram.RowCount, HG.Hexagram.ColCount];
 
     public void FillCheckBoxes(HG.Values values)
     {
