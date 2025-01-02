@@ -1,4 +1,4 @@
-﻿﻿namespace HexagramNS;
+﻿﻿﻿﻿namespace HexagramNS;
 
 /*
 1. Six Lines Stacked:
@@ -102,7 +102,7 @@ This is the main documentation for Hexagram values. Never change this.
 */
 
     // this is the representation of the above hexagram values.
-    private static readonly Dictionary<int, Dictionary<int, int>> hexagramLookup = new()
+    public static readonly Dictionary<int, Dictionary<int, int>> hexagramLookup = new()
     {
         { 111, new Dictionary<int, int> { { 111,  1 }, { 1, 34 }, { 10, 5  }, { 100, 26 }, { 0, 11 }, { 110, 9  }, { 11, 43 }, { 101, 14 } } },
         { 001, new Dictionary<int, int> { { 111, 25 }, { 1, 51 }, { 10, 3  }, { 100, 27 }, { 0, 24 }, { 110, 42 }, { 11, 17 }, { 101, 21 } } },

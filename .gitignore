@@ -399,3 +399,4 @@ snapshots-diff/
 /MauiApp2/Visual Studio 2022/Visualizers/attribcache*.bin
 /YiChing/publish.cmd
 /YiChing/yiching.keystore
+*.7z
