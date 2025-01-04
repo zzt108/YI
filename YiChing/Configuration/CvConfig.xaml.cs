@@ -40,7 +40,7 @@ public partial class CvConfig : ContentView
     {
         var picker = (Picker)sender;
         var selectedItem = picker.SelectedItem;
-        txtAnswerLanguage.Text = selectedItem?.ToString();
+        txtAnswerLanguage.Text = selectedItem?.ToString() ?? string.Empty;
 
         if (Settings != null) // Ensure Settings is not null before accessing
         {

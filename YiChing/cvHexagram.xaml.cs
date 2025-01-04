@@ -27,18 +27,22 @@ public partial class CvHexagram : ContentView
             gridHexagram.Add(labelCB, gridHexagram.ColumnDefinitions.Count - 1, row + 1);
             labelCB.WidthRequest = 40;
 
-            for (int col = 0; col < HG.Hexagram.ColCount; col++)
+            if (gridHexagram != null)
             {
-                CheckBox checkBox = new CheckBox();
-                CheckBoxes[row, col] = checkBox;
-                checkBox.WidthRequest = 40;
+                for (int col = 0; col < HG.Hexagram.ColCount; col++)
+                {
+                    CheckBox checkBox = new CheckBox();
+                    CheckBoxes[row, col] = checkBox;
+                    checkBox.WidthRequest = 40;
 
-                // checkBox.Location = new Point(x, y);
-                gridHexagram.Add(checkBox, col + 1, row + 1);
-                //x += HorDist; // Adjust the horizontal spacing between checkboxes
+                    // checkBox.Location = new Point(x, y);
+                    gridHexagram.Add(checkBox, col + 1, row + 1);
+                    //x += HorDist; // Adjust the horizontal spacing between checkboxes
+                }
             }
         }
     }
+
 
     private void ResetIndeterminate()
     {
@@ -113,17 +117,21 @@ public partial class CvHexagram : ContentView
     {
         if (hexagramPicker.SelectedItem != null)
         {
-            var selectedHexagram = hexagramPicker.SelectedItem.ToString();
-            var jsonHandler = new JsonHandler();
-            var hexagramDetails = jsonHandler.GetHexagramDetails(selectedHexagram);
-
-            if (hexagramDetails != null)
+            if (hexagramPicker.SelectedItem != null)
             {
-                rtAnswer.Text = hexagramDetails.Answer;
-                rtQuestion.Text = hexagramDetails.Question;
+                var selectedHexagram = hexagramPicker.SelectedItem.ToString();
+                var jsonHandler = new JsonHandler();
+                var hexagramDetails = jsonHandler.GetHexagramDetails(selectedHexagram);
 
-                FillCheckBoxesFromHexagramNumbers(hexagramDetails.CurrentHexagram, hexagramDetails.NewHexagram);
+                if (hexagramDetails != null)
+                {
+                    rtAnswer.Text = hexagramDetails.Answer;
+                    rtQuestion.Text = hexagramDetails.Question;
+
+                    FillCheckBoxesFromHexagramNumbers(hexagramDetails.CurrentHexagram, hexagramDetails.NewHexagram);
+                }
             }
+
         }
     }
 
