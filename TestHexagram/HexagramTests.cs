@@ -212,17 +212,16 @@ namespace TestHexagram
             _hexagram.ChangingLines.Should().BeEquivalentTo(new[] { 1, 4 });
         }
 
-        [Test]
-        public void TrigramsToBinaryString_ShouldReturnCorrectBinaryRepresentation()
+        [TestCase(0, 0, "000000")]
+        [TestCase(111, 111, "111111")]
+        [TestCase(10, 101, "010101")]
+        [TestCase(101, 1, "101001")]
+        public void TrigramsToBinaryString_ShouldReturnCorrectBinaryRepresentation(int upperTrigram, int lowerTrigram, string expectedBinary)
         {
-            // Arrange
-            var hexagram = new Hexagram(_values);
 
+            var hexagram = new Hexagram(_values);
             // Act & Assert
-            hexagram.TrigramsToBinaryString((0, 0)).Should().Be("000000");
-            hexagram.TrigramsToBinaryString((111, 111)).Should().Be("111111");
-            hexagram.TrigramsToBinaryString((10, 101)).Should().Be("010101");
-            hexagram.TrigramsToBinaryString((101, 1)).Should().Be("101001");
+            hexagram.TrigramsToBinaryString((upperTrigram, lowerTrigram)).Should().Be(expectedBinary);
         }
 
         [TestCase(1, "111111")]
@@ -240,6 +239,66 @@ namespace TestHexagram
 
             // Assert
             result.Should().Be(expectedBinary);
+        }
+
+        [Test]
+        public void FillValuesFromHexagramNumbers_ShouldSetCorrectValues_ForHexagram1To2()
+        {
+            // Arrange
+            var hexagram = new Hexagram(1, 2);
+            var trigrams = hexagram.GetTrigrams();
+
+            // Act & Assert
+            trigrams[0].Should().Be(111);
+            trigrams[1].Should().Be(111);
+            trigrams[2].Should().Be(000);
+            trigrams[3].Should().Be(000);
+            hexagram.ChangingLines.Should().BeEquivalentTo(new[] { 1, 2, 3, 4, 5, 6 });
+        }
+
+        [Test]
+        public void FillValuesFromHexagramNumbers_ShouldSetCorrectValues_ForHexagram34To56()
+        {
+            // Arrange
+            var hexagram = new Hexagram(34, 56); // 001 111, 101 100
+            var trigrams = hexagram.GetTrigrams();
+
+            // Act & Assert
+            trigrams[0].Should().Be(001);
+            trigrams[1].Should().Be(111);
+            trigrams[2].Should().Be(101);
+            trigrams[3].Should().Be(100);
+            hexagram.ChangingLines.Should().BeEquivalentTo(new[] { 1, 2, 5, 6 });
+        }
+
+        [Test]
+        public void FillValuesFromHexagramNumbers_ShouldSetCorrectValues_ForHexagram63To64()
+        {
+            // Arrange
+            var hexagram = new Hexagram(63, 64); // 010 101, 101 010
+            var trigrams = hexagram.GetTrigrams();
+
+            // Act & Assert
+            trigrams[0].Should().Be(010);
+            trigrams[1].Should().Be(101);
+            trigrams[2].Should().Be(101);
+            trigrams[3].Should().Be(010);
+            hexagram.ChangingLines.Should().BeEquivalentTo(new[] { 1, 2, 3, 4, 5, 6 });
+        }
+
+        [Test]
+        public void FillValuesFromHexagramNumbers_ShouldSetCorrectValues_ForSameHexagram()
+        {
+            // Arrange
+            var hexagram = new Hexagram(30, 30);
+            var trigrams = hexagram.GetTrigrams();
+
+            // Act & Assert
+            trigrams[0].Should().Be(101);
+            trigrams[1].Should().Be(101);
+            trigrams[2].Should().Be(101);
+            trigrams[3].Should().Be(101);
+            hexagram.ChangingLines.Should().BeEmpty();
         }
     }
 }

@@ -9,7 +9,11 @@
                 "build",
                 "${workspaceFolder}/Yi.sln",
                 "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+                "/consoleloggerparameters:NoSummary;ForceNoAlign",
+                "/p:AndroidUseManagedDesignTimeResourceGenerator=false",
+                "/p:AndroidUseIntermediateDesignerFile=false",
+                "/p:AndroidUseSharedRuntime=false",
+                "/p:AndroidEnableParallelBuild=false"
             ],
             "problemMatcher": "$msCompile"
         },
@@ -34,6 +38,22 @@
                 "run",
                 "--project",
                 "${workspaceFolder}/Yi.sln"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "incremental",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Yi.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary;ForceNoAlign",
+                "/p:AndroidUseManagedDesignTimeResourceGenerator=false",
+                "/p:AndroidUseIntermediateDesignerFile=false",
+                "/p:AndroidUseSharedRuntime=false",
+                "/p:AndroidEnableParallelBuild=false"
             ],
             "problemMatcher": "$msCompile"
         }

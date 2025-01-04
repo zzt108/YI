@@ -123,9 +123,9 @@ This is the main documentation for Hexagram values. Never change this.
         { 011, new Dictionary<int, int> { { 111, 10 }, { 1, 54 }, { 10, 60 }, { 100, 41 }, { 0, 19 }, { 110, 61 }, { 11, 58 }, { 101, 38 } } }
     };
 
-    private void GetTrigrams()
+    public int[] GetTrigrams()
     {
-        if (!_values.Changed) { return; }
+        if (!_values.Changed) { return lastTrigrams; }
 
         var rowStr = string.Empty;
         _changingLines.Clear();
@@ -140,6 +140,7 @@ This is the main documentation for Hexagram values. Never change this.
 
         // Trigrams returned as strings like "101" the hexagramLookup dictionary uses these as decimal int keys for looking up trigram numbers
         lastTrigrams = new int[] { int.Parse(trigrams[0]), int.Parse(trigrams[1]), int.Parse(changedTrigrams[0]), int.Parse(changedTrigrams[1]) };
+        return lastTrigrams;
     }
 
     void UpdateTrigrams(int row, string[] trigrams, string[] changedTrigrams)
@@ -170,7 +171,7 @@ This is the main documentation for Hexagram values. Never change this.
         }
         if (IsChangingLine(row))
         {
-            _changingLines.Add(RowCount - row); // Módosítva: RowCount - row helyett row + 1
+            _changingLines.Add(RowCount - row); 
         }
     }
 
