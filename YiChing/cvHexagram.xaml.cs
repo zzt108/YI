@@ -117,21 +117,17 @@ public partial class CvHexagram : ContentView
     {
         if (hexagramPicker.SelectedItem != null)
         {
-            if (hexagramPicker.SelectedItem != null)
+            var selectedHexagram = hexagramPicker.SelectedItem.ToString();
+            var jsonHandler = new JsonHandler();
+            var hexagramDetails = jsonHandler.GetHexagramDetails(selectedHexagram);
+
+            if (hexagramDetails != null)
             {
-                var selectedHexagram = hexagramPicker.SelectedItem.ToString();
-                var jsonHandler = new JsonHandler();
-                var hexagramDetails = jsonHandler.GetHexagramDetails(selectedHexagram);
+                rtAnswer.Text = hexagramDetails.Answer;
+                rtQuestion.Text = hexagramDetails.Question;
 
-                if (hexagramDetails != null)
-                {
-                    rtAnswer.Text = hexagramDetails.Answer;
-                    rtQuestion.Text = hexagramDetails.Question;
-
-                    FillCheckBoxesFromHexagramNumbers(hexagramDetails.CurrentHexagram, hexagramDetails.NewHexagram);
-                }
+                FillCheckBoxesFromHexagramNumbers(hexagramDetails.CurrentHexagram, hexagramDetails.NewHexagram);
             }
-
         }
     }
 
