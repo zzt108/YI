@@ -45,7 +45,7 @@ namespace TestHexagram
             // Assert
             _hexagram.Current.Should().Be(1);
             _hexagram.New.Should().Be(2);
-            _hexagram.ChangingLines.Should().BeEquivalentTo(new [] {1,2,3,4,5,6});
+            _hexagram.ChangingLines.Should().BeEquivalentTo(new[] { 1, 2, 3, 4, 5, 6 });
 
         }
 
@@ -82,7 +82,7 @@ namespace TestHexagram
             // Act
 
             // Assert
-            _hexagram.ChangingLines.Should().BeEquivalentTo(new int [] {1, 2, 3, 4, 6 });
+            _hexagram.ChangingLines.Should().BeEquivalentTo(new int[] { 1, 2, 3, 4, 6 });
         }
 
         [Test]
@@ -211,66 +211,35 @@ namespace TestHexagram
             // Assert
             _hexagram.ChangingLines.Should().BeEquivalentTo(new[] { 1, 4 });
         }
-    }
-
-    [TestFixture]
-    public class ValuesTests
-    {
-        private Values _values;
-
-        [SetUp]
-        public void Setup()
-        {
-            _values = new Values();
-        }
 
         [Test]
-        public void GetValue_ShouldReturnCorrectValue()
+        public void TrigramsToBinaryString_ShouldReturnCorrectBinaryRepresentation()
         {
             // Arrange
-            _values.SetValue(0, 0, true);
+            var hexagram = new Hexagram(_values);
 
-            // Act
-            var result = _values.GetValue(0, 0);
-
-            // Assert
-            result.Should().BeTrue();
+            // Act & Assert
+            hexagram.TrigramsToBinaryString((0, 0)).Should().Be("000000");
+            hexagram.TrigramsToBinaryString((111, 111)).Should().Be("111111");
+            hexagram.TrigramsToBinaryString((10, 101)).Should().Be("010101");
+            hexagram.TrigramsToBinaryString((101, 1)).Should().Be("101001");
         }
 
-        [Test]
-        public void SetValue_ShouldUpdateValue()
-        {
-            // Act
-            _values.SetValue(0, 0, false);
-
-            // Assert
-            _values.GetValue(0, 0).Should().BeFalse();
-        }
-
-        [Test]
-        public void SetHexagramRow_ShouldSetCorrectValues()
-        {
-            // Act
-            _values.SetHexagramRow(0, 6);
-
-            // Assert
-            _values.GetValue(0, 0).Should().BeFalse();
-            _values.GetValue(0, 1).Should().BeFalse();
-            _values.GetValue(0, 2).Should().BeFalse();
-        }
-
-        [Test]
-        public void InitValues_ShouldInitializeCorrectly()
+        [TestCase(1, "111111")]
+        [TestCase(2, "000000")]
+        [TestCase(3, "010001")]
+        [TestCase(4, "100010")]
+        [TestCase(63, "010101")]
+        public void HexagramToBinary_ConvertsCorrectly(int hexagramNumber, string expectedBinary)
         {
             // Arrange
-            bool[,] array = new bool[,] { { true, false }, { false, true } };
+            var hexagram = new Hexagram(_values);
 
             // Act
-            _values.InitValues(array, (value, row, col) => value);
+            var result = hexagram.HexagramToString(hexagramNumber);
 
             // Assert
-            _values.GetValue(0, 0).Should().BeTrue();
-            _values.GetValue(1, 1).Should().BeTrue();
+            result.Should().Be(expectedBinary);
         }
     }
 }

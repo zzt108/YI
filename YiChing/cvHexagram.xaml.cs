@@ -113,6 +113,14 @@ public partial class CvHexagram : ContentView
         }
     }
 
+    public void FillCheckBoxesFromHexagramNumbers(int currentHexagramNumber, int newHexagramNumber)
+    {
+        var h = new HG.Hexagram(currentHexagramNumber, newHexagramNumber);
+
+        FillCheckBoxes(h.Values);
+
+    }
+
     private void OnHexagramSelected(object sender, EventArgs e)
     {
         if (hexagramPicker.SelectedItem != null)
@@ -161,73 +169,6 @@ public partial class CvHexagram : ContentView
             checkBox.IsChecked = value;
             return checkBox;
         });
-    }
-
-    private string HexagramToBinary(int hexagramNumber)
-    {
-        // Find the trigrams that correspond to the hexagram number using the reverse lookup
-        var trigrams = FindTrigramsForHexagram(hexagramNumber);
-
-        // Convert the trigrams to a 6-digit binary string
-        string binaryString = TrigramsToBinaryString(trigrams);
-
-        return binaryString;
-    }
-
-    private (int, int) FindTrigramsForHexagram(int hexagramNumber)
-    {
-        foreach (var upperTrigram in Hexagram.hexagramLookup)
-        {
-            foreach (var lowerTrigram in upperTrigram.Value)
-            {
-                if (lowerTrigram.Value == hexagramNumber)
-                {
-                    return (upperTrigram.Key, lowerTrigram.Key);
-                }
-            }
-        }
-
-        throw new ArgumentException($"Hexagram number {hexagramNumber} not found in lookup table.");
-    }
-
-    private string TrigramsToBinaryString((int, int) trigrams)
-    {
-        // Convert each trigram to its 3-digit binary representation
-        string upperBinary = Convert.ToString(trigrams.Item1, 2).PadLeft(3, '0');
-        string lowerBinary = Convert.ToString(trigrams.Item2, 2).PadLeft(3, '0');
-
-        // Concatenate the binary strings to form the 6-digit hexagram representation
-        return upperBinary + lowerBinary;
-    }
-
-    public void FillCheckBoxesFromHexagramNumbers(int currentHexagramNumber, int newHexagramNumber)
-    {
-        // 1. Hexagram Numbers to Binary Strings
-        string currentBinary = HexagramToBinary(currentHexagramNumber);
-        string newBinary = HexagramToBinary(newHexagramNumber);
-
-        // 2. Binary Strings to Lines and Checkbox States
-        for (int row = 0; row < Hexagram.RowCount; row++)
-        {
-            // Determine if the line is changing by comparing current and new binary
-            bool isChanging = currentBinary[Hexagram.RowCount - 1 - row] != newBinary[Hexagram.RowCount - 1 - row];
-
-            // Get the line value from the current binary string (0 or 1)
-            char lineValue = currentBinary[Hexagram.RowCount - 1 - row]; // Read from right to left
-
-            // Set checkbox states based on the line value and whether it's changing
-            for (int col = 0; col < Hexagram.ColCount; col++)
-            {
-                if (lineValue == '1') // Yang line
-                {
-                    CheckBoxes[row, col].IsChecked = !isChanging; // Yang, not changing (9): Checked, Checked, Checked
-                }
-                else // Yin line
-                {
-                    CheckBoxes[row, col].IsChecked = isChanging; // Yin, not changing (6): Unchecked, Unchecked, Unchecked
-                }
-            }
-        }
     }
 
     private void EvalAndSaveHexagram()

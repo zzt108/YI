@@ -1,4 +1,4 @@
-﻿﻿﻿﻿namespace HexagramNS;
+﻿﻿namespace HexagramNS;
 
 /*
 1. Six Lines Stacked:
@@ -46,6 +46,14 @@ public class Hexagram
         _values = values;
     }
 
+    public Hexagram(int currentHG, int newHG)
+    {
+        _values = new Values();
+        FillValuesFromHexagramNumbers(currentHG, newHG);
+    }
+
+    public Values Values { get => _values; }
+
     // TODO add int Hexagram number and changed hexagram number
     // Variable to represent the hexagram number
     public int Current
@@ -78,7 +86,7 @@ public class Hexagram
 
     /*
 This is the main documentation for Hexagram values. Never change this.
-|   |111 | 0  | 010|101 | 001| 100| 110| 011|
+|   |111 | 0  | 010|101 | 001| 100| 110| 011| Top Trigram
 |111| 1  | 11 | 5  | 14 | 34 | 26 | 9  | 43 |
 |000| 12 | 2  | 8  | 35 | 16 | 23 | 20 | 45 |
 |010| 6  | 7  | 29 | 64 | 40 | 4  | 59 | 47 |
@@ -87,6 +95,7 @@ This is the main documentation for Hexagram values. Never change this.
 |100| 33 | 15 | 39 | 56 | 62 | 52 | 53 | 31 |
 |110| 44 | 46 | 48 | 50 | 32 | 18 | 57 | 28 |
 |011| 10 | 19 | 60 | 38 | 54 | 41 | 61 | 58 |
+  ^ Bottom Trigram
 
     111 000 = 11
 
@@ -142,7 +151,7 @@ This is the main documentation for Hexagram values. Never change this.
             case 6:
                 trigrams[trigramIndex] += "0";
                 changedTrigrams[trigramIndex] += "1";
-                
+
                 break;
             case 7:
                 var noChange0 = "0";
@@ -194,5 +203,70 @@ This is the main documentation for Hexagram values. Never change this.
             }
         }
         return true;
+    }
+
+    public string TrigramsToBinaryString((int, int) trigrams)
+    {
+        // Convert each trigram to its 3-digit binary representation
+        string upperBinary = Convert.ToString(trigrams.Item1, 10).PadLeft(3, '0');
+        string lowerBinary = Convert.ToString(trigrams.Item2, 10).PadLeft(3, '0');
+
+        // Concatenate the binary strings to form the 6-digit hexagram representation
+        return upperBinary + lowerBinary;
+    }
+
+    /// <summary>
+    /// Converts a hexagram number to its binary string representation.
+    /// </summary>
+    /// <param name="hexagramNumber">The number of the hexagram to convert (1-64)</param>
+    /// <returns>A 6-digit binary string representing the hexagram structure</returns>
+    public string HexagramToString(int hexagramNumber)
+    {
+        // Find the trigrams that correspond to the hexagram number using the reverse lookup
+        var trigrams = FindTrigramsForHexagram(hexagramNumber);
+
+        // Convert the trigrams to a 6-digit binary string
+        string binaryString = TrigramsToBinaryString(trigrams);
+
+        return binaryString;
+    }
+
+    private (int, int) FindTrigramsForHexagram(int hexagramNumber)
+    {
+        foreach (var lowerTrigram in Hexagram.hexagramLookup)
+        {
+            foreach (var upperTrigram in lowerTrigram.Value)
+            {
+                if (upperTrigram.Value == hexagramNumber)
+                {
+                    return (upperTrigram.Key, lowerTrigram.Key);
+                }
+            }
+        }
+
+        throw new ArgumentException($"Hexagram number {hexagramNumber} not found in lookup table.");
+    }
+
+    public void FillValuesFromHexagramNumbers(int currentHexagramNumber, int newHexagramNumber)
+    {
+        // 1. Hexagram Numbers to Binary Strings
+        string currentBinary = HexagramToString(currentHexagramNumber);
+        string newBinary = HexagramToString(newHexagramNumber);
+
+        // 2. Binary Strings to Lines and Checkbox States
+        for (int row = 0; row < Hexagram.RowCount; row++)
+        {
+            // Determine if the line is changing by comparing current and new binary
+            bool isChanging = currentBinary[Hexagram.RowCount - 1 - row] != newBinary[Hexagram.RowCount - 1 - row];
+
+            // Get the line value from the current binary string (0 or 1)
+            char lineValue = currentBinary[Hexagram.RowCount - 1 - row]; // Read from right to left
+
+            // Set checkbox states based on the line value and whether it's changing
+            for (int col = 0; col < Hexagram.ColCount; col++)
+            {
+                _values.SetHexagramRow(row, lineValue);
+            }
+        }
     }
 }

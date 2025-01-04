@@ -12,8 +12,10 @@ public class Values
     public int RowCount { get => values.GetLength(0); }
 
     public Values(int rowCount = Hexagram.RowCount, int colCount = Hexagram.ColCount)
-    { values = new bool[rowCount, colCount];
-    Changed = false;}
+    {
+        values = new bool[rowCount, colCount];
+        Changed = false;
+    }
 
     // TODO contsructor that takes an 2 dimensional array and a bool function to initialize the array
 
@@ -22,14 +24,17 @@ public class Values
 
 
 
-/// <summary>
-/// A hexagram line is changing when a row has 3 columns with the same values 
-/// </summary>
-/// <param name="row"></param>
-/// <param name="col"></param>
-/// <param name="value"></param>
-    public void SetValue(int row, int col, bool value) { values[row, col] = value; 
-    Changed = true;}
+    /// <summary>
+    /// A hexagram line is changing when a row has 3 columns with the same values 
+    /// </summary>
+    /// <param name="row"></param>
+    /// <param name="col"></param>
+    /// <param name="value"></param>
+    public void SetValue(int row, int col, bool value)
+    {
+        values[row, col] = value;
+        Changed = true;
+    }
 
     public void SetValues<T>(T[] array, Func<T, int, int, bool> func)
     {
@@ -70,7 +75,7 @@ public class Values
                 break;
         }
     }
-    
+
     /// <summary>
     /// Initializes the values in a two-dimensional array based on a given function.
     /// </summary>
@@ -105,7 +110,7 @@ public class Values
         return this;
     }
 
-    public void UpdateValues<T>(T[,] array, Func< int, int, bool, T> func)
+    public void UpdateValues<T>(T[,] array, Func<int, int, bool, T> func)
     {
         int rows = array.GetLength(0);
         int cols = array.GetLength(1);
@@ -114,7 +119,7 @@ public class Values
         {
             for (int j = 0; j < cols; j++)
             {
-                array[i, j] = func(i, j , values[i, j]);
+                array[i, j] = func(i, j, values[i, j]);
             }
         }
     }
