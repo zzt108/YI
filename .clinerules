@@ -1,3 +1,9 @@
+# Tools you MUST use 
+- C# .NET
+- MAUi
+- FluentAssertions
+- NUnit
+
 # Communication with the user (me)
 - Talk to me in the cline chat window in Hungarian. All other output must be in English. 
 - read readme.md for info about this project
