@@ -55,7 +55,11 @@
                 "/p:AndroidUseSharedRuntime=false",
                 "/p:AndroidEnableParallelBuild=false"
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }

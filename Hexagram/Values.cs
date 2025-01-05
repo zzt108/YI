@@ -123,4 +123,17 @@ public class Values
             }
         }
     }
+
+    internal void SetRow(int row, bool isYang, bool isChanging)
+    {
+        // use SetHexagramRow method
+        if (isChanging)
+        {
+            SetHexagramRow(row, isYang ? 9 : 6);
+        }
+        else
+        {
+            SetHexagramRow(row, isYang ? 7 : 8);
+        }
+    }
 }

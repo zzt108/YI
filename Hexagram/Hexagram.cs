@@ -250,24 +250,22 @@ This is the main documentation for Hexagram values. Never change this.
 
     public void FillValuesFromHexagramNumbers(int currentHexagramNumber, int newHexagramNumber)
     {
-        // 1. Hexagram Numbers to Binary Strings
+        // Convert hexagram numbers to 6-digit binary strings
         string currentBinary = HexagramToString(currentHexagramNumber);
         string newBinary = HexagramToString(newHexagramNumber);
 
-        // 2. Binary Strings to Lines and Checkbox States
+        // Iterate over each row (line) of the hexagram
         for (int row = 0; row < Hexagram.RowCount; row++)
         {
-            // Determine if the line is changing by comparing current and new binary
-            bool isChanging = currentBinary[Hexagram.RowCount - 1 - row] != newBinary[Hexagram.RowCount - 1 - row];
+            // Determine if the line is yang (1) or yin (0) based on the current hexagram
+            bool isYang = currentBinary[row] == '1';
 
-            // Get the line value from the current binary string (0 or 1)
-            char lineValue = currentBinary[Hexagram.RowCount - 1 - row]; // Read from right to left
+            // Determine if the line is changing based on the difference between current and new hexagrams
+            bool isChanging = currentBinary[row] != newBinary[row];
 
-            // Set checkbox states based on the line value and whether it's changing
-            for (int col = 0; col < Hexagram.ColCount; col++)
-            {
-                _values.SetHexagramRow(row, lineValue);
-            }
+            // rows are numbered from bottom up in the hexagram, so invert the row index
+            // first char in the binar string is top row
+            _values.SetRow(5-row, isYang, isChanging);
         }
     }
 }
