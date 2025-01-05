@@ -60,7 +60,8 @@ public partial class CvHexagram : ContentView
     {
         if (_mainPage != null) // Check if _mainPage is not null
         {
-            var settings = _mainPage.CVConfig.Settings;
+            var settings = _mainPage?.CVConfig?.Settings;
+            if (settings == null) return string.Empty;
             return $"{settings.TranslationRequest} {settings.AnswerLanguage} and provide an interpretation of the result.\n\n" +
                    $"Date: {DateTime.Now:yyyy-MM-dd}\n" +
                    $"{settings.QuestionPrefix} {rtQuestion.Text}\n\n" +
@@ -125,9 +126,10 @@ public partial class CvHexagram : ContentView
     {
         if (hexagramPicker.SelectedItem != null)
         {
-            var selectedHexagram = hexagramPicker.SelectedItem.ToString();
+            var selectedHexagram = hexagramPicker.SelectedItem?.ToString();
+            if (selectedHexagram == null) return;
             var jsonHandler = new JsonHandler();
-            var hexagramDetails = jsonHandler.GetHexagramDetails(selectedHexagram);
+            var hexagramDetails = jsonHandler.GetHexagramDetails(selectedHexagram!);
 
             if (hexagramDetails != null)
             {

@@ -85,30 +85,30 @@ public class Hexagram
     }
 
     /*
-This is the main documentation for Hexagram values. Never change this.
-|   |111 | 0  | 010|101 | 001| 100| 110| 011| Top Trigram
-|111| 1  | 11 | 5  | 14 | 34 | 26 | 9  | 43 |
-|000| 12 | 2  | 8  | 35 | 16 | 23 | 20 | 45 |
-|010| 6  | 7  | 29 | 64 | 40 | 4  | 59 | 47 |
-|101| 13 | 36 | 63 | 30 | 55 | 22 | 37 | 49 |
-|001| 25 | 24 | 3  | 21 | 51 | 27 | 42 | 17 |
-|100| 33 | 15 | 39 | 56 | 62 | 52 | 53 | 31 |
-|110| 44 | 46 | 48 | 50 | 32 | 18 | 57 | 28 |
-|011| 10 | 19 | 60 | 38 | 54 | 41 | 61 | 58 |
-  ^ Bottom Trigram
+    This is the main documentation for Hexagram values. Never change this.
+    |   |111 | 0  | 010|101 | 001| 100| 110| 011| Top Trigram
+    |111| 1  | 11 | 5  | 14 | 34 | 26 | 9  | 43 |
+    |000| 12 | 2  | 8  | 35 | 16 | 23 | 20 | 45 |
+    |010| 6  | 7  | 29 | 64 | 40 | 4  | 59 | 47 |
+    |101| 13 | 36 | 63 | 30 | 55 | 22 | 37 | 49 |
+    |001| 25 | 24 | 3  | 21 | 51 | 27 | 42 | 17 |
+    |100| 33 | 15 | 39 | 56 | 62 | 52 | 53 | 31 |
+    |110| 44 | 46 | 48 | 50 | 32 | 18 | 57 | 28 |
+    |011| 10 | 19 | 60 | 38 | 54 | 41 | 61 | 58 |
+      ^ Bottom Trigram
 
-    111 000 = 11
+        111 000 = 11
 
-|   |111 | 001| 010| 100| 0  | 110|101 | 011|
-|111| 1  | 34 | 5  | 26 | 11 | 9  | 14 | 43 |
-|001| 25 | 51 | 3  | 27 | 24 | 42 | 21 | 17 |
-|010| 6  | 40 | 29 | 4  | 7  | 59 | 64 | 47 |
-|100| 33 | 62 | 39 | 52 | 15 | 53 | 56 | 31 |
-|000| 12 | 16 | 8  | 23 | 2  | 20 | 35 | 45 |
-|110| 44 | 32 | 48 | 18 | 46 | 57 | 50 | 28 |
-|101| 13 | 55 | 63 | 22 | 36 | 37 | 30 | 49 |
-|011| 10 | 54 | 60 | 41 | 19 | 61 | 38 | 58 |
-*/
+    |   |111 | 001| 010| 100| 0  | 110|101 | 011|
+    |111| 1  | 34 | 5  | 26 | 11 | 9  | 14 | 43 |
+    |001| 25 | 51 | 3  | 27 | 24 | 42 | 21 | 17 |
+    |010| 6  | 40 | 29 | 4  | 7  | 59 | 64 | 47 |
+    |100| 33 | 62 | 39 | 52 | 15 | 53 | 56 | 31 |
+    |000| 12 | 16 | 8  | 23 | 2  | 20 | 35 | 45 |
+    |110| 44 | 32 | 48 | 18 | 46 | 57 | 50 | 28 |
+    |101| 13 | 55 | 63 | 22 | 36 | 37 | 30 | 49 |
+    |011| 10 | 54 | 60 | 41 | 19 | 61 | 38 | 58 |
+    */
 
     // this is the representation of the above hexagram values.
     public static readonly Dictionary<int, Dictionary<int, int>> hexagramLookup = new()
@@ -264,8 +264,7 @@ This is the main documentation for Hexagram values. Never change this.
             bool isChanging = currentBinary[row] != newBinary[row];
 
             // rows are numbered from bottom up in the hexagram, so invert the row index
-            // first char in the binar string is top row
-            _values.SetRow(5-row, isYang, isChanging);
+            _values.SetRow(Hexagram.RowCount - 1 - row, isYang, isChanging);
         }
     }
 }

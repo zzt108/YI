@@ -22,7 +22,14 @@ public partial class CvConfig : ContentView
 #pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
         LoadSettings();
         BindingContext = this;
-        myPicker.SelectedItem = Settings?.AnswerLanguage ?? "English"; // Default to "English" if null
+        if (Settings != null)
+        {
+            myPicker.SelectedItem = Settings.AnswerLanguage ?? "English"; // Default to "English" if null
+        }
+        else
+        {
+            myPicker.SelectedItem = "English";
+        }
     }
     private void LoadSettings()
     {
