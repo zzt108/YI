@@ -1,4 +1,7 @@
-﻿﻿namespace HexagramNS;
+﻿﻿using System;
+using System.Collections.Generic;
+
+namespace HexagramNS;
 
 /*
 1. Six Lines Stacked:
@@ -130,8 +133,8 @@ public class Hexagram
         var rowStr = string.Empty;
         _changingLines.Clear();
 
-        string[] trigrams = new string[2];
-        string[] changedTrigrams = new string[2];
+        string[] trigrams = new string[2] { "", "" };
+        string[] changedTrigrams = new string[2] { "", "" };
 
         for (int row = 0; row < RowCount; row++)
         {
@@ -146,13 +149,12 @@ public class Hexagram
     void UpdateTrigrams(int row, string[] trigrams, string[] changedTrigrams)
     {
         var line = GetLine(row);
-        var trigramIndex = row > 2 ? 0 : 1;
+        var trigramIndex = row > 2 ? 1 : 0;
         switch (line)
         {
             case 6:
                 trigrams[trigramIndex] += "0";
                 changedTrigrams[trigramIndex] += "1";
-
                 break;
             case 7:
                 var noChange0 = "0";

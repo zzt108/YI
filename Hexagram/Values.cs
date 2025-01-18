@@ -49,26 +49,27 @@ public class Values
 
     public void SetHexagramRow(int hexagramRow, int value)
     {
+        // see [three-coin method](https://en.wikipedia.org/wiki/I_Ching_divination)
         switch (value)
         {
             // Changing line
-            case 6:
+            case 6: //yin changing into yang
                 SetValue(hexagramRow, 0, false);
                 SetValue(hexagramRow, 1, false);
                 SetValue(hexagramRow, 2, false);
                 break;
-            case 7:
+            case 7: //yang unchanging 
                 SetValue(hexagramRow, 0, true);
                 SetValue(hexagramRow, 1, true);
                 SetValue(hexagramRow, 2, false);
                 break;
-            case 8:
+            case 8: //yin unchanging 
                 SetValue(hexagramRow, 0, false);
                 SetValue(hexagramRow, 1, false);
                 SetValue(hexagramRow, 2, true);
                 break;
             // Changing line
-            case 9:
+            case 9: //yang changing into yin
                 SetValue(hexagramRow, 0, true);
                 SetValue(hexagramRow, 1, true);
                 SetValue(hexagramRow, 2, true);
