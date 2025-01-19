@@ -148,7 +148,7 @@ public partial class CvYarrowStalks : ContentView
             if (clickCount % 3 == 0)
             {
                 hexagramRow--;
-                values.SetHexagramRow(hexagramRow, YarrowStalksHelper.GetHexagramLine(piles));
+                values.SetIndexRow(hexagramRow, YarrowStalksHelper.GetHexagramLine(piles));
                 mainPage.CVHexagram.FillCheckBoxes(values);
                 helper.Reset();
             }

@@ -1,5 +1,6 @@
 ﻿﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HexagramNS;
 
@@ -32,8 +33,15 @@ The positions of the solid and broken lines within the hexagram are important. T
 /// <summary>
 /// Represents a Hexagram, which is a 6x3 grid of coins.
 /// </summary>
+public enum TrigramPos
+{
+    Bottom = 0,
+    Top = 1
+}
+
 public class Hexagram
 {
+
     // Constants for the number of rows and columns in the Hexagram
     public const int RowCount = 6;
     public const int ColCount = 3;
@@ -63,8 +71,8 @@ public class Hexagram
     {
         get
         {
-            GetTrigrams();
-            return Hexagram.hexagramLookup[lastTrigrams[0]][lastTrigrams[1]];
+            var lastTrigrams = Trigrams;
+            return Hexagram.hexagramLookup[lastTrigrams[(int)TrigramPos.Top]][lastTrigrams[(int)TrigramPos.Bottom]];
         }
     }
 
@@ -73,8 +81,8 @@ public class Hexagram
     {
         get
         {
-            GetTrigrams();
-            return Hexagram.hexagramLookup[lastTrigrams[2]][lastTrigrams[3]];
+            var lastTrigrams = Trigrams;
+            return Hexagram.hexagramLookup[lastTrigrams[2+(int)TrigramPos.Top]][lastTrigrams[2+(int)TrigramPos.Bottom]];
         }
     }
 
@@ -82,7 +90,7 @@ public class Hexagram
     {
         get
         {
-            GetTrigrams();
+            var lastTrigrams = Trigrams;
             return new List<int>(_changingLines);
         }
     }
@@ -126,58 +134,61 @@ public class Hexagram
         { 011, new Dictionary<int, int> { { 111, 10 }, { 1, 54 }, { 10, 60 }, { 100, 41 }, { 0, 19 }, { 110, 61 }, { 11, 58 }, { 101, 38 } } }
     };
 
-    public int[] GetTrigrams()
+    public int[] Trigrams
     {
-        if (!_values.Changed) { return lastTrigrams; }
-
-        var rowStr = string.Empty;
-        _changingLines.Clear();
-
-        string[] trigrams = new string[2] { "", "" };
-        string[] changedTrigrams = new string[2] { "", "" };
-
-        for (int row = 0; row < RowCount; row++)
+        get
         {
-            UpdateTrigrams(row, trigrams, changedTrigrams);
-        }
+            if (!_values.Changed) { return lastTrigrams; }
 
-        // Trigrams returned as strings like "101" the hexagramLookup dictionary uses these as decimal int keys for looking up trigram numbers
-        lastTrigrams = new int[] { int.Parse(trigrams[0]), int.Parse(trigrams[1]), int.Parse(changedTrigrams[0]), int.Parse(changedTrigrams[1]) };
-        return lastTrigrams;
-    }
+            var rowStr = string.Empty;
+            _changingLines.Clear();
 
-    void UpdateTrigrams(int row, string[] trigrams, string[] changedTrigrams)
-    {
-        var line = GetLine(row);
-        var trigramIndex = row > 2 ? 1 : 0;
-        switch (line)
-        {
-            case 6:
-                trigrams[trigramIndex] += "0";
-                changedTrigrams[trigramIndex] += "1";
-                break;
-            case 7:
-                var noChange0 = "0";
-                changedTrigrams[trigramIndex] += noChange0;
-                trigrams[trigramIndex] += noChange0;
-                break;
-            case 8:
-                var noChange1 = "1";
-                changedTrigrams[trigramIndex] += noChange1;
-                trigrams[trigramIndex] += noChange1;
-                break;
-            case 9:
-                changedTrigrams[trigramIndex] += "0";
-                trigrams[trigramIndex] += "1";
-                break;
-        }
-        if (IsChangingLine(row))
-        {
-            _changingLines.Add(RowCount - row); 
+            string[] trigrams = new string[2] { "", "" };
+            string[] changedTrigrams = new string[2] { "", "" };
+
+            for (int index = 0; index < RowCount; index++)
+            {
+                UpdateTrigrams(index, trigrams, changedTrigrams);
+            }
+
+            // Trigrams returned as strings like "101" the hexagramLookup dictionary uses these as decimal int keys for looking up trigram numbers
+            lastTrigrams = new int[] { int.Parse(trigrams[1]), int.Parse(trigrams[0]), int.Parse(changedTrigrams[1]), int.Parse(changedTrigrams[0]) };
+            return lastTrigrams;
         }
     }
 
-    int GetLine(int row)
+    void UpdateTrigrams(int index, string[] trigrams, string[] changedTrigrams)
+    {
+        var lineValue = GetLineValue(index);
+        var trigramIndex = index > 2 ? TrigramPos.Bottom : TrigramPos.Top;
+        switch (lineValue)
+        {
+            case 6: // old yin
+                trigrams[(int)trigramIndex] += "0";
+                changedTrigrams[(int)trigramIndex] += "1";
+                break;
+            case 7: // yang
+                var noChange0 = "1";
+                changedTrigrams[(int)trigramIndex] += noChange0;
+                trigrams[(int)trigramIndex] += noChange0;
+                break;
+            case 8: // yin
+                var noChange1 = "0";
+                changedTrigrams[(int)trigramIndex] += noChange1;
+                trigrams[(int)trigramIndex] += noChange1;
+                break;
+            case 9: // old yang
+                changedTrigrams[(int)trigramIndex] += "0";
+                trigrams[(int)trigramIndex] += "1";
+                break;
+        }
+        if (IsChangingLine(index))
+        {
+            _changingLines.Add(RowCount - index); 
+        }
+    }
+
+    int GetLineValue(int row)
     {
         var line = 0;
         for (int col = 0; col < ColCount; col++)
@@ -257,16 +268,17 @@ public class Hexagram
         string newBinary = HexagramToString(newHexagramNumber);
 
         // Iterate over each row (line) of the hexagram
-        for (int row = 0; row < Hexagram.RowCount; row++)
+        for (int index = 0; index < Hexagram.RowCount; index++)
         {
             // Determine if the line is yang (1) or yin (0) based on the current hexagram
-            bool isYang = currentBinary[row] == '1';
+            bool isYang = currentBinary[index] == '1';
 
             // Determine if the line is changing based on the difference between current and new hexagrams
-            bool isChanging = currentBinary[row] != newBinary[row];
+            bool isChanging = currentBinary[index] != newBinary[index];
 
             // rows are numbered from bottom up in the hexagram, so invert the row index
-            _values.SetRow(Hexagram.RowCount - 1 - row, isYang, isChanging);
+            // var row = Hexagram.RowCount - 1 - index;
+            _values.SetIndexRow(index, isYang, isChanging);
         }
     }
 }

@@ -23,16 +23,15 @@ public class Values
     public bool GetValue(int row, int col) { return values[row, col]; }
 
 
-
     /// <summary>
-    /// A hexagram line is changing when a row has 3 columns with the same values 
+    /// Sets a value in the values array. 
     /// </summary>
-    /// <param name="row"></param>
+    /// <param name="index"></param>
     /// <param name="col"></param>
     /// <param name="value"></param>
-    public void SetValue(int row, int col, bool value)
+    public void SetValue(int index, int col, bool value)
     {
-        values[row, col] = value;
+        values[index, col] = value;
         Changed = true;
     }
 
@@ -47,32 +46,37 @@ public class Values
         Changed = true;
     }
 
-    public void SetHexagramRow(int hexagramRow, int value)
+/// <summary>
+/// Sets a values row based on the line value.
+/// </summary>
+/// <param name="index"></param>
+/// <param name="value"></param>
+    public void SetIndexRow(int index, int value)
     {
         // see [three-coin method](https://en.wikipedia.org/wiki/I_Ching_divination)
         switch (value)
         {
             // Changing line
             case 6: //yin changing into yang
-                SetValue(hexagramRow, 0, false);
-                SetValue(hexagramRow, 1, false);
-                SetValue(hexagramRow, 2, false);
+                SetValue(index, 0, false);
+                SetValue(index, 1, false);
+                SetValue(index, 2, false);
                 break;
             case 7: //yang unchanging 
-                SetValue(hexagramRow, 0, true);
-                SetValue(hexagramRow, 1, true);
-                SetValue(hexagramRow, 2, false);
+                SetValue(index, 0, false);
+                SetValue(index, 1, false);
+                SetValue(index, 2, true);
                 break;
             case 8: //yin unchanging 
-                SetValue(hexagramRow, 0, false);
-                SetValue(hexagramRow, 1, false);
-                SetValue(hexagramRow, 2, true);
+                SetValue(index, 0, false);
+                SetValue(index, 1, true);
+                SetValue(index, 2, true);
                 break;
             // Changing line
             case 9: //yang changing into yin
-                SetValue(hexagramRow, 0, true);
-                SetValue(hexagramRow, 1, true);
-                SetValue(hexagramRow, 2, true);
+                SetValue(index, 0, true);
+                SetValue(index, 1, true);
+                SetValue(index, 2, true);
                 break;
         }
     }
@@ -125,16 +129,16 @@ public class Values
         }
     }
 
-    internal void SetRow(int row, bool isYang, bool isChanging)
+    internal void SetIndexRow(int index, bool isYang, bool isChanging)
     {
         // use SetHexagramRow method
         if (isChanging)
         {
-            SetHexagramRow(row, isYang ? 9 : 6);
+            SetIndexRow(index, isYang ? 9 : 6);
         }
         else
         {
-            SetHexagramRow(row, isYang ? 7 : 8);
+            SetIndexRow(index, isYang ? 7 : 8);
         }
     }
 }
