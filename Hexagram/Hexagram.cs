@@ -48,8 +48,6 @@ public class Hexagram
     void UpdateTrigrams(int index)
     {
         var lineValue = GetLineValue(index);
-        var trigramUpper = index > 2;
-        var trigramPos = index % 3;
 
         switch (lineValue)
         {
