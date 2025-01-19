@@ -133,12 +133,12 @@ namespace TestHexagram
             trigramSet.ToString().Should().Be(expected);
         }
 
-        [TestCase(0, true, "1xx010")]
-        [TestCase(1, false, "0xx010")]
-        [TestCase(2, true, "1xx010")]
-        [TestCase(3, false, "100000")]
+        [TestCase(0, false, "000010")]
+        [TestCase(1, true, "110010")]
+        [TestCase(2, true, "101010")]
+        [TestCase(3, true, "100110")]
         [TestCase(4, true, "100010")]
-        [TestCase(5, false, "100000")]
+        [TestCase(5, true, "100011")]
         public void SetValue_UpdatesCorrectBitInBinaryString(int trigramPos, bool isYang, string expected)
         {
             // Arrange
