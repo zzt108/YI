@@ -41,7 +41,7 @@ namespace TestHexagram
         public void SetHexagramRow_ShouldSetCorrectValues()
         {
             // Act
-            _values.SetHexagramRow(0, 6);
+            _values.SetIndexRow(0, 6);
 
             // Assert
             _values.GetValue(0, 0).Should().BeFalse();

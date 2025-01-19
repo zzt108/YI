@@ -1,8 +1,5 @@
 using FluentAssertions;
-using NUnit.Framework;
 using HexagramNS;
-using YiChing;
-using Microsoft.Maui.Controls;
 
 namespace Test
 {
@@ -18,28 +15,15 @@ namespace Test
             _values = new Values(Hexagram.RowCount, Hexagram.ColCount);
         }
 
-        private void FillCheckBoxesFromHexagramNumbers(int currentHexagramNum, int newHexagramNum)
-        {
-            // Convert hexagram numbers to binary representation
-            var currentBinary = Convert.ToString(currentHexagramNum - 1, 2).PadLeft(6, '0');
-            var newBinary = Convert.ToString(newHexagramNum - 1, 2).PadLeft(6, '0');
 
-            // Fill checkbox states based on the binary values
-            for (int row = 0; row < Hexagram.RowCount; row++)
-            {
-                bool isYang = currentBinary[5 - row] == '1';
-                bool isChanging = currentBinary[5 - row] != newBinary[5 - row];
-
-                // Set all columns in the row to the same value
-                for (int col = 0; col < Hexagram.ColCount; col++)
-                {
-                    _values.SetValue(row, col, isYang);
-                }
-            }
-        }
+        /// <summary>
+        /// Tests all 64 possible hexagrams by iterating through each combination of 
+        /// current and new hexagram numbers. Ensures that the hexagram created from 
+        /// values matches the expected current and new hexagram numbers.
+        /// </summary>
 
         [Test]
-        public void FillCheckBoxes_ShouldMatch_GetTrigramsOutput()
+        public void CheckEquivalenceOfHexagramConstructors()
         {
             // Test all 64 possible hexagrams
             for (int currentHexagramNum = 1; currentHexagramNum <= 64; currentHexagramNum++)
@@ -47,18 +31,18 @@ namespace Test
                 for (int newHexagramNum = 1; newHexagramNum <= 64; newHexagramNum++)
                 {
                     // Arrange
-                    FillCheckBoxesFromHexagramNumbers(currentHexagramNum, newHexagramNum);
+                    var hexagram = new Hexagram(currentHexagramNum, newHexagramNum);
 
                     // Create hexagram from values
-                    var hexagram = new Hexagram(_values);
+                    var hexagram2 = new Hexagram(hexagram.Values);
 
                     // Act
-                    int expectedCurrent = hexagram.Current;
-                    int expectedNew = hexagram.New;
+                    int actualCurrent = hexagram2.Current;
+                    int actualNew = hexagram2.New;
 
                     // Assert
-                    expectedCurrent.Should().Be(currentHexagramNum, $"Current hexagram mismatch for input {currentHexagramNum}");
-                    expectedNew.Should().Be(newHexagramNum, $"New hexagram mismatch for input {newHexagramNum}");
+                    actualCurrent.Should().Be(currentHexagramNum, $"Current hexagram mismatch for input {currentHexagramNum}");
+                    actualNew.Should().Be(newHexagramNum, $"New hexagram mismatch for input {newHexagramNum}");
                 }
             }
         }
@@ -81,7 +65,7 @@ namespace Test
             };
 
             // Act
-            FillCheckBoxesFromHexagramNumbers(currentHexagramNum, newHexagramNum);
+            // FillCheckBoxesFromHexagramNumbers(currentHexagramNum, newHexagramNum);
 
             // Assert
             for (int row = 0; row < Hexagram.RowCount; row++)

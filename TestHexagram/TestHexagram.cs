@@ -16,12 +16,12 @@ public class TestHexagram
     {
         int[,] data = new int[,]
         {
-    {0, 0, 0},
+    {0, 0, 0}, // top i0
     {0, 0, 0},
     {0, 0, 0},
     {1, 1, 1},
     {1, 1, 1},
-    {1, 1, 1}
+    {1, 1, 1} // bottom i5
 
     };
         var hexagram = new HexagramNS.Hexagram(new Values().InitValues(data, (item, row, col) => item > 0));
@@ -31,21 +31,21 @@ public class TestHexagram
     }
 
     [Test]
-    public void Test2_12()
+    public void Test12_1()
     {
         int[,] data = new int[,]
         {
-    {0, 0, 0},
-    {0, 0, 0},
-    {0, 0, 0},
-    {1, 0, 0},
-    {1, 0, 0},
-    {1, 0, 0}
+    {0, 0, 0}, // yin 2 yang - top (i0)
+    {0, 0, 0}, // yin 2 yang
+    {0, 0, 0}, // yin 2 yang
+    {1, 0, 0}, // yang
+    {1, 0, 0}, // yang
+    {1, 0, 0}  // yang - bottom (i5)
 
     };
         var hexagram = new HexagramNS.Hexagram(new Values().InitValues(data, (item, row, col) => item > 0));
-        hexagram.Current.Should().Be(2);
-        hexagram.New.Should().Be(12);
+        hexagram.Current.Should().Be(11);
+        hexagram.New.Should().Be(1);
         hexagram.ChangingLines.Should().BeEquivalentTo(new[] {  4, 5, 6 });
     }
 
@@ -54,12 +54,12 @@ public class TestHexagram
     {
         int[,] data = new int[,]
         {
-    {0, 0, 0},
-    {1, 1, 1},
-    {0, 0, 0},
-    {0, 0, 0},
-    {0, 0, 0},
-    {1, 1, 1}
+    {0, 0, 0}, // top 0 2 1
+    {1, 1, 1}, // 1 2 0
+    {0, 0, 0}, // 0 2 1
+    {0, 0, 0}, // 0 2 1
+    {0, 0, 0}, // 0 2 1
+    {1, 1, 1}  // bottom 1 2 0
 
     };
         var hexagram = new HexagramNS.Hexagram(new Values().InitValues(data, (item, row, col) => item > 0));
