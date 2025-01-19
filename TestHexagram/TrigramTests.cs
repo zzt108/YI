@@ -16,8 +16,15 @@ namespace TestHexagram
             // Assert
             trigramSet.TopBinaryString.Should().Be("xxx");
             trigramSet.BottomBinaryString.Should().Be("xxx");
-            trigramSet.Top.Should().Be(0); // Assuming Top parses "xxx" as 0
-            trigramSet.Bottom.Should().Be(0); // Assuming Bottom parses "xxx" as 0
+            // this should throw format exception
+            // trigramSet.Top.Should().Be(0); // Assuming Top parses "xxx" as 0
+            // trigramSet.Bottom.Should().Be(0); // Assuming Bottom parses "xxx" as 0
+            Action action = () => trigramSet.Top.Should().Be(0);
+            action.Should().Throw<FormatException>();
+
+            action = () => trigramSet.Bottom.Should().Be(0);
+            action.Should().Throw<FormatException>();
+
         }
 
         [Test]
@@ -108,12 +115,12 @@ namespace TestHexagram
             result.Should().Be("100011");
         }
 
-        [TestCase(0, true, "1xx010")]
-        [TestCase(1, false, "100000")]
-        [TestCase(2, true, "100110")]
-        [TestCase(3, false, "100000")]
-        [TestCase(4, true, "100011")]
-        [TestCase(5, false, "100000")]
+        [TestCase(0, false, "000010")]
+        [TestCase(1, false, "100010")]
+        [TestCase(2, true, "101010")]
+        [TestCase(3, true, "100110")]
+        [TestCase(4, false, "100000")]
+        [TestCase(5, true, "100011")]
         public void SetLine_UpdatesCorrectBinaryString(int index, bool isYang, string expected)
         {
             // Arrange
