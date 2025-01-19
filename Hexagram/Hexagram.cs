@@ -30,24 +30,70 @@ Each of the 64 hexagrams has a unique name, associated meaning, and often a stor
 The positions of the solid and broken lines within the hexagram are important. They determine not just the overall meaning of the hexagram but also nuances in its interpretation.
 */
 
-/// <summary>
-/// Represents a Hexagram, which is a 6x3 grid of coins.
-/// </summary>
-public enum TrigramPos
+public class HexagramTrigrams
 {
-    Bottom = 0,
-    Top = 1
+    public TrigramSet Current { get; set; }
+    public TrigramSet New { get; set; }
+
+    public HexagramTrigrams()
+    {
+        Current = new TrigramSet();
+        New = new TrigramSet();
+    }
 }
 
 public class Hexagram
 {
+
+    void UpdateTrigrams(int index)
+    {
+        var lineValue = GetLineValue(index);
+        var trigramUpper = index > 2;
+        var trigramPos = index % 3;
+
+        switch (lineValue)
+        {
+            case 6: // old yin
+                _lastTrigrams.Current.SetLine(index,false);
+                _lastTrigrams.New.SetLine(index, true);
+                // trigrams[(int)trigramIndex] += "0";
+                // changedTrigrams[(int)trigramIndex] += "1";
+                break;
+            case 7: // yang
+                _lastTrigrams.Current.SetLine(index,true);
+                _lastTrigrams.New.SetLine(index, true);
+
+                // var noChange0 = "1";
+                // changedTrigrams[(int)trigramIndex] += noChange0;
+                // trigrams[(int)trigramIndex] += noChange0;
+                break;
+            case 8: // yin
+                _lastTrigrams.Current.SetLine(index,false);
+                _lastTrigrams.New.SetLine(index, false);
+                // var noChange1 = "0";
+                // changedTrigrams[(int)trigramIndex] += noChange1;
+                // trigrams[(int)trigramIndex] += noChange1;
+                break;
+            case 9: // old yang
+                _lastTrigrams.Current.SetLine(index,true);
+                _lastTrigrams.New.SetLine(index, false);
+
+                // changedTrigrams[(int)trigramIndex] += "0";
+                // trigrams[(int)trigramIndex] += "1";
+                break;
+        }
+        if (IsChangingLine(index))
+        {
+            _changingLines.Add(RowCount - index);
+        }
+    }
 
     // Constants for the number of rows and columns in the Hexagram
     public const int RowCount = 6;
     public const int ColCount = 3;
 
     private Values _values { get; set; }
-    private int[] lastTrigrams = new int[] { 0, 0, 0, 0 };
+    private HexagramTrigrams _lastTrigrams = new HexagramTrigrams();
 
     // Backing field for ChangingLines
     private List<int> _changingLines = new List<int>();
@@ -72,7 +118,7 @@ public class Hexagram
         get
         {
             var lastTrigrams = Trigrams;
-            return Hexagram.hexagramLookup[lastTrigrams[(int)TrigramPos.Top]][lastTrigrams[(int)TrigramPos.Bottom]];
+            return Hexagram.hexagramLookup[lastTrigrams.Current.Top][lastTrigrams.Current.Bottom];
         }
     }
 
@@ -82,7 +128,7 @@ public class Hexagram
         get
         {
             var lastTrigrams = Trigrams;
-            return Hexagram.hexagramLookup[lastTrigrams[2+(int)TrigramPos.Top]][lastTrigrams[2+(int)TrigramPos.Bottom]];
+            return Hexagram.hexagramLookup[lastTrigrams.New.Top][lastTrigrams.New.Bottom];
         }
     }
 
@@ -134,59 +180,25 @@ public class Hexagram
         { 011, new Dictionary<int, int> { { 111, 10 }, { 1, 54 }, { 10, 60 }, { 100, 41 }, { 0, 19 }, { 110, 61 }, { 11, 58 }, { 101, 38 } } }
     };
 
-    public int[] Trigrams
+    public HexagramTrigrams Trigrams
     {
         get
         {
-            if (!_values.Changed) { return lastTrigrams; }
+            if (!_values.Changed) { return _lastTrigrams; }
 
-            var rowStr = string.Empty;
             _changingLines.Clear();
 
-            string[] trigrams = new string[2] { "", "" };
-            string[] changedTrigrams = new string[2] { "", "" };
+            _lastTrigrams = new HexagramTrigrams();
 
             for (int index = 0; index < RowCount; index++)
             {
-                UpdateTrigrams(index, trigrams, changedTrigrams);
+                UpdateTrigrams(index);
             }
 
-            // Trigrams returned as strings like "101" the hexagramLookup dictionary uses these as decimal int keys for looking up trigram numbers
-            lastTrigrams = new int[] { int.Parse(trigrams[1]), int.Parse(trigrams[0]), int.Parse(changedTrigrams[1]), int.Parse(changedTrigrams[0]) };
-            return lastTrigrams;
+            return _lastTrigrams;
         }
     }
 
-    void UpdateTrigrams(int index, string[] trigrams, string[] changedTrigrams)
-    {
-        var lineValue = GetLineValue(index);
-        var trigramIndex = index > 2 ? TrigramPos.Bottom : TrigramPos.Top;
-        switch (lineValue)
-        {
-            case 6: // old yin
-                trigrams[(int)trigramIndex] += "0";
-                changedTrigrams[(int)trigramIndex] += "1";
-                break;
-            case 7: // yang
-                var noChange0 = "1";
-                changedTrigrams[(int)trigramIndex] += noChange0;
-                trigrams[(int)trigramIndex] += noChange0;
-                break;
-            case 8: // yin
-                var noChange1 = "0";
-                changedTrigrams[(int)trigramIndex] += noChange1;
-                trigrams[(int)trigramIndex] += noChange1;
-                break;
-            case 9: // old yang
-                changedTrigrams[(int)trigramIndex] += "0";
-                trigrams[(int)trigramIndex] += "1";
-                break;
-        }
-        if (IsChangingLine(index))
-        {
-            _changingLines.Add(RowCount - index); 
-        }
-    }
 
     int GetLineValue(int row)
     {
@@ -219,33 +231,21 @@ public class Hexagram
         return true;
     }
 
-    public string TrigramsToBinaryString((int, int) trigrams)
-    {
-        // Convert each trigram to its 3-digit binary representation
-        string upperBinary = Convert.ToString(trigrams.Item1, 10).PadLeft(3, '0');
-        string lowerBinary = Convert.ToString(trigrams.Item2, 10).PadLeft(3, '0');
-
-        // Concatenate the binary strings to form the 6-digit hexagram representation
-        return upperBinary + lowerBinary;
-    }
 
     /// <summary>
     /// Converts a hexagram number to its binary string representation.
     /// </summary>
     /// <param name="hexagramNumber">The number of the hexagram to convert (1-64)</param>
     /// <returns>A 6-digit binary string representing the hexagram structure</returns>
-    public string HexagramToString(int hexagramNumber)
+    public string TrigramString(int hexagramNumber)
     {
         // Find the trigrams that correspond to the hexagram number using the reverse lookup
         var trigrams = FindTrigramsForHexagram(hexagramNumber);
 
-        // Convert the trigrams to a 6-digit binary string
-        string binaryString = TrigramsToBinaryString(trigrams);
-
-        return binaryString;
+        return trigrams.ToString();
     }
 
-    private (int, int) FindTrigramsForHexagram(int hexagramNumber)
+    private TrigramSet FindTrigramsForHexagram(int hexagramNumber)
     {
         foreach (var lowerTrigram in Hexagram.hexagramLookup)
         {
@@ -253,7 +253,7 @@ public class Hexagram
             {
                 if (upperTrigram.Value == hexagramNumber)
                 {
-                    return (upperTrigram.Key, lowerTrigram.Key);
+                    return new TrigramSet(upperTrigram.Key, lowerTrigram.Key);
                 }
             }
         }
@@ -264,8 +264,8 @@ public class Hexagram
     public void FillValuesFromHexagramNumbers(int currentHexagramNumber, int newHexagramNumber)
     {
         // Convert hexagram numbers to 6-digit binary strings
-        string currentBinary = HexagramToString(currentHexagramNumber);
-        string newBinary = HexagramToString(newHexagramNumber);
+        string currentBinary = TrigramString(currentHexagramNumber);
+        string newBinary = TrigramString(newHexagramNumber);
 
         // Iterate over each row (line) of the hexagram
         for (int index = 0; index < Hexagram.RowCount; index++)

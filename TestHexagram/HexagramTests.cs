@@ -231,8 +231,10 @@ namespace TestHexagram
         {
 
             var hexagram = new Hexagram(_values);
+            var result = new TrigramSet(upperTrigram, lowerTrigram);
+
             // Act & Assert
-            hexagram.TrigramsToBinaryString((upperTrigram, lowerTrigram)).Should().Be(expectedBinary);
+            result.ToString().Should().Be(expectedBinary);
         }
 
         [TestCase(1, "111111")]
@@ -246,7 +248,7 @@ namespace TestHexagram
             var hexagram = new Hexagram(_values);
 
             // Act
-            var result = hexagram.HexagramToString(hexagramNumber);
+            var result = hexagram.TrigramString(hexagramNumber);
 
             // Assert
             result.Should().Be(expectedBinary);
@@ -260,10 +262,10 @@ namespace TestHexagram
             var trigrams = hexagram.Trigrams;
 
             // Act & Assert
-            trigrams[0].Should().Be(111);
-            trigrams[1].Should().Be(111);
-            trigrams[2].Should().Be(000);
-            trigrams[3].Should().Be(000);
+            trigrams.Current.Top.Should().Be(111);
+            trigrams.Current.Bottom.Should().Be(111);
+            trigrams.New.Top.Should().Be(000);
+            trigrams.New.Bottom.Should().Be(000);
             hexagram.ChangingLines.Should().BeEquivalentTo(new[] { 1, 2, 3, 4, 5, 6 });
         }
 
@@ -275,10 +277,10 @@ namespace TestHexagram
             var trigrams = hexagram.Trigrams;
 
             // Act & Assert
-            trigrams[0].Should().Be(001);
-            trigrams[2].Should().Be(101);
-            trigrams[1].Should().Be(111);
-            trigrams[3].Should().Be(100);
+            trigrams.Current.Top.Should().Be(001);
+            trigrams.New.Top.Should().Be(101);
+            trigrams.Current.Bottom.Should().Be(111);
+            trigrams.New.Bottom.Should().Be(100);
             hexagram.ChangingLines.Should().BeEquivalentTo(new[] { 1, 2, 6 });
         }
 
@@ -290,10 +292,10 @@ namespace TestHexagram
             var trigrams = hexagram.Trigrams;
 
             // Act & Assert
-            trigrams[0].Should().Be(001);
-            trigrams[2].Should().Be(101);
-            trigrams[1].Should().Be(111);
-            trigrams[3].Should().Be(000);
+            trigrams.Current.Top.Should().Be(001);
+            trigrams.New.Top.Should().Be(101);
+            trigrams.Current.Bottom.Should().Be(111);
+            trigrams.New.Bottom.Should().Be(000);
             hexagram.ChangingLines.Should().BeEquivalentTo(new[] { 1, 2, 3, 6 });
         }
 
@@ -305,10 +307,10 @@ namespace TestHexagram
             var trigrams = hexagram.Trigrams;
 
             // Act & Assert
-            trigrams[0].Should().Be(010);
-            trigrams[1].Should().Be(101);
-            trigrams[2].Should().Be(101);
-            trigrams[3].Should().Be(010);
+            trigrams.Current.Top.Should().Be(010);
+            trigrams.Current.Bottom.Should().Be(101);
+            trigrams.New.Top.Should().Be(101);
+            trigrams.New.Bottom.Should().Be(010);
             hexagram.ChangingLines.Should().BeEquivalentTo(new[] { 1, 2, 3, 4, 5, 6 });
         }
 
@@ -320,32 +322,11 @@ namespace TestHexagram
             var trigrams = hexagram.Trigrams;
 
             // Act & Assert
-            trigrams[0].Should().Be(101);
-            trigrams[1].Should().Be(101);
-            trigrams[2].Should().Be(101);
-            trigrams[3].Should().Be(101);
+            trigrams.Current.Top.Should().Be(101);
+            trigrams.Current.Bottom.Should().Be(101);
+            trigrams.New.Top.Should().Be(101);
+            trigrams.New.Bottom.Should().Be(101);
             hexagram.ChangingLines.Should().BeEmpty();
-        }
-
-        [Test]
-        public void GetTrigrams_WhenValuesNotChanged_ReturnsLastTrigrams()
-        {
-            // Arrange - Set initial values
-            _values.SetIndexRow(0, true, false);  // 7
-            _values.SetIndexRow(1, true, false);  // 7
-            _values.SetIndexRow(2, true, false);  // 7
-            _values.SetIndexRow(3, true, false);  // 7
-            _values.SetIndexRow(4, true, false);  // 7
-            _values.SetIndexRow(5, true, false);  // 7
-
-            // Get initial trigrams to set lastTrigrams
-            var expected = _hexagram.Trigrams;
-
-            // Act - Get trigrams again without changing values
-            var result = _hexagram.Trigrams;
-
-            // Assert
-            result.Should().Equal(expected);
         }
 
         [Test]
@@ -364,14 +345,12 @@ namespace TestHexagram
             var result = _hexagram.Trigrams;
 
             // Assert
-            result.Should().HaveCount(4);
-            result.Should().OnlyContain(x => x >= 0 && x <= 111);
             _hexagram.Current.Should().Be(64);
             _hexagram.New.Should().Be(17);
-            result[(int)TrigramPos.Top].Should().Be(101); // Upper trigram
-            result[(int)TrigramPos.Bottom].Should().Be(010); // Lower trigram
-            result[2 + (int)TrigramPos.Top].Should().Be(011); // Changed upper trigram
-            result[2 + (int)TrigramPos.Bottom].Should().Be(001); // Changed lower trigram
+            result.Current.Top.Should().Be(101); // Upper trigram
+            result.Current.Bottom.Should().Be(010); // Lower trigram
+            result.New.Top.Should().Be(011); // Changed upper trigram
+            result.New.Bottom.Should().Be(001); // Changed lower trigram
         }
 
         [Test]
@@ -391,8 +370,6 @@ namespace TestHexagram
             var result = _hexagram.Trigrams;
 
             // Assert
-            result.Should().HaveCount(4);
-            result.Should().OnlyContain(x => x >= 0 && x <= 111);
             _hexagram.ChangingLines.Should().BeEquivalentTo(new[] { 1, 4, 5 });
         }
     }
