@@ -38,7 +38,7 @@ public class TrigramSet
         this.BottomBinaryString = "xxx";
     }
 
-    public TrigramSet(int keyTop, int keyBottom)
+    public TrigramSet(int keyTop, int keyBottom):this()
     {
         Top = keyTop;
         Bottom = keyBottom;
@@ -52,7 +52,7 @@ public class TrigramSet
         }
         set
         {
-            TopBinaryString = Convert.ToString(Top, 10).PadLeft(3, '0');
+            TopBinaryString = Convert.ToString(value, 10).PadLeft(3, '0');
         }
     }
     public int Bottom
