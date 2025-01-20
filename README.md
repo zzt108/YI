@@ -49,27 +49,12 @@ cd YiChing
 dotnet workload restore
 ```
 
-# Plans
-- Signed APK to ease distribution
-- Stacked navigation
-- Continuous saving of data, restore last state when started
-  - persist hexagrams to JSON
-- categorized questions
-- ? Randomized throws
-- User reaction based coin throws
-  - gif
-  - based on user response or position
-
-- Read char sequence from question as coin throw results. Like oo1, hht, ffi, 001, etc
-
 ## TODO
-- Immediately update questions list after copy click
 - Configurable prompt to AI
-- Hexagram names in answers, besides numbers
 - Store questions in GDrive or OneDrive
   - How to config on Win/Amdroid?
 - access to AI APIs, getting direct answers
-- 
+ 
 ## Data structure
 ![Data structure](
 https://www.plantuml.com/plantuml/png/JOun2y8m48Nt-nMt5OGuEZX8nmuT5DJzQ8yOI2wGNAGY_dUDsDhr--xTUsrMIbg2X-ReIVGI_7Q80M3mb3DsF95D59w0w4JnIhuml6RhiiRqg39hScBnL3YhYxASd7dIbU-OHauV2z3qJXYDYKi9xl56TyOT7g3cS6FMJlxOO4zY2rc6-cMcyLi7lrcLB7c0bcKimRy1
@@ -93,18 +78,11 @@ Your startup project 'DataLayer' doesn't reference Microsoft.EntityFrameworkCore
 
 # Plans
 - Accessing https://www.jamesdekorne.com/GBCh/hex{number}.htm for hexagram description
-- Signed APK to ease distribution
-- Continuous saving of data, restore last state when started
-  - persist hexagrams to JSON
-  - persist jicsing 2 JSON
-- categorized questions
 - ? Randomized throws
 - User reaction based coin throws
   - gif
   - based on user response or position
-- Do UI in MAUI/Android
 - Read char sequence from question as coin throw results. Like oo1, hht, ffi, 001, etc
-
 
 ### Use the following URL format:
 https://www.perplexity.ai/?s=O&q=your_question_here
@@ -117,5 +95,5 @@ Then when you type your question in the address bar and hit enter, it will open 
 ### Some additional tips:
 You can add more parameters to the URL like &focus=[internet,scholar,writing,wolfram,youtube,reddit] to specify the search focus
 Setting copilot=true will enable pro mode for the search
-The OpenAI API can also be used to access Perplexity models programmatically
+The OpenAI API can also be used to access models programmatically
 
