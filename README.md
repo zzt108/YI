@@ -1,28 +1,59 @@
-# YI
+# Yi Ching for AI
+
+[![Android](https://img.shields.io/badge/Platform-Android-3ddc84?logo=android)](https://developer.android.com)
+[![.NET](https://img.shields.io/badge/.NET-9.0.100-512bd4?logo=dotnet)](https://dotnet.microsoft.com)
+
+A modern implementation of the I Ching (Book of Changes) with AI connection, built using .NET MAUI for cross-platform deployment.
+
 ## Features
-### 24.930
-- store questions and answers in local storage
-- can select Q/A in a dropdown
-- Q/A deleted after 2 months
-- Perplexity.ai button removed as sending questions to p.ai was not working anymore
-- 
-### 24.526
-  - Icon and splash screen fixed
-### 24.525
-  - Ask AI to translate answer to selected language (in configuration)
-  - User can enter a question and a result of coin throws via the UI
-  - User can use Yarrow Stalks method to get a divination
-  - User can send result of divination to perplexity.ai side as a question
-  - User can copy result of divination to clipboard to send other ui sides or save it
-  - Auto Version numbers based on date/time
-  - UI in MAUI/Android
+### Core Functionality
+- 🎴 **Divination Methods**
+  - Three Coin Method
+  - Yarrow Stalks Method (Traditional)
+- 🌐 **Multilingual Support**
+  - English/Hungarian hexagram names
+  - Configurable translation output
+- 📱 **Cross-Platform UI**
+  - MAUI-based Android interface
+  - Responsive mobile-first design
+- 💾 **Data Management**
+  - SQLite local storage
+  - JSON serialization
+  - Auto-cleanup after 2 months
+
+### Advanced Features
+- 🔐 **Secure Publishing**
+  - Keystore-based APK signing
+  - Automated build pipeline
+- ⚙️ **Configuration System**
+  - Customizable prompt templates
+  - AI answer text localization
+  - Persistent user settings
+- 🔄 **State Management**
+  - Continuous auto-save
+  - Session restoration
+  - History tracking
+
+### Prerequisites
+- [.NET SDK 9.0.100](https://dotnet.microsoft.com/download)
+- [Visual Studio 2022](https://visualstudio.microsoft.com) with:
+  - .NET MAUI workload
+  - Android SDK 34
+  - .NET desktop development
+- Java JDK 11+
+
+### Installation
+```bash
+git clone https://github.com/yourusername/YiChing.git
+cd YiChing
+dotnet workload restore
+```
 
 # Plans
 - Signed APK to ease distribution
 - Stacked navigation
 - Continuous saving of data, restore last state when started
   - persist hexagrams to JSON
-  - persist jicsing 2 JSON
 - categorized questions
 - ? Randomized throws
 - User reaction based coin throws
