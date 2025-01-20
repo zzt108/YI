@@ -116,7 +116,7 @@ public class Hexagram
         get
         {
             var lastTrigrams = Trigrams;
-            return Hexagram.hexagramLookup[lastTrigrams.Current.Top][lastTrigrams.Current.Bottom];
+            return Hexagram.hexagramLookup[lastTrigrams.Current.Bottom][lastTrigrams.Current.Top];
         }
     }
 
@@ -126,7 +126,7 @@ public class Hexagram
         get
         {
             var lastTrigrams = Trigrams;
-            return Hexagram.hexagramLookup[lastTrigrams.New.Top][lastTrigrams.New.Bottom];
+            return Hexagram.hexagramLookup[lastTrigrams.New.Bottom][lastTrigrams.New.Top];
         }
     }
 
@@ -166,6 +166,7 @@ public class Hexagram
     */
 
     // this is the representation of the above hexagram values.
+    // lookup [lowTrigram, topTrigram] = value
     public static readonly Dictionary<int, Dictionary<int, int>> hexagramLookup = new()
     {
         { 111, new Dictionary<int, int> { { 111,  1 }, { 1, 34 }, { 10, 5  }, { 100, 26 }, { 0, 11 }, { 110, 9  }, { 11, 43 }, { 101, 14 } } },
