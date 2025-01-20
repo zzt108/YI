@@ -3,46 +3,48 @@
 [![Android](https://img.shields.io/badge/Platform-Android-3ddc84?logo=android)](https://developer.android.com)
 [![.NET](https://img.shields.io/badge/.NET-9.0.100-512bd4?logo=dotnet)](https://dotnet.microsoft.com)
 
-A modern implementation of the I Ching (Book of Changes) with AI connection, built using .NET MAUI for cross-platform deployment.
+A modern implementation of the I Ching (Book of Changes) with a focus on AI integration, built using .NET MAUI for cross-platform deployment.
 
 ## Features
+
 ### Core Functionality
-- 🎴 **Divination Methods**
-  - Three Coin Method
-  - Yarrow Stalks Method (Traditional)
-- 🌐 **Multilingual Support**
-  - English/Hungarian hexagram names
-  - Configurable translation output
-- 📱 **Cross-Platform UI**
-  - MAUI-based Android interface
-  - Responsive mobile-first design
-- 💾 **Data Management**
-  - SQLite local storage
-  - JSON serialization
-  - Auto-cleanup after 2 months
+
+-   **🎴 Divination Methods:**
+    -   Three Coin Method
+    -   Traditional Yarrow Stalks Method
+-   **🌐 Multilingual Support:**
+    -   English and Hungarian hexagram names.
+    -   Configurable output language for AI responses.
+-   **📱 Cross-Platform UI:**
+    -   MAUI-based Android interface.
+    -   Responsive, mobile-first design.
+-   **💾 Data Management:**
+    -   JSON serialization for storing questions and answers.
+    -   Automatic data cleanup after 2 months.
 
 ### Advanced Features
-- 🔐 **Secure Publishing**
-  - Keystore-based APK signing
-  - Automated build pipeline
-- ⚙️ **Configuration System**
-  - Customizable prompt templates
-  - AI answer text localization
-  - Persistent user settings
-- 🔄 **State Management**
-  - Continuous auto-save
-  - Session restoration
-  - History tracking
+
+-   **🔐 Secure Publishing:**
+    -   Automated build pipeline with keystore-based APK signing.
+-   **⚙️ Configuration System:**
+    -   Customizable prompt templates for AI interactions.
+    -   Persistent user settings for a personalized experience.
+-   **🔄 State Management:**
+    -   Continuous auto-save of application state.
+    -   Session restoration for seamless continuity.
+    -   History tracking of user interactions.
 
 ### Prerequisites
-- [.NET SDK 9.0.100](https://dotnet.microsoft.com/download)
-- [Visual Studio 2022](https://visualstudio.microsoft.com) with:
-  - .NET MAUI workload
-  - Android SDK 34
-  - .NET desktop development
-- Java JDK 11+
+
+-   [.NET SDK 9.0.100](https://dotnet.microsoft.com/download)
+-   [Visual Studio 2022](https://visualstudio.microsoft.com) with:
+    -   .NET MAUI workload
+    -   Android SDK 34
+    -   .NET desktop development workload
+-   Java JDK 11+
 
 ### Installation
+
 ```bash
 git clone https://github.com/yourusername/YiChing.git
 cd YiChing
