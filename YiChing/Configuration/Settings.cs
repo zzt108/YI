@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
+using System.Text.Json;
 
 namespace YiChing.Configuration
 {
@@ -16,6 +18,7 @@ namespace YiChing.Configuration
             "- Pay attention to the meanings of both hexagrams and how the changing lines transition the reading from the main to the changing hexagram.\n\n" +
             "- Ensure the interpretation reflects the philosophical concepts of the I Ching and C. G. Jung views in the context of the question asked.";
         public const string DEFAULT_MESSAGE = "Default Message";
+        public const string DEFAULT_URLS = "[\"https://chat.deepseek.com\",\"https://claude.ai/new\",\"https://chatgpt.com/\"]";
     }
 
     public class Settings : IDisposable, INotifyPropertyChanged
@@ -27,6 +30,8 @@ namespace YiChing.Configuration
         private string stepsHeader;
         private string outputFormatHeader;
         private string notesHeader;
+        private ObservableCollection<string> savedUrls;
+        private string selectedUrl;
     
         public event PropertyChangedEventHandler? PropertyChanged;
     
@@ -55,6 +60,10 @@ namespace YiChing.Configuration
             stepsHeader = DefaultTexts.DEFAULT_STEPS_HEADER;
             outputFormatHeader = DefaultTexts.DEFAULT_OUTPUT_FORMAT_HEADER;
             notesHeader = DefaultTexts.DEFAULT_NOTES_HEADER;
+            savedUrls = new ObservableCollection<string>(
+                JsonSerializer.Deserialize<string[]>(DefaultTexts.DEFAULT_URLS) ?? Array.Empty<string>()
+            );
+            selectedUrl = savedUrls.FirstOrDefault() ?? string.Empty;
         }
         #endregion
 
@@ -148,6 +157,32 @@ namespace YiChing.Configuration
                 }
             }
         }
+        
+        public ObservableCollection<string> SavedUrls
+        {
+            get => savedUrls;
+            set
+            {
+                if (savedUrls != value)
+                {
+                    savedUrls = value;
+                    OnPropertyChanged(nameof(SavedUrls));
+                }
+            }
+        }
+        
+        public string SelectedUrl
+        {
+            get => selectedUrl;
+            set
+            {
+                if (selectedUrl != value)
+                {
+                    selectedUrl = value;
+                    OnPropertyChanged(nameof(SelectedUrl));
+                }
+            }
+        }
 
         #region Methods
 
@@ -160,7 +195,14 @@ namespace YiChing.Configuration
             StepsHeader = Preferences.Default.Get(nameof(StepsHeader), defaults?.StepsHeader ?? DefaultTexts.DEFAULT_STEPS_HEADER);
             OutputFormatHeader = Preferences.Default.Get(nameof(OutputFormatHeader), defaults?.OutputFormatHeader ?? DefaultTexts.DEFAULT_OUTPUT_FORMAT_HEADER);
             NotesHeader = Preferences.Default.Get(nameof(NotesHeader), defaults?.NotesHeader ?? DefaultTexts.DEFAULT_NOTES_HEADER);
+            
+            var urlsJson = Preferences.Default.Get(nameof(SavedUrls), DefaultTexts.DEFAULT_URLS);
+            SavedUrls = new ObservableCollection<string>(
+                JsonSerializer.Deserialize<string[]>(urlsJson) ?? Array.Empty<string>()
+            );
+            SelectedUrl = Preferences.Default.Get(nameof(SelectedUrl), string.Empty);
         }
+        
         public void SaveValues()
         {
             Preferences.Default.Set(nameof(Settings.AnswerLanguage), answerLanguage);
@@ -170,6 +212,10 @@ namespace YiChing.Configuration
             Preferences.Default.Set(nameof(Settings.StepsHeader), stepsHeader);
             Preferences.Default.Set(nameof(Settings.OutputFormatHeader), outputFormatHeader);
             Preferences.Default.Set(nameof(Settings.NotesHeader), notesHeader);
+            
+            var urlsJson = JsonSerializer.Serialize(SavedUrls.ToArray());
+            Preferences.Default.Set(nameof(SavedUrls), urlsJson);
+            Preferences.Default.Set(nameof(SelectedUrl), SelectedUrl);
         }
         #endregion
     }
