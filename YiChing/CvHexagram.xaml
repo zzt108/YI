@@ -2,60 +2,77 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="YiChing.CvHexagram">
-    <StackLayout x:Name ="stack">
+    <StackLayout x:Name="stack">
 
         <!-- First column containing another stacklayout -->
         <StackLayout Orientation="Horizontal">
             <StackLayout>
                 <!-- Dropdown for Hexagrams -->
-                <Picker x:Name="hexagramPicker" Title="Select Hexagram" SelectedIndexChanged="OnHexagramSelected" />
+                <Picker x:Name="hexagramPicker"
+                        Title="Select Hexagram"
+                        SelectedIndexChanged="OnHexagramSelected"/>
 
-                <!-- AI URL Picker -->
-                <Picker x:Name="aiUrlPicker"
-                        Title="Select AI URL"
-                        ItemsSource="{Binding Settings.SavedUrls}"
-                        SelectedItem="{Binding SelectedAIUrl, Mode=TwoWay}" />
-
-                <Editor x:Name="rtQuestion" Text="{Binding QuestionText, Mode=TwoWay}" WidthRequest="300" HeightRequest="100" />
+                <Editor x:Name="rtQuestion"
+                        Text="{Binding QuestionText, Mode=TwoWay}"
+                        WidthRequest="300"
+                        HeightRequest="100"/>
                 <StackLayout Orientation="Horizontal">
-                    <StackLayout x:Name ="stackHexagram" WidthRequest="200">
-                        <Grid x:Name ="gridHexagram" WidthRequest="200">
+                    <StackLayout x:Name="stackHexagram"
+                            WidthRequest="200">
+                        <Grid x:Name="gridHexagram"
+                                WidthRequest="200">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="10" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                         </Grid>
                     </StackLayout>
-                    <StackLayout x:Name ="stackButtons">
-                        <Button x:Name="btnYarrow" Text="Yarrow Stalks" BackgroundColor="DarkGreen">
+                    <StackLayout x:Name="stackButtons">
+                        <Button x:Name="btnYarrow"
+                                Text="Yarrow Stalks"
+                                BackgroundColor="DarkGreen">
                         </Button>
-                        <Button x:Name="btnOpenAI" Text="Consult AI"
+
+                        <!-- AI URL Picker -->
+                        <Picker x:Name="aiUrlPicker"
+                                Title="Select AI URL"
+                                ItemsSource="{Binding Settings.SavedUrls}"
+                                SelectedItem="{Binding SelectedAIUrl, Mode=TwoWay}"/>
+
+                        <Button x:Name="btnOpenAI"
+                                Text="Consult AI"
                                 Clicked="OnOpenAIClicked"
                                 BackgroundColor="#0078D4">
                         </Button>
-                        <Button x:Name="btnCopy" Text="Copy">
+                        <Button x:Name="btnCopy"
+                                Text="Copy">
                         </Button>
-                        <Button x:Name="btnConfig" Text="Configuration">
+                        <Button x:Name="btnConfig"
+                                Text="Configuration">
                         </Button>
-                        <Button x:Name="btnClear" Text="Clear" BackgroundColor="DarkRed">
+                        <Button x:Name="btnClear"
+                                Text="Clear"
+                                BackgroundColor="DarkRed">
                         </Button>
                     </StackLayout>
                 </StackLayout>
                 <StackLayout>
-                    <Editor x:Name ="rtAnswer" IsReadOnly="True" HeightRequest="150"/>
+                    <Editor x:Name="rtAnswer"
+                            IsReadOnly="True"
+                            HeightRequest="150"/>
                 </StackLayout>
             </StackLayout>
             <!-- Right column containing Answers editor -->
