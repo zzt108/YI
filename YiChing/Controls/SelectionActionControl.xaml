@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="YiChing.Controls.SelectionActionControl">
+    <HorizontalStackLayout Spacing="10">
+        <Picker x:Name="selectionPicker"
+                Title="{Binding Title}"
+                ItemsSource="{Binding ItemsSource}"
+                SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                WidthRequest="200"/>
+                
+        <Button x:Name="actionButton"
+                Text="{Binding ActionText}"
+                Command="{Binding ActionCommand}"
+                BackgroundColor="{Binding BackgroundColor}"/>
+    </HorizontalStackLayout>
+</ContentView>

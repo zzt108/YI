@@ -1,6 +1,9 @@
 using HexagramNS;
 using HG = HexagramNS;
 using YiChing.Configuration;
+using System.Windows.Input;
+using System.Diagnostics;
+using Microsoft.Extensions.Configuration;
 
 namespace YiChing;
 
@@ -74,26 +77,27 @@ public partial class CvHexagram : ContentView
         mainPage.Title = Title;
         
         // Set binding context to access settings
-        this.BindingContext = mainPage.CVConfig?.Settings;
+        if (mainPage.CVConfig?.Settings == null)
+        {
+            Debug.WriteLine("Warning: Settings not initialized - using default values");
+            var defaultSettings = new Settings();
+            this.BindingContext = defaultSettings;
+        }
+        else
+        {
+            this.BindingContext = mainPage.CVConfig.Settings;
+        }
 
         btnCopy.Clicked += btnCopy_Click;
         btnClear.Clicked += btnClear_Click;
         btnYarrow.Clicked += btnYarrow_Click;
         btnConfig.Clicked += btnConfig_Click;
-        btnOpenAI.Clicked += OnOpenAIClicked;
 
         rtQuestion.TextChanged += (sender, e) => { Question.Text = e.NewTextValue; };
 
         DrawHexagram();
         this._mainPage = mainPage;
         LoadHexagrams();
-        
-        // Initialize URL picker
-        if (mainPage.CVConfig?.Settings != null)
-        {
-            aiUrlPicker.ItemsSource = mainPage.CVConfig.Settings.SavedUrls;
-            aiUrlPicker.SelectedItem = mainPage.CVConfig.Settings.SelectedUrl;
-        }
     }
     #endregion
 
@@ -239,25 +243,28 @@ public partial class CvHexagram : ContentView
         ResetIndeterminate();
     }
 
-    private async void OnOpenAIClicked(object sender, System.EventArgs e)
+    #endregion
+
+    #region Commands
+
+    public ICommand OpenAICommand => new Command(async () =>
     {
-        var selectedUrl = aiUrlPicker.SelectedItem as string;
-        if (!string.IsNullOrEmpty(selectedUrl))
-        {
-            try
-            {
-                await Launcher.OpenAsync(selectedUrl);
-            }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert("Error", $"Could not open URL: {ex.Message}", "OK");
-            }
-        }
-        else
+        var settings = _mainPage?.CVConfig?.Settings;
+        if (settings?.SelectedAIUrl == null)
         {
             await Shell.Current.DisplayAlert("No URL", "Please select an AI URL from the dropdown", "OK");
+            return;
         }
-    }
+
+        try
+        {
+            await Launcher.OpenAsync(settings.SelectedAIUrl);
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Error", $"Could not open URL: {ex.Message}", "OK");
+        }
+    });
 
     #endregion
 }

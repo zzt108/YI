@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Maui.Controls.Compatibility;
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Hosting;
+using YiChing.Configuration;
 
 namespace YiChing
 {
@@ -36,7 +37,12 @@ namespace YiChing
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
-            builder.Services.AddTransient<MainPage>();
+
+            // Register services
+            builder.Services.AddSingleton<Settings>();
+            builder.Services.AddTransient<MainPage>(sp => 
+                new MainPage(sp.GetRequiredService<IConfiguration>()));
+            builder.Services.AddTransient<CvConfig>();
 
             return builder.Build();
         }

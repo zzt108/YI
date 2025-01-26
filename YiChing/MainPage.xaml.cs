@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Maui.Controls;
 using YiChing.Configuration;
+using System.Diagnostics;
 
 namespace YiChing
 {
@@ -9,6 +9,7 @@ namespace YiChing
         private CvHexagram? _cvHexagram;
         private CvYarrowStalks? _cvYarrowStalks;
         private CvConfig? _cvConfig;
+        private readonly Settings _settings;
 
         public CvHexagram CVHexagram 
         { 
@@ -32,24 +33,20 @@ namespace YiChing
         { 
             get 
             {
-                _cvConfig ??= new CvConfig(this, configuration);
+                _cvConfig ??= new CvConfig(this, _configuration);
                 return _cvConfig;
             }
         }
 
         public Version version;
-        private readonly IConfiguration configuration;
-
-        public async Task<bool> ShowMessageBox(string title, string message, string accept = "OK", string? cancel = null)
-        {
-            bool result = await DisplayAlert(title, message, accept, cancel);
-            return result;
-        }
+        private readonly IConfiguration _configuration;
 
         public MainPage(IConfiguration config)
         {
             InitializeComponent();
-            configuration = config;
+            _configuration = config;
+            _settings = new Settings();
+            Debug.WriteLine($"Settings initialized with {_settings.SavedUrls.Count} URLs");
             version = typeof(App).Assembly.GetName().Version ?? new Version(1, 0);
 
             MainThread.BeginInvokeOnMainThread(() =>
@@ -61,7 +58,7 @@ namespace YiChing
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"Error setting content: {ex}");
+                    Debug.WriteLine($"Error setting content: {ex}");
                 }
             });
         }

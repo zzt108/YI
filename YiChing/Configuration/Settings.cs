@@ -31,7 +31,7 @@ namespace YiChing.Configuration
         private string outputFormatHeader;
         private string notesHeader;
         private ObservableCollection<string> savedUrls;
-        private string selectedUrl;
+        private string selectedAIUrl;
     
         public event PropertyChangedEventHandler? PropertyChanged;
     
@@ -63,7 +63,7 @@ namespace YiChing.Configuration
             savedUrls = new ObservableCollection<string>(
                 JsonSerializer.Deserialize<string[]>(DefaultTexts.DEFAULT_URLS) ?? Array.Empty<string>()
             );
-            selectedUrl = savedUrls.FirstOrDefault() ?? string.Empty;
+            selectedAIUrl = savedUrls.FirstOrDefault() ?? string.Empty;
         }
         #endregion
 
@@ -171,15 +171,15 @@ namespace YiChing.Configuration
             }
         }
         
-        public string SelectedUrl
+        public string SelectedAIUrl
         {
-            get => selectedUrl;
+            get => selectedAIUrl;
             set
             {
-                if (selectedUrl != value)
+                if (selectedAIUrl != value)
                 {
-                    selectedUrl = value;
-                    OnPropertyChanged(nameof(SelectedUrl));
+                    selectedAIUrl = value;
+                    OnPropertyChanged(nameof(SelectedAIUrl));
                 }
             }
         }
@@ -200,7 +200,7 @@ namespace YiChing.Configuration
             SavedUrls = new ObservableCollection<string>(
                 JsonSerializer.Deserialize<string[]>(urlsJson) ?? Array.Empty<string>()
             );
-            SelectedUrl = Preferences.Default.Get(nameof(SelectedUrl), string.Empty);
+            SelectedAIUrl = Preferences.Default.Get(nameof(SelectedAIUrl), string.Empty);
         }
         
         public void SaveValues()
@@ -215,7 +215,7 @@ namespace YiChing.Configuration
             
             var urlsJson = JsonSerializer.Serialize(SavedUrls.ToArray());
             Preferences.Default.Set(nameof(SavedUrls), urlsJson);
-            Preferences.Default.Set(nameof(SelectedUrl), SelectedUrl);
+            Preferences.Default.Set(nameof(SelectedAIUrl), SelectedAIUrl);
         }
         #endregion
     }

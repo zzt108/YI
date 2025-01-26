@@ -85,7 +85,7 @@ public partial class CvConfig : ContentView
             Settings.SavedUrls = new ObservableCollection<string>(
                 JsonSerializer.Deserialize<string[]>(DefaultTexts.DEFAULT_URLS) ?? Array.Empty<string>()
             );
-            Settings.SelectedUrl = Settings.SavedUrls.FirstOrDefault() ?? string.Empty;
+            Settings.SelectedAIUrl = Settings.SavedUrls.FirstOrDefault() ?? string.Empty;
 
             myPicker.SelectedItem = Settings.AnswerLanguage;
             Settings.SaveValues();
@@ -115,20 +115,20 @@ public partial class CvConfig : ContentView
 
     private void RemoveUrl_Click(object? sender, EventArgs e)
     {
-        if (Settings != null && Settings.SelectedUrl != null)
+        if (Settings != null && Settings.SelectedAIUrl != null)
         {
-            Settings.SavedUrls.Remove(Settings.SelectedUrl);
-            Settings.SelectedUrl = Settings.SavedUrls.FirstOrDefault() ?? string.Empty;
+            Settings.SavedUrls.Remove(Settings.SelectedAIUrl);
+            Settings.SelectedAIUrl = Settings.SavedUrls.FirstOrDefault() ?? string.Empty;
         }
     }
 
     private void OpenUrl_Click(object? sender, EventArgs e)
     {
-        if (Settings != null && !string.IsNullOrWhiteSpace(Settings.SelectedUrl))
+        if (Settings != null && !string.IsNullOrWhiteSpace(Settings.SelectedAIUrl))
         {
             try
             {
-                var uri = new Uri(Settings.SelectedUrl);
+                var uri = new Uri(Settings.SelectedAIUrl);
                 Launcher.OpenAsync(uri);
             }
             catch (Exception ex)
