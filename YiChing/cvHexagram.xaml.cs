@@ -1,8 +1,5 @@
 using HexagramNS;
-using System.Web;
 using HG = HexagramNS;
-using Microsoft.Maui.ApplicationModel;
-using Microsoft.Maui.Controls;
 using YiChing.Configuration;
 
 namespace YiChing;
@@ -244,11 +241,12 @@ public partial class CvHexagram : ContentView
 
     private async void OnOpenAIClicked(object sender, System.EventArgs e)
     {
-        if (BindingContext is Settings settings && !string.IsNullOrEmpty(settings.SelectedUrl))
+        var selectedUrl = aiUrlPicker.SelectedItem as string;
+        if (!string.IsNullOrEmpty(selectedUrl))
         {
             try
             {
-                await Launcher.OpenAsync(settings.SelectedUrl);
+                await Launcher.OpenAsync(selectedUrl);
             }
             catch (Exception ex)
             {
