@@ -1,6 +1,9 @@
 using HexagramNS;
 using System.Web;
 using HG = HexagramNS;
+using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Controls;
+using YiChing.Configuration;
 
 namespace YiChing;
 
@@ -11,11 +14,6 @@ public partial class CvHexagram : ContentView
     MainPage _mainPage;
     private void DrawHexagram()
     {
-        // Set the initial location for the checkboxes
-        //int x = HorStart;
-        //int y = VerStart;
-
-        // Add CheckBoxes to the Panel in a 6x3 arrangement
         for (int row = 0; row < HG.Hexagram.RowCount; row++)
         {
             Label labelCB = new Label
@@ -34,15 +32,11 @@ public partial class CvHexagram : ContentView
                     CheckBox checkBox = new CheckBox();
                     CheckBoxes[row, col] = checkBox;
                     checkBox.WidthRequest = 40;
-
-                    // checkBox.Location = new Point(x, y);
                     gridHexagram.Add(checkBox, col + 1, row + 1);
-                    //x += HorDist; // Adjust the horizontal spacing between checkboxes
                 }
             }
         }
     }
-
 
     private void ResetIndeterminate()
     {
@@ -58,7 +52,7 @@ public partial class CvHexagram : ContentView
 
     private string GetFullQuestion()
     {
-        if (_mainPage != null) // Check if _mainPage is not null
+        if (_mainPage != null)
         {
             var settings = _mainPage?.CVConfig?.Settings;
             if (settings == null) return string.Empty;
@@ -71,7 +65,7 @@ public partial class CvHexagram : ContentView
                    $"{settings.OutputFormatHeader}\n\n" +
                    $"{settings.NotesHeader}";
         }
-        return string.Empty; // Return an empty string if _mainPage is null
+        return string.Empty;
     }
 
     #endregion
@@ -81,45 +75,46 @@ public partial class CvHexagram : ContentView
     {
         InitializeComponent();
         mainPage.Title = Title;
-        // Add event handlers
-#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
+        
+        // Set binding context to access settings
+        this.BindingContext = mainPage.CVConfig?.Settings;
+
         btnCopy.Clicked += btnCopy_Click;
-#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
-#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
         btnClear.Clicked += btnClear_Click;
-#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
-#pragma warning disable CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
         btnYarrow.Clicked += btnYarrow_Click;
-#pragma warning restore CS8622 // Nullability of reference types in type of parameter doesn't match the target delegate (possibly because of nullability attributes).
         btnConfig.Clicked += btnConfig_Click;
+        btnOpenAI.Clicked += OnOpenAIClicked;
 
         rtQuestion.TextChanged += (sender, e) => { Question.Text = e.NewTextValue; };
 
         DrawHexagram();
         this._mainPage = mainPage;
         LoadHexagrams();
+        
+        // Initialize URL picker
+        if (mainPage.CVConfig?.Settings != null)
+        {
+            aiUrlPicker.ItemsSource = mainPage.CVConfig.Settings.SavedUrls;
+            aiUrlPicker.SelectedItem = mainPage.CVConfig.Settings.SelectedUrl;
+        }
     }
     #endregion
 
     private void LoadHexagrams()
     {
         var jsonHandler = new JsonHandler();
-
-        // Assuming you have a method to read the JSON data
-        var hexagramEntries = jsonHandler.ReadHexagramEntriesFromJson(); // Implement this method based on your JSON structure
+        var hexagramEntries = jsonHandler.ReadHexagramEntriesFromJson();
 
         foreach (var entry in hexagramEntries)
         {
-            hexagramPicker.Items.Add($"{entry.DisplayText}"); // Customize the display text as needed
+            hexagramPicker.Items.Add($"{entry.DisplayText}");
         }
     }
 
     public void FillCheckBoxesFromHexagramNumbers(int currentHexagramNumber, int newHexagramNumber)
     {
         var h = new HG.Hexagram(currentHexagramNumber, newHexagramNumber);
-
         FillCheckBoxes(h.Values);
-
     }
 
     private void OnHexagramSelected(object sender, EventArgs e)
@@ -135,13 +130,11 @@ public partial class CvHexagram : ContentView
             {
                 rtAnswer.Text = hexagramDetails.Answer;
                 rtQuestion.Text = hexagramDetails.Question;
-
                 FillCheckBoxesFromHexagramNumbers(hexagramDetails.CurrentHexagram, hexagramDetails.NewHexagram);
             }
         }
     }
 
-    // TODO encapsulate rtQuestion.Text into property
     public Editor Question
     {
         get
@@ -167,7 +160,6 @@ public partial class CvHexagram : ContentView
         values.UpdateValues<CheckBox>(CheckBoxes, (row, col, value) =>
         {
             CheckBox checkBox = CheckBoxes[row, col];
-
             checkBox.IsChecked = value;
             return checkBox;
         });
@@ -178,7 +170,6 @@ public partial class CvHexagram : ContentView
         string question = rtQuestion.Text;
         var hexagram = new HG.Hexagram(new HG.Values().InitValues<CheckBox>(CheckBoxes, (checkBox, row, col) => checkBox.IsChecked));
 
-        // Example logic to retrieve the main hexagram.
         int mainHexagram = hexagram.Current;
         var hexagramName = HexagramNameProvider.GetHexagramName(mainHexagram, HexagramNameProvider.Language.English);
 
@@ -194,7 +185,6 @@ public partial class CvHexagram : ContentView
                 rtAnswer.Text += line + ", ";
             }
             var hexagramChangedName = HexagramNameProvider.GetHexagramName(hexagram.New, HexagramNameProvider.Language.English);
-
             rtAnswer.Text += $"\n\nChanging Hexagram {hexagram.New}: {hexagramChangedName}\n";
         }
         else
@@ -202,7 +192,6 @@ public partial class CvHexagram : ContentView
             rtAnswer.Text += "\n No changing lines ";
         }
 
-        // Save the question and hexagram result
         var jsonHandler = new JsonHandler();
         jsonHandler.SaveEntry(new HexagramEntry(
             question,
@@ -211,17 +200,15 @@ public partial class CvHexagram : ContentView
             hexagram.New
         ));
 
-        // Refresh the hexagram picker with the updated entries
         RefreshHexagramPicker();
     }
 
     private void RefreshHexagramPicker()
     {
-        // Clear existing items
         hexagramPicker.Items.Clear();
-        // Reload hexagrams from JSON
         LoadHexagrams();
     }
+
     #region EventHandlers
 
     private void btnConfig_Click(object? sender, EventArgs e)
@@ -243,38 +230,36 @@ public partial class CvHexagram : ContentView
 
     private void btnYarrow_Click(object sender, EventArgs e)
     {
-        // ResetIndeterminate();
         _mainPage.CVYarrowStalks.Question.Text = rtQuestion.Text;
         _mainPage.CVYarrowStalks.InitProcess();
-
         _mainPage.Content = _mainPage.CVYarrowStalks;
     }
 
     private void btnClear_Click(object sender, EventArgs e)
     {
-        //var task = _mainPage.DisplayAlert("Are you sure?", "Clear question and answer?", "Yes", "No");
-        //task.Wait();
-        //if (!task.Result)
-        //    return;
         _mainPage.DisplayVersionText();
         rtQuestion.Text = string.Empty;
         ResetIndeterminate();
     }
-    private async void btnPerpAI_Click(object? sender, EventArgs e)
+
+    private async void OnOpenAIClicked(object sender, System.EventArgs e)
     {
-        try
+        if (BindingContext is Settings settings && !string.IsNullOrEmpty(settings.SelectedUrl))
         {
-            EvalAndSaveHexagram();
-            string question = HttpUtility.UrlEncode(GetFullQuestion());
-            string url = $"https://www.perplexity.ai/search?s=o&q={question}";
-            Uri uri = new Uri(url);
-            await Browser.Default.OpenAsync(uri, BrowserLaunchMode.External);
+            try
+            {
+                await Launcher.OpenAsync(settings.SelectedUrl);
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"Could not open URL: {ex.Message}", "OK");
+            }
         }
-        catch (Exception ex)
+        else
         {
-            // Handle potential exceptions (e.g., no browser installed)
-            await _mainPage.DisplayAlert("Error", "Failed to open web page: " + ex.Message, "OK");
+            await Shell.Current.DisplayAlert("No URL", "Please select an AI URL from the dropdown", "OK");
         }
     }
+
     #endregion
 }

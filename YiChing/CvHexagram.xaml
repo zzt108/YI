@@ -10,6 +10,12 @@
                 <!-- Dropdown for Hexagrams -->
                 <Picker x:Name="hexagramPicker" Title="Select Hexagram" SelectedIndexChanged="OnHexagramSelected" />
 
+                <!-- AI URL Picker -->
+                <Picker x:Name="aiUrlPicker"
+                        Title="Select AI URL"
+                        ItemsSource="{Binding Settings.SavedUrls}"
+                        SelectedItem="{Binding SelectedAIUrl, Mode=TwoWay}" />
+
                 <Editor x:Name="rtQuestion" Text="{Binding QuestionText, Mode=TwoWay}" WidthRequest="300" HeightRequest="100" />
                 <StackLayout Orientation="Horizontal">
                     <StackLayout x:Name ="stackHexagram" WidthRequest="200">
@@ -36,10 +42,10 @@
                     <StackLayout x:Name ="stackButtons">
                         <Button x:Name="btnYarrow" Text="Yarrow Stalks" BackgroundColor="DarkGreen">
                         </Button>
-                        <!--<Button x:Name="btnPerpAI" Text="Perplexity.AI">
+                        <Button x:Name="btnOpenAI" Text="Consult AI"
+                                Clicked="OnOpenAIClicked"
+                                BackgroundColor="#0078D4">
                         </Button>
-                        <Button x:Name="btnEval" Text="Eval">
-                        </Button>-->
                         <Button x:Name="btnCopy" Text="Copy">
                         </Button>
                         <Button x:Name="btnConfig" Text="Configuration">
