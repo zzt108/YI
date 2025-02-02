@@ -110,8 +110,16 @@ public partial class CvHexagram : ContentView
 
     public void FillCheckBoxesFromHexagramNumbers(int currentHexagramNumber, int newHexagramNumber)
     {
-        var h = new HG.Hexagram(currentHexagramNumber, newHexagramNumber);
-        FillCheckBoxes(h.Values);
+        try
+        {
+            var h = new HG.Hexagram(currentHexagramNumber, newHexagramNumber);
+            FillCheckBoxes(h.Values);            
+        }
+        catch (ArgumentException e)
+        {
+            _mainPage.DisplayAlert("Error", $"Error: Invalid hexagram numbers: {e.Message}", "OK");
+        }
+        
     }
 
     private void OnHexagramSelected(object sender, EventArgs e)
@@ -250,12 +258,12 @@ public partial class CvHexagram : ContentView
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Error", $"Could not open URL: {ex.Message}", "OK");
+                _mainPage.DisplayAlert("Error", $"Could not open URL: {ex.Message}", "OK");
             }
         }
         else
         {
-            await Shell.Current.DisplayAlert("No URL", "Please select an AI URL from the dropdown", "OK");
+            _mainPage.DisplayAlert("No URL", "Please select an AI URL from the dropdown", "OK");
         }
     }
 

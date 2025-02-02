@@ -1,4 +1,4 @@
-﻿﻿﻿﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -262,29 +262,21 @@ public class Hexagram
 
     public void FillValuesFromHexagramNumbers(int currentHexagramNumber, int newHexagramNumber)
     {
-         try
-         {
-            // Convert hexagram numbers to 6-digit binary strings
-            string currentBinary = TrigramString(currentHexagramNumber);
-            string newBinary = TrigramString(newHexagramNumber);
+       // Convert hexagram numbers to 6-digit binary strings
+       string currentBinary = TrigramString(currentHexagramNumber);
+       string newBinary = TrigramString(newHexagramNumber);
 
-            // Iterate over each row (line) of the hexagram
-            for (int index = 0; index < Hexagram.RowCount; index++)
-         {
+       // Iterate over each row (line) of the hexagram
+        for (int index = 0; index < Hexagram.RowCount; index++)
+        {
     
-            // Determine if the line is yang (1) or yin (0) based on the current hexagram
-                bool isYang = currentBinary[index] == '1';
+       // Determine if the line is yang (1) or yin (0) based on the current hexagram
+           bool isYang = currentBinary[index] == '1';
 
-               // Determine if the line is changing based on the difference between current and new hexagrams
-                bool isChanging = currentBinary[index] != newBinary[index];
+           // Determine if the line is changing based on the difference between current and new hexagrams
+           bool isChanging = currentBinary[index] != newBinary[index];
 
-               _values.SetIndexRow(index, isYang, isChanging);
-             }
-         }
-         catch (ArgumentException e)
-         {
-             // TODO: display error message to the user about invalid hexagram numbers
-             Console.WriteLine($"Error: Invalid hexagram number: {e.Message}");
-        }
+           _values.SetIndexRow(index, isYang, isChanging);
+       }
     }
 }
