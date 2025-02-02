@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.25.202.1430] - 2025-02-02
+
+### Added
+
+-   **URL Management in Configuration:** Introduced a section in the configuration panel (`CvConfig.xaml`, `CvConfig.xaml.cs`) to manage saved AI URLs, allowing users to add, remove, open, and select URLs directly within the app.
+-   **Default URLs:** Added default URLs for popular AI chat services to the configuration, providing users with immediate options for AI consultation (`Settings.cs`, `DefaultTexts.cs`).
+
+### Changed
+
+-   **UI Layout Improvements:** Refined the layout of `CvHexagram.xaml` to address word wrap issues in the question editor and improve overall responsiveness.
+-   **Configuration Options Update:** Updated the configuration options in `CvConfig.xaml` and `Settings.cs` to reflect the removal of redundant settings properties (`keyTwo`, `interpretationRequest`, `KeyThree`) and to incorporate new settings for text prompts.
+-   **Prompt Configuration:** Enhanced the prompt configuration system to allow for more customizable and structured prompts to AI, including configurable sections for steps, output format, and notes (`Settings.cs`, `CvConfig.xaml`, `cvHexagram.xaml.cs`).
+-   **README.md Update:** Significantly updated the `README.md` file to include a comprehensive overview of features, prerequisites, installation instructions, TODO list, data structure diagram, dotnet EF commands, and plans.
+
+### Fixed
+
+-   **Word Wrap in Question Editor (Attempt):** Addressed the word wrap issue in the question editor of `CvHexagram.xaml` through layout adjustments (further investigation may be needed).
+
+### Removed
+
+-   **Redundant Settings Properties:** Removed `keyTwo`, `interpretationRequest`, and `KeyThree` properties from `Settings.cs` and related configuration UI elements as per user request, streamlining the settings interface.
+
 ## [0.25.120.1616] - 2025-01-20
 
 ### Added

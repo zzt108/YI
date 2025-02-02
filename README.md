@@ -1,3 +1,4 @@
+```markdown
 # Yi Ching for AI
 
 [![Android](https://img.shields.io/badge/Platform-Android-3ddc84?logo=android)](https://developer.android.com)
@@ -29,6 +30,7 @@ A modern implementation of the I Ching (Book of Changes) with a focus on AI inte
 -   **⚙️ Configuration System:**
     -   Customizable prompt templates for AI interactions.
     -   Persistent user settings for a personalized experience.
+    -   **URL Management:** Save and manage frequently used URLs for AI consultations.
 -   **🔄 State Management:**
     -   Continuous auto-save of application state.
     -   Session restoration for seamless continuity.
@@ -36,9 +38,11 @@ A modern implementation of the I Ching (Book of Changes) with a focus on AI inte
 -   **🌐 URL Management:**
     -   Save and manage frequently used URLs
     -   Open URLs directly from the app
-    -   Default URLs include popular AI chat services
+    -   Default URLs include popular AI chat services (DeepSeek Chat, Claude, ChatGPT)
     -   Add/remove URLs through configuration interface
     -   Persistent storage of URL preferences
+    -   Pre-populated with default AI chat URLs for convenience.
+    -   Easy URL management directly within the app's configuration settings.
 
 ### Prerequisites
 
@@ -62,27 +66,11 @@ dotnet workload restore
 - Store questions in GDrive or OneDrive
   - How to config on Win/Amdroid?
 - access to AI APIs, getting direct answers
- 
+
 ## Data structure
 ![Data structure](
 https://www.plantuml.com/plantuml/png/JOun2y8m48Nt-nMt5OGuEZX8nmuT5DJzQ8yOI2wGNAGY_dUDsDhr--xTUsrMIbg2X-ReIVGI_7Q80M3mb3DsF95D59w0w4JnIhuml6RhiiRqg39hScBnL3YhYxASd7dIbU-OHauV2z3qJXYDYKi9xl56TyOT7g3cS6FMJlxOO4zY2rc6-cMcyLi7lrcLB7c0bcKimRy1
 )
-## Dotnet EF
-
-- Open the package manager prompt
-- To install the dotnet-ef tool, run the following command:
-- For .NET 7
-  - PM> dotnet tool install --global dotnet-ef
-- add Migration
-
-PM> dotnet ef migrations add Initial --project DataLayer --context YiDbContext
-- undo Migration
-To undo this action, use 'ef migrations remove' (no 'Initial')
-
-PM> dotnet ef migrations remove --project DataLayer --context yidbcontext
-
-Your startup project 'DataLayer' doesn't reference Microsoft.EntityFrameworkCore.Design. 
---> Do not just add nuget package but add using Microsoft.EntityFrameworkCore.Design; 
 
 # Plans
 - Accessing https://www.jamesdekorne.com/GBCh/hex{number}.htm for hexagram description
@@ -104,3 +92,4 @@ Then when you type your question in the address bar and hit enter, it will open 
 You can add more parameters to the URL like &focus=[internet,scholar,writing,wolfram,youtube,reddit] to specify the search focus
 Setting copilot=true will enable pro mode for the search
 The OpenAI API can also be used to access models programmatically
+```
