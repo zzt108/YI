@@ -16,7 +16,7 @@ namespace YiChing.Configuration
         public const string DEFAULT_OUTPUT_FORMAT_HEADER = "# Output Format\n\nProvide a paragraph in the requested translation that includes the translated question, hexagrams, and a detailed interpretation of the I Ching reading.\n\nFinally summarise the answer to the reading";
         public const string DEFAULT_NOTES_HEADER = "# Notes\n\n" +
             "- Pay attention to the meanings of both hexagrams and how the changing lines transition the reading from the main to the changing hexagram.\n\n" +
-            "- Ensure the interpretation reflects the philosophical concepts of the I Ching and C. G. Jung views in the context of the question asked.";
+            "- Ensure the interpretation reflects the philosophical concepts of the I Ching, Dzogchen, and Taoism in the context of the question asked.";
         public const string DEFAULT_MESSAGE = "Default Message";
         public const string DEFAULT_URLS = "[\"https://chat.deepseek.com\",\"https://claude.ai/new\",\"https://chatgpt.com/\"]";
     }
