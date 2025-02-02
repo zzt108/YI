@@ -14,13 +14,13 @@
 
                 <Editor x:Name="rtQuestion"
                         Text="{Binding QuestionText, Mode=TwoWay}"
-                        WidthRequest="300"
-                        HeightRequest="100"/>
+                        HorizontalOptions="Fill"
+                        HeightRequest="200"/>
                 <StackLayout Orientation="Horizontal">
                     <StackLayout x:Name="stackHexagram"
-                            WidthRequest="200">
+                                 WidthRequest="200">
                         <Grid x:Name="gridHexagram"
-                                WidthRequest="200">
+                              WidthRequest="200">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="10"/>
                                 <RowDefinition Height="Auto"/>
@@ -52,13 +52,14 @@
                                 ItemsSource="{Binding Settings.SavedUrls}"
                                 SelectedItem="{Binding SelectedAIUrl, Mode=TwoWay}"/>
 
+                        <Button x:Name="btnCopy"
+                                Text="to Clipboard">
+                        </Button>
+
                         <Button x:Name="btnOpenAI"
                                 Text="Consult AI"
                                 Clicked="OnOpenAIClicked"
                                 BackgroundColor="#0078D4">
-                        </Button>
-                        <Button x:Name="btnCopy"
-                                Text="Copy">
                         </Button>
                         <Button x:Name="btnConfig"
                                 Text="Configuration">

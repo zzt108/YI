@@ -258,12 +258,12 @@ public partial class CvHexagram : ContentView
             }
             catch (Exception ex)
             {
-                _mainPage.DisplayAlert("Error", $"Could not open URL: {ex.Message}", "OK");
+                await _mainPage.DisplayAlert("Error", $"Could not open URL: {ex.Message}", "OK");
             }
         }
         else
         {
-            _mainPage.DisplayAlert("No URL", "Please select an AI URL from the dropdown", "OK");
+            await _mainPage.DisplayAlert("No URL", "Please select an AI URL from the dropdown", "OK");
         }
     }
 
