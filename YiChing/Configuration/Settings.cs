@@ -18,7 +18,7 @@ namespace YiChing.Configuration
             "- Pay attention to the meanings of both hexagrams and how the changing lines transition the reading from the main to the changing hexagram.\n\n" +
             "- Ensure the interpretation reflects the philosophical concepts of the I Ching, Dzogchen, and Taoism in the context of the question asked.";
         public const string DEFAULT_MESSAGE = "Default Message";
-        public const string DEFAULT_URLS = "[\"https://chat.deepseek.com\",\"https://claude.ai/new\",\"https://chatgpt.com/\"]";
+        public const string DEFAULT_URLS = "[\"https://chat.deepseek.com\",\"https://claude.ai/new\",\"https://chatgpt.com\", \"https://aistudio.google.com\", \"https://chat.mistral.ai\"]";
     }
 
     public class Settings : IDisposable, INotifyPropertyChanged

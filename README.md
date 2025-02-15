@@ -1,4 +1,3 @@
-```markdown
 # Yi Ching for AI
 
 [![Android](https://img.shields.io/badge/Platform-Android-3ddc84?logo=android)](https://developer.android.com)
@@ -92,4 +91,3 @@ Then when you type your question in the address bar and hit enter, it will open 
 You can add more parameters to the URL like &focus=[internet,scholar,writing,wolfram,youtube,reddit] to specify the search focus
 Setting copilot=true will enable pro mode for the search
 The OpenAI API can also be used to access models programmatically
-```

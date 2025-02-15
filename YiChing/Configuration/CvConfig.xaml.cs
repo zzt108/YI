@@ -18,22 +18,22 @@ public partial class CvConfig : ContentView
         InitializeComponent();
         _mainPage = page;
         _configuration = configuration;
-        
+
         // Existing event handlers
         btnReturn.Clicked += btnReturn_Click;
         btnReset.Clicked += btnReset_Click;
 #pragma warning disable CS8622
         myPicker.SelectedIndexChanged += Picker_SelectedIndexChanged;
 #pragma warning restore CS8622
-        
+
         // New URL event handlers
         btnAddUrl.Clicked += AddUrl_Click;
         btnRemoveUrl.Clicked += RemoveUrl_Click;
         btnOpenUrl.Clicked += OpenUrl_Click;
-        
+
         LoadSettings();
         BindingContext = this;
-        
+
         if (Settings != null)
         {
             myPicker.SelectedItem = Settings.AnswerLanguage ?? "English";
@@ -80,7 +80,7 @@ public partial class CvConfig : ContentView
             Settings.StepsHeader = defaultSettings.StepsHeader;
             Settings.OutputFormatHeader = defaultSettings.OutputFormatHeader;
             Settings.NotesHeader = defaultSettings.NotesHeader;
-            
+
             // Reset URLs
             Settings.SavedUrls = new ObservableCollection<string>(
                 JsonSerializer.Deserialize<string[]>(DefaultTexts.DEFAULT_URLS) ?? Array.Empty<string>()
@@ -92,17 +92,19 @@ public partial class CvConfig : ContentView
         }
     }
 
-    private void AddUrl_Click(object? sender, EventArgs e)
+    private async void AddUrl_Click(object? sender, EventArgs e)
     {
         var newUrl = txtNewUrl.Text?.Trim();
-        if (string.IsNullOrWhiteSpace(newUrl))
+        if (string.IsNullOrWhiteSpace(newUrl)) return;
+
+        if (!newUrl.StartsWith("http://", StringComparison.OrdinalIgnoreCase) && !newUrl.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
         {
-            return;
+            newUrl = "https://" + newUrl; // Prepend https://
         }
 
-        if (!Uri.TryCreate(newUrl, UriKind.Absolute, out _))
+        if (!Uri.TryCreate(newUrl, UriKind.Absolute, out var uri))
         {
-            // Show error message
+            await _mainPage.DisplayAlert("Error", $"Invalid URL format. {newUrl}", "OK"); // User feedback for invalid format
             return;
         }
 
