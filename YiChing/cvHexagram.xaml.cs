@@ -1,6 +1,7 @@
 using HexagramNS;
 using HG = HexagramNS;
 using YiChing.Configuration;
+using System.Text;
 
 namespace YiChing;
 
@@ -47,6 +48,37 @@ public partial class CvHexagram : ContentView
             });
     }
 
+    private string GetSystemText()
+    {
+        if (_mainPage?.CVConfig?.Settings == null) return string.Empty;
+
+        var settings = _mainPage.CVConfig.Settings;
+        //  Construct a system prompt.  This is a *key* change.  Adapt this
+        //  to the specific format you want for OpenAI.  This is just an
+        //  EXAMPLE structure.
+        return
+            $"{settings.TranslationRequest} {_mainPage.CVConfig.Settings.AnswerLanguage} and provide an interpretation of the result.\n\n" +
+            //$"Date: {{DateTime.Now:yyyy-MM-dd}}\n" +
+            //$"{settings.QuestionPrefix} {{rtQuestion.Text}}\n\n" +
+            $"{settings.StepsHeader}\n\n" +
+            $"{settings.OutputFormatHeader}\n\n" +
+            $"{settings.NotesHeader}";
+    }
+
+    private string GetAnswerText()
+    {
+        if (_mainPage?.CVConfig?.Settings == null) return string.Empty;
+
+        var settings = _mainPage.CVConfig.Settings;
+        //  Construct a system prompt.  This is a *key* change.  Adapt this
+        //  to the specific format you want for OpenAI.  This is just an
+        //  EXAMPLE structure.
+        return
+            $"Date: {DateTime.Now:yyyy-MM-dd}\n" +
+            $"{settings.QuestionPrefix} {rtQuestion.Text}\n\n" + 
+            rtAnswer.Text;
+    }
+
     private string GetFullQuestion()
     {
         if (_mainPage != null)
@@ -76,7 +108,10 @@ public partial class CvHexagram : ContentView
         // Set binding context to access settings
         this.BindingContext = mainPage.CVConfig?.Settings;
 
-        btnCopy.Clicked += btnCopy_Click;
+        btnCopy.Clicked += btnCopyAll_Click;
+        btnCopyAnswer.Clicked += BtnCopyAnswer_Clicked;
+        btnCopySystem.Clicked += BtnCopySystem_Clicked;
+
         btnClear.Clicked += btnClear_Click;
         btnYarrow.Clicked += btnYarrow_Click;
         btnConfig.Clicked += btnConfig_Click;
@@ -178,24 +213,31 @@ public partial class CvHexagram : ContentView
         int mainHexagram = hexagram.Current;
         var hexagramName = HexagramNameProvider.GetHexagramName(mainHexagram, HexagramNameProvider.Language.English);
 
-        rtAnswer.Text = $"\nMain Hexagram {mainHexagram}: {hexagramName}\n\n";
+        StringBuilder answerText = new StringBuilder();
+        answerText.AppendLine($"Main Hexagram {mainHexagram}: {hexagramName}");
+        answerText.AppendLine();
 
         if (hexagram.ChangingLines.Any())
         {
-            rtAnswer.Text += "Changing lines: ";
+            answerText.Append("Changing lines: ");
             var changingLines = hexagram.ChangingLines;
             changingLines.Reverse();
             foreach (int line in changingLines)
             {
-                rtAnswer.Text += line + ", ";
+                answerText.Append(line + ", ");
             }
-            var hexagramChangedName = HexagramNameProvider.GetHexagramName(hexagram.New, HexagramNameProvider.Language.English);
-            rtAnswer.Text += $"\n\nChanging Hexagram {hexagram.New}: {hexagramChangedName}\n";
+
+            var hexagramChangedName = HexagramNameProvider.GetHexagramName(hexagram.New,
+                HexagramNameProvider.Language.English);
+            answerText.AppendLine(); // Ensure newline before next line
+            answerText.AppendLine($"Changing Hexagram {hexagram.New}: {hexagramChangedName}");
         }
         else
         {
-            rtAnswer.Text += "\n No changing lines ";
+            answerText.AppendLine("No changing lines");
         }
+
+        rtAnswer.Text = answerText.ToString(); // Set the complete answer text
 
         var jsonHandler = new JsonHandler();
         jsonHandler.SaveEntry(new HexagramEntry(
@@ -226,11 +268,26 @@ public partial class CvHexagram : ContentView
         EvalAndSaveHexagram();
     }
 
-    private void btnCopy_Click(object sender, EventArgs e)
+    private void btnCopyAll_Click(object sender, EventArgs e)
     {
-        EvalAndSaveHexagram();
+        EvalAndSaveHexagram(); // Make sure answer is up-to-date
         string full = GetFullQuestion();
         Clipboard.SetTextAsync(full);
+    }
+
+    // New handler for "Copy Answer" button:
+    private void BtnCopyAnswer_Clicked(object sender, EventArgs e)
+    {
+        EvalAndSaveHexagram(); // Ensure rtAnswer.Text is current
+        string answerText = GetAnswerText();
+        Clipboard.SetTextAsync(answerText);
+    }
+
+    // New handler for "Copy System" button:
+    private void BtnCopySystem_Clicked(object sender, EventArgs e)
+    {
+        string systemText = GetSystemText();
+        Clipboard.SetTextAsync(systemText);
     }
 
     private void btnYarrow_Click(object sender, EventArgs e)

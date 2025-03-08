@@ -11,7 +11,7 @@
                     <!-- Added FillAndExpand here -->
                     <!-- Dropdown for Hexagrams -->
                     <Picker x:Name="hexagramPicker"
-                            Title="Select Hexagram"
+                            Title="Select from history ..."
                             SelectedIndexChanged="OnHexagramSelected"
                             HorizontalOptions="FillAndExpand"/>
                     <!-- Added FillAndExpand here -->
@@ -54,9 +54,10 @@
                                     BackgroundColor="DarkGreen">
                             </Button>
 
-                            <Button x:Name="btnCopy"
-                                    Text="to Clipboard">
-                            </Button>
+                            <Button x:Name="btnCopy" Text="Copy All" />
+                            <!-- Keep existing button, rename -->
+                            <Button x:Name="btnCopyAnswer" Text="Copy Answer" />
+                            <Button x:Name="btnCopySystem" Text="Copy System" />
 
                             <!-- AI URL Picker -->
                             <Picker x:Name="aiUrlPicker"
@@ -73,7 +74,7 @@
                                     Text="Configuration">
                             </Button>
                             <Button x:Name="btnClear"
-                                    Text="Clear"
+                                    Text="Save/New"
                                     BackgroundColor="DarkRed">
                             </Button>
                         </StackLayout>
