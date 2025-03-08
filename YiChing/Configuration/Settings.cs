@@ -23,7 +23,7 @@ namespace YiChing.Configuration
             "- Pay attention to the meanings of both hexagrams and how the changing lines transition the reading from the main to the changing hexagram.\n\n" +
             "- Ensure the interpretation reflects the philosophical concepts of the I Ching, Dzogchen, and Taoism in the context of the question asked.";
         public const string DEFAULT_MESSAGE = "Default Message";
-        public const string DEFAULT_URLS = "[\"https://chatgpt.com\", \"https://aistudio.google.com\", \"https://platform.openai.com/playground/chat?preset=fOAXZZoXJ3HhZogG1qR1KhxI\", \"https://chat.deepseek.com\",\"https://claude.ai/new\",\"https://chat.mistral.ai\"]";
+        public const string DEFAULT_URLS = "[\"https://chatgpt.com\", \"https://platform.openai.com/playground/assistants?assistant=asst_D462v27vJU6aIhiHEhgqajCx\",  \"https://aistudio.google.com\", \"https://platform.openai.com/playground/chat?preset=fOAXZZoXJ3HhZogG1qR1KhxI\", \"https://chat.deepseek.com\",\"https://claude.ai/new\",\"https://chat.mistral.ai\"]";
     }
 
     public class Settings : IDisposable, INotifyPropertyChanged
