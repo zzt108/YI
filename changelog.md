@@ -1,5 +1,15 @@
 # Changelog
 
+ ## [0.25.308.1430] - 2025-03-08
+### Changed
+**CvHexagram UI Layout Refactor:** Redesigned the `CvHexagram.xaml` layout using Grid for better responsiveness and organization. Adjusted sizes and alignments for Picker, Editor, Labels, and CheckBoxes. Enhanced button arrangement by converting StackLayout to Grid and aligning buttons within grid cells.
+**Enhanced Text Copy Functionality:** Added "Copy All," "Copy Answer," and "Copy System" buttons to the UI in `CvHexagram.xaml`. Updated button titles for better clarity and implemented methods to retrieve specific texts for copying, improving user experience in sharing divination results.
+
+### Added
+**OpenAI Platform Link:** Added a direct link to the OpenAI platform within the default AI service URLs, providing users with more options for AI consultation.
+
+### Fixed
+**URL Handling Logic:** Refined URL handling in the configuration settings to automatically prepend 'https://' to URLs if missing, ensuring correct URL format. Implemented user feedback for invalid URL formats by displaying an alert, improving the robustness of URL inputs.
 ## [0.25.202.1430] - 2025-02-02
 
 ### Added
