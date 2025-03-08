@@ -18,7 +18,7 @@ namespace YiChing.Configuration
             "- Pay attention to the meanings of both hexagrams and how the changing lines transition the reading from the main to the changing hexagram.\n\n" +
             "- Ensure the interpretation reflects the philosophical concepts of the I Ching, Dzogchen, and Taoism in the context of the question asked.";
         public const string DEFAULT_MESSAGE = "Default Message";
-        public const string DEFAULT_URLS = "[\"https://chat.deepseek.com\",\"https://claude.ai/new\",\"https://chatgpt.com\", \"https://aistudio.google.com\", \"https://chat.mistral.ai\"]";
+        public const string DEFAULT_URLS = "[\"https://chatgpt.com\", \"https://aistudio.google.com\", \"https://platform.openai.com/playground/chat?preset=fOAXZZoXJ3HhZogG1qR1KhxI\", \"https://chat.deepseek.com\",\"https://claude.ai/new\",\"https://chat.mistral.ai\"]";
     }
 
     public class Settings : IDisposable, INotifyPropertyChanged
@@ -32,9 +32,9 @@ namespace YiChing.Configuration
         private string notesHeader;
         private ObservableCollection<string> savedUrls;
         private string selectedUrl;
-    
+
         public event PropertyChangedEventHandler? PropertyChanged;
-    
+
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -79,7 +79,7 @@ namespace YiChing.Configuration
                 }
             }
         }
-        
+
         public string QuestionPrefix
         {
             get => questionPrefix;
@@ -92,7 +92,7 @@ namespace YiChing.Configuration
                 }
             }
         }
-        
+
         public string AnswerPrefix
         {
             get => answerPrefix;
@@ -105,7 +105,7 @@ namespace YiChing.Configuration
                 }
             }
         }
-        
+
         public string TranslationRequest
         {
             get => translationRequest;
@@ -118,7 +118,7 @@ namespace YiChing.Configuration
                 }
             }
         }
-        
+
         public string StepsHeader
         {
             get => stepsHeader;
@@ -131,7 +131,7 @@ namespace YiChing.Configuration
                 }
             }
         }
-        
+
         public string OutputFormatHeader
         {
             get => outputFormatHeader;
@@ -144,7 +144,7 @@ namespace YiChing.Configuration
                 }
             }
         }
-        
+
         public string NotesHeader
         {
             get => notesHeader;
@@ -157,7 +157,7 @@ namespace YiChing.Configuration
                 }
             }
         }
-        
+
         public ObservableCollection<string> SavedUrls
         {
             get => savedUrls;
@@ -170,7 +170,7 @@ namespace YiChing.Configuration
                 }
             }
         }
-        
+
         public string SelectedUrl
         {
             get => selectedUrl;
@@ -195,14 +195,14 @@ namespace YiChing.Configuration
             StepsHeader = Preferences.Default.Get(nameof(StepsHeader), defaults?.StepsHeader ?? DefaultTexts.DEFAULT_STEPS_HEADER);
             OutputFormatHeader = Preferences.Default.Get(nameof(OutputFormatHeader), defaults?.OutputFormatHeader ?? DefaultTexts.DEFAULT_OUTPUT_FORMAT_HEADER);
             NotesHeader = Preferences.Default.Get(nameof(NotesHeader), defaults?.NotesHeader ?? DefaultTexts.DEFAULT_NOTES_HEADER);
-            
+
             var urlsJson = Preferences.Default.Get(nameof(SavedUrls), DefaultTexts.DEFAULT_URLS);
             SavedUrls = new ObservableCollection<string>(
                 JsonSerializer.Deserialize<string[]>(urlsJson) ?? Array.Empty<string>()
             );
             SelectedUrl = Preferences.Default.Get(nameof(SelectedUrl), string.Empty);
         }
-        
+
         public void SaveValues()
         {
             Preferences.Default.Set(nameof(Settings.AnswerLanguage), answerLanguage);
@@ -212,7 +212,7 @@ namespace YiChing.Configuration
             Preferences.Default.Set(nameof(Settings.StepsHeader), stepsHeader);
             Preferences.Default.Set(nameof(Settings.OutputFormatHeader), outputFormatHeader);
             Preferences.Default.Set(nameof(Settings.NotesHeader), notesHeader);
-            
+
             var urlsJson = JsonSerializer.Serialize(SavedUrls.ToArray());
             Preferences.Default.Set(nameof(SavedUrls), urlsJson);
             Preferences.Default.Set(nameof(SelectedUrl), SelectedUrl);
