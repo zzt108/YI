@@ -9,9 +9,9 @@ A modern implementation of the I Ching (Book of Changes) with a focus on AI inte
 
 ### Core Functionality
 
--   **🎴 Divination Methods:**
-    -   Three Coin Method
-    -   Traditional Yarrow Stalks Method
+- **☯️ Divination Methods:**
+    - **🪙 Three Coin Method**
+    - **🌿 Traditional Yarrow Stalks Method**
 -   **🌐 Multilingual Support:**
     -   English and Hungarian hexagram names.
     -   Configurable output language for AI responses.
