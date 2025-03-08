@@ -17,11 +17,12 @@ public partial class CvHexagram : ContentView
             Label labelCB = new Label
             {
                 Text = $"{HG.Hexagram.RowCount - row}",
-                WidthRequest = 40,
+                WidthRequest = 20,
+                HeightRequest = 20,
                 VerticalTextAlignment = TextAlignment.Center
             };
             gridHexagram.Add(labelCB, gridHexagram.ColumnDefinitions.Count - 1, row + 1);
-            labelCB.WidthRequest = 40;
+            // labelCB.WidthRequest = 20;
 
             if (gridHexagram != null)
             {
@@ -29,7 +30,8 @@ public partial class CvHexagram : ContentView
                 {
                     CheckBox checkBox = new CheckBox();
                     CheckBoxes[row, col] = checkBox;
-                    checkBox.WidthRequest = 40;
+                    checkBox.WidthRequest = 20;
+                    checkBox.HeightRequest = 20;
                     gridHexagram.Add(checkBox, col + 1, row + 1);
                 }
             }
@@ -48,18 +50,15 @@ public partial class CvHexagram : ContentView
             });
     }
 
+    private string GetTranslationRequestText() => _mainPage?.CVConfig?.Settings?.AnswerLanguage != "English" ? $"{_mainPage?.CVConfig?.Settings?.TranslationRequest} {_mainPage.CVConfig.Settings.AnswerLanguage}\n\n" : string.Empty;
+
     private string GetSystemText()
     {
         if (_mainPage?.CVConfig?.Settings == null) return string.Empty;
 
         var settings = _mainPage.CVConfig.Settings;
-        //  Construct a system prompt.  This is a *key* change.  Adapt this
-        //  to the specific format you want for OpenAI.  This is just an
-        //  EXAMPLE structure.
         return
-            $"{settings.TranslationRequest} {_mainPage.CVConfig.Settings.AnswerLanguage} and provide an interpretation of the result.\n\n" +
-            //$"Date: {{DateTime.Now:yyyy-MM-dd}}\n" +
-            //$"{settings.QuestionPrefix} {{rtQuestion.Text}}\n\n" +
+            GetTranslationRequestText() +
             $"{settings.StepsHeader}\n\n" +
             $"{settings.OutputFormatHeader}\n\n" +
             $"{settings.NotesHeader}";
@@ -70,9 +69,6 @@ public partial class CvHexagram : ContentView
         if (_mainPage?.CVConfig?.Settings == null) return string.Empty;
 
         var settings = _mainPage.CVConfig.Settings;
-        //  Construct a system prompt.  This is a *key* change.  Adapt this
-        //  to the specific format you want for OpenAI.  This is just an
-        //  EXAMPLE structure.
         return
             $"Date: {DateTime.Now:yyyy-MM-dd}\n" +
             $"{settings.QuestionPrefix} {rtQuestion.Text}\n\n" + 
@@ -85,7 +81,7 @@ public partial class CvHexagram : ContentView
         {
             var settings = _mainPage?.CVConfig?.Settings;
             if (settings == null) return string.Empty;
-            return $"{settings.TranslationRequest} {settings.AnswerLanguage} and provide an interpretation of the result.\n\n" +
+            return GetTranslationRequestText() +
                    $"Date: {DateTime.Now:yyyy-MM-dd}\n" +
                    $"{settings.QuestionPrefix} {rtQuestion.Text}\n\n" +
                    $"{settings.AnswerPrefix}\n\n" +
@@ -275,7 +271,6 @@ public partial class CvHexagram : ContentView
         Clipboard.SetTextAsync(full);
     }
 
-    // New handler for "Copy Answer" button:
     private void BtnCopyAnswer_Clicked(object sender, EventArgs e)
     {
         EvalAndSaveHexagram(); // Ensure rtAnswer.Text is current
@@ -283,7 +278,6 @@ public partial class CvHexagram : ContentView
         Clipboard.SetTextAsync(answerText);
     }
 
-    // New handler for "Copy System" button:
     private void BtnCopySystem_Clicked(object sender, EventArgs e)
     {
         string systemText = GetSystemText();

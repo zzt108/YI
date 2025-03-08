@@ -12,7 +12,12 @@ namespace YiChing.Configuration
         public const string DEFAULT_QUESTION_PREFIX = "Question to I Ching:";
         public const string DEFAULT_ANSWER_PREFIX = "I Ching answered:";
         public const string DEFAULT_TRANSLATION_REQUEST = "When finished translate everything to";
-        public const string DEFAULT_STEPS_HEADER = "# Steps\n\n1. Translate the hexagrams and question into English.\n2. Provide an interpretation of the main hexagram and how the changing lines influence its meaning.\n3. Explain how the changing hexagram provides additional insight or guidance.";
+        public const string DEFAULT_STEPS_HEADER = "# Steps\n\n"+
+            "1. Translate the hexagrams and question into English.\n"+
+            "2. Provide an interpretation of the main hexagram and how the changing lines influence its meaning.\n"+
+            "3. Explain how the changing hexagram provides additional insight or guidance.\n"+
+            "4. Provide an interpretation of the full answer"
+            ;
         public const string DEFAULT_OUTPUT_FORMAT_HEADER = "# Output Format\n\nProvide a paragraph in the requested translation that includes the translated question, hexagrams, and a detailed interpretation of the I Ching reading.\n\nFinally summarise the answer to the reading";
         public const string DEFAULT_NOTES_HEADER = "# Notes\n\n" +
             "- Pay attention to the meanings of both hexagrams and how the changing lines transition the reading from the main to the changing hexagram.\n\n" +

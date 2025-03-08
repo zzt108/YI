@@ -4,92 +4,135 @@
              x:Class="YiChing.CvHexagram">
     <StackLayout x:Name="stack">
         <StackLayout Orientation="Vertical">
-            <!-- Changed to Vertical Orientation for main StackLayout -->
-            <!-- First column containing another stacklayout -->
             <StackLayout Orientation="Horizontal">
                 <StackLayout HorizontalOptions="FillAndExpand">
-                    <!-- Added FillAndExpand here -->
                     <!-- Dropdown for Hexagrams -->
                     <Picker x:Name="hexagramPicker"
                             Title="Select from history ..."
                             SelectedIndexChanged="OnHexagramSelected"
-                            HorizontalOptions="FillAndExpand"/>
-                    <!-- Added FillAndExpand here -->
-
+                            HorizontalOptions="FillAndExpand" />
                     <Editor x:Name="rtQuestion"
                             Text="{Binding QuestionText, Mode=TwoWay}"
-                            HorizontalOptions="FillAndExpand"  
-                        HeightRequest="200"
-                            HorizontalTextAlignment="Start"/>
-                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                        <!-- Added FillAndExpand here -->
+                            HorizontalOptions="FillAndExpand"
+                            HeightRequest="200"
+                            HorizontalTextAlignment="Start" 
+                            FontSize="16"/>
+                    <StackLayout Orientation="Horizontal"
+                                 HorizontalOptions="FillAndExpand">
                         <StackLayout x:Name="stackHexagram"
                                      HorizontalOptions="Start"
-                                     WidthRequest="200">
+                                     WidthRequest="120">
                             <Grid x:Name="gridHexagram"
-                                  WidthRequest="200">
+                                  WidthRequest="120">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="10"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="0" />
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="30" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="10"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="0" />
+                                    <ColumnDefinition Width="30" />
+                                    <ColumnDefinition Width="30" />
+                                    <ColumnDefinition Width="30" />
+                                    <ColumnDefinition Width="1" />
+                                    <ColumnDefinition Width="30" />
                                 </Grid.ColumnDefinitions>
                             </Grid>
                         </StackLayout>
-                        <StackLayout x:Name="stackButtons" HorizontalOptions="End">
+                        <Grid x:Name="stackButtons">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <!-- Row 0 -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- Row 1 -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- Row 2 -->
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <!-- Column 0 -->
+                                <ColumnDefinition Width="Auto"/>
+                                <!-- Column 1 -->
+                            </Grid.ColumnDefinitions>
                             <!-- Aligned buttons to the end -->
                             <Button x:Name="btnYarrow"
                                     Text="Yarrow Stalks"
-                                    BackgroundColor="DarkGreen">
-                            </Button>
-
-                            <Button x:Name="btnCopy" Text="Copy All" />
+                                    BackgroundColor="DarkGreen" 
+                                    Grid.Row="0"
+                                    Grid.Column="0"/>
+                            <Button x:Name="btnCopy"
+                                    Text="Copy All" 
+                                    Grid.Row="1"
+                                    Grid.Column="0"/>
                             <!-- Keep existing button, rename -->
-                            <Button x:Name="btnCopyAnswer" Text="Copy Answer" />
-                            <Button x:Name="btnCopySystem" Text="Copy System" />
-
-                            <!-- AI URL Picker -->
-                            <Picker x:Name="aiUrlPicker"
-                                    Title="Select AI URL"
-                                    ItemsSource="{Binding Settings.SavedUrls}"
-                                    SelectedItem="{Binding SelectedAIUrl, Mode=TwoWay}"/>
-
-                            <Button x:Name="btnOpenAI"
-                                    Text="Consult AI"
-                                    Clicked="OnOpenAIClicked"
-                                    BackgroundColor="#0078D4">
-                            </Button>
+                            <Button x:Name="btnCopyAnswer"
+                                    Text="Copy Answer" 
+                                    Grid.Row="2"
+                                    Grid.Column="0"/>
+                            <Button x:Name="btnCopySystem"
+                                    Text="Copy System" 
+                                    Grid.Row="0"
+                                    Grid.Column="1"/>
                             <Button x:Name="btnConfig"
-                                    Text="Configuration">
-                            </Button>
+                                    Text="Configuration"
+                                    BackgroundColor="#0078D4"
+                                    Grid.Row="1"
+                                    Grid.Column="1"/>
                             <Button x:Name="btnClear"
                                     Text="Save/New"
-                                    BackgroundColor="DarkRed">
-                            </Button>
-                        </StackLayout>
-                    </StackLayout>
-                    <StackLayout HorizontalOptions="FillAndExpand">
-                        <!-- Added FillAndExpand here -->
-                        <Editor x:Name="rtAnswer"
-                                IsReadOnly="True"
-                                HeightRequest="150"
-                                HorizontalOptions="FillAndExpand"/>
-                        <!-- Added FillAndExpand here -->
+                                    BackgroundColor="DarkRed"
+                                    Grid.Row="2"
+                                    Grid.Column="1"/>
+                        </Grid>
                     </StackLayout>
                 </StackLayout>
-                <!-- Right column containing Answers editor -->
             </StackLayout>
+        </StackLayout>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <!-- Picker takes remaining space -->
+                <ColumnDefinition Width="Auto" />
+                <!-- Buttons take only what they need -->
+                <!--<ColumnDefinition Width="Auto" />
+                --><!-- Buttons take only what they need --><!--
+                <ColumnDefinition Width="Auto" />
+                --><!-- Buttons take only what they need -->
+            </Grid.ColumnDefinitions>
+
+            <!-- AI URL Picker -->
+            <Picker x:Name="aiUrlPicker"
+                    Title="Select AI URL"
+                    ItemsSource="{Binding Settings.SavedUrls}"
+                    SelectedItem="{Binding SelectedAIUrl, Mode=TwoWay}"
+                    Grid.Column="0" />
+
+            <Button x:Name="btnOpenAI"
+                    Text="Consult AI"
+                    Clicked="OnOpenAIClicked"
+                    BackgroundColor="#0078D4"
+                    Grid.Column="1" />
+
+            <!--<Button x:Name="btnConfig"
+                    Text="Configuration"
+                    Grid.Column="2" />
+
+            <Button x:Name="btnClear"
+                    Text="Clear"
+                    BackgroundColor="DarkRed"
+                    Grid.Column="3" />-->
+        </Grid>
+        <StackLayout HorizontalOptions="FillAndExpand">
+            <!-- Added FillAndExpand here -->
+            <Editor x:Name="rtAnswer"
+                    IsReadOnly="True"
+                    HeightRequest="150"
+                    HorizontalOptions="FillAndExpand"/>
+            <!-- Added FillAndExpand here -->
         </StackLayout>
     </StackLayout>
 </ContentView>
