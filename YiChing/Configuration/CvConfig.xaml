@@ -52,14 +52,14 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <Entry x:Name="txtNewUrl" Placeholder="Enter new URL"/>
 
             <HorizontalStackLayout Spacing="10">
-                <Entry x:Name="txtNewUrl" Placeholder="Enter new URL" WidthRequest="250" />
-                <Button x:Name="btnAddUrl" Text="Add" />
-                <Button x:Name="btnRemoveUrl" Text="Remove" />
+                <Button x:Name="btnAddUrl" Text="Add" WidthRequest="100"/>
+                <Button x:Name="btnRemoveUrl" Text="Remove Selected" WidthRequest="100" />
+                <Button x:Name="btnOpenUrl" Text="Open Selected URL" WidthRequest="100"/>
             </HorizontalStackLayout>
 
-            <Button x:Name="btnOpenUrl" Text="Open Selected URL" HorizontalOptions="Start" />
 
             <Button x:Name="btnReset" Text="Reset to Defaults" Margin="0,20,0,0" BackgroundColor="Orange"></Button>
             <Button x:Name="btnReturn" Text="Return" Margin="0,10,0,20"></Button>
